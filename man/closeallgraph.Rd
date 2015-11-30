@@ -2,11 +2,11 @@
 % Please edit documentation in R/imsbasics.R
 \name{closeallgraph}
 \alias{closeallgraph}
-\title{Function to close all graphs and plots}
+\title{Function to close all graphs plots}
 \usage{
 closeallgraph()
 }
 \description{
-Function to close all graphs and plots
+Function to close all graphs plots
 }
 
