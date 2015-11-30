@@ -20,7 +20,7 @@ clearallvar <- function() { # Define function "clr()"
 }
 
 
-#' Function to close all graphs and plots
+#' Function to close all graphs plots
 #' @export
 closeallgraph <- function() {
   if (dev.cur() != 1) {dev.off(which = dev.cur())} #close plots
