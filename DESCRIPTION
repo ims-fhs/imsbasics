@@ -1,0 +1,11 @@
+Package: imsbasics
+Type: Package
+Title: Provides basic functions
+Version: 0.1
+Date: 2015-11-30
+Author: Christoph Strauss
+Maintainer: Christoph Strauss <Christoph.Strauss@fhsg.ch>
+Description: bla
+License: -
+LazyData: TRUE
+RoxygenNote: 5.0.1
