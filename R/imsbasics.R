@@ -1,5 +1,4 @@
 #' Function returns blue of FH St. Gallen.
-#' @export
 #'
 #' @return RGB value for FHS-blue
 fhs <- function() {
@@ -13,7 +12,6 @@ fhs <- function() {
 
 
 #' Function to remove all variables
-#' @export
 clear_all_var <- function() { # Define function "clr()"
   # Clear the environment.
   #
@@ -35,7 +33,6 @@ clear_all_var <- function() { # Define function "clr()"
 
 
 #' Function to close all graphs/ plots
-#' @export
 close_all_graph <- function() {
   if (dev.cur() != 1) {dev.off(which = dev.cur())} #close plots
   graphics.off() #close plots in win.graph()
@@ -44,7 +41,6 @@ close_all_graph <- function() {
 
 #' Function to remove all variables and close all graphs/ plots
 #' including Garbage Collection gc()
-#' @export
 clc <- function() {
   clear_all_var()
   close_all_graph()
@@ -53,7 +49,6 @@ clc <- function() {
 
 
 #' Function to clear console
-#' @export
 cc <- function() {
   cat("\014")
 }
@@ -85,6 +80,5 @@ cc <- function() {
 #'
 #' Install packages with install.packages("package")
 #' Include non-standard libraries using libraray(package)
-#' @export
 googlestyle <- function() {}
 
