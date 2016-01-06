@@ -1,3 +1,86 @@
+# =============================================================================
+# Independent functions:
+
+#' Load data from specific folder to a variable in current environment.
+#' Call as routes <- imsbasics::load_rdata(filename, path)
+#'
+#' @param filename, can be without ".RData"
+#' @param path in "../.." style. Default: getwd()
+#'
+#' @return Obects(s) in filename
+#'
+load_rdata <- function(filename, path) {
+  # Default file type:
+  if (!grepl(".RData", filename)) {
+    filename <- paste0(filename, ".RData")
+  }
+
+  # Set default path (If possible):
+  if (missing(path)) {
+    # When function us used without path, data is expected to lie in folder ../data/
+    # Needs "data" folder in testthat folder. Normally this is the expected place
+    # to find data
+    path <- paste0(getwd(), "/data/")
+    warning(paste0("Path is set to ", path))
+    file <- paste0(path, "/", filename)
+
+    # Use path and load file:
+  } else {
+    file <- paste0(path, filename)
+  }
+  if (file.exists(file)) {
+    # create new clear environment which can be deleted after loading
+    temp_space <- new.env()
+    # load file in temp.space as name.of.object:
+    name_of_object <- load(file, temp_space)
+    # Assign data in name.f.objects to routes:
+    routes <- get(name_of_object, temp_space)
+    # Remove local variables to clean up environment:
+    rm(temp_space, name_of_object)
+
+    # Check that there are now entries twice:
+    # Previously done in "removedoublicates.
+    if (length(routes) != length(unique(routes))) {
+      warning("in fileToVar: Double entries in data.")
+    }
+  } else {
+    stop("Error in fileToVar: No such file")
+    routes <- NULL
+  }
+  return(routes)
+}
+
+
+#' Save a specific variable in environmet to file in specific folder
+#' Call as cacheR::varToFile(routes, filename, path)
+#'
+#' @param routes: An object in the environment
+#' @param filename, can be without ".RData"
+#' @param path in "../.." style. Default: getwd()
+#'
+#' @return path to file ot NULL in case file already exists.
+#'
+save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
+  # Default file name:
+  if (missing(path)) {
+    path <- paste0(getwd(), "/")
+  }
+  # Default file type:
+  if (!grepl(".RData", filename)) {
+    filename <- paste0(filename, ".RData")
+  }
+
+  # Check that you don't overwrite a file:
+  if (file.exists(paste0(path, filename))) {
+    warning("File already exists")
+    return(NULL)
+  } else {
+    save(routes, file = paste0(path, filename))
+    return(path)
+  }
+}
+
+
 #' Function returns blue of FH St. Gallen.
 #'
 #' @return RGB value for FHS-blue
@@ -39,24 +122,15 @@ close_all_graph <- function() {
 }
 
 
-#' Function to remove all variables and close all graphs/ plots
-#' including Garbage Collection gc()
-clc <- function() {
-  clear_all_var()
-  close_all_graph()
-  gc()
-}
-
-
 #' Function to clear console
 cc <- function() {
   cat("\014")
 }
 
 
-#' Function without functionality to show R style guideline from google
-#' Google R styleguide, see "https://google.github.io/styleguide/Rguide.xml#generallayout":
-#' Hadley R styleguide, see ......................................................
+#' Function without functionality to show ims style guideline based on Hadley and google
+#' See workflow-and-style.Rmd for further details
+#'
 #' Files end with .R: meaningful-file.R
 #' Variables: meaningful_variable
 #' Functions: meaningful_function => Verb for toDo...
@@ -81,4 +155,20 @@ cc <- function() {
 #' Install packages with install.packages("package")
 #' Include non-standard libraries using libraray(package)
 googlestyle <- function() {}
+
+
+# =============================================================================
+# Functions with dependencies:
+
+#' Function to remove all variables and close all graphs/ plots
+#' including Garbage Collection gc()
+clc <- function() {
+  clear_all_var()
+  close_all_graph()
+  gc()
+}
+
+
+# =============================================================================
+# Not used any more:
 
