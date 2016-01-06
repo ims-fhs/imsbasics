@@ -1,6 +1,6 @@
 # File Testroutes.RData in /data. This path is searched automatically.
 # File has not to be load to environment manually.
-
+# Needs folder /imsbasics/data/
 
 test_that("save_rdata can save variables in environment to folder", {
   # print("test-save_rdata")
