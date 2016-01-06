@@ -1,6 +1,6 @@
 # File Testroutes.RData in /data. This path is searched automatically.
 # File has not to be load to environment manually.
-
+# Needs folder /imsbasics/data/
 
 test_that("load_rdata() can load \"Testroutes.Rdata\" w/o path argument", {
   # print("test-load_rdata")
