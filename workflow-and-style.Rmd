@@ -68,21 +68,53 @@ following command in the console:
 > devtools::use_testthat()  
 This creates the test_that folders. For Details see Hadley "R packages", Ch. 7. 
 
+**Note about fork and branch**: When talking about version control, we have to 
+distinguish "folk a branch" and "Create a new branch": In contrast to "branch",
+"folk" is a pure github to github operation where everything gets copied to another 
+user. 
+
 **set up R / Rstudiuo with git and roxygen**
+When you change the project in RStudio, you start with a **clear environment** 
+and a **clear shell**!
+?????????????????????????
 
 ## Shell: First steps
 
-Open a (Linux???????????) shell in Rstudio (Rstudio => Tools => Shell...). The following commands are possible
-* **rm**: Remove file, e.g. rm example.txt
-* **mv**: Rename a file, e.g. mv old.txt new.txt
+A (Linux) shell can be opened in Rstudio via Rstudio => Tools => Shell...
+Notation for the cd-command.  
+You can find the help for any command via help command, e.g. help cd  
+There you will find  
+cd [-L|-P] [dir].  
+Here, [] means an optional argument and | means "eiter or".  
+The "." notation refers to the working directory itself and the ".." notation 
+refers to the working directory's parent directory.
+Sometimes you can also find
 
-For further reading see <http://linuxcommand.org/lc3_learning_the_shell.php>??????????????????????????????????????????
+  * ls -r or
+  * ls - -reverse
+These to commands are identical and the arguments just read - -longargument = -abbreviatedarg.
+The first variant is fast to write, the second one is easy (fast) to read and understand.
+
+The following commands are possible
+* Navigation **cd, pwd** see <http://linuxcommand.org/lc3_lts0020.php>
+* Looking around **ls, less, file** see <http://linuxcommand.org/lc3_lts0030.php>
+    - q = Quit!
+* Manipulating files **cp, mv, rm, mkdir** see <http://linuxcommand.org/lc3_lts0050.php>
+    - rm: Remove file, e.g. rm example.txt
+    - mv: Rename a file, e.g. mv old.txt new.txt
+    - Wildcards * and ?, e.g. cp *.txt existingdirectory
+* Commands **type, which, help, man**, e.g. help cd or
+* I/O redirection see <http://linuxcommand.org/lc3_lts0070.php>
+* Expansions see <http://linuxcommand.org/lc3_lts0080.php>
+* Permissions see <http://linuxcommand.org/lc3_lts0090.php>
+* Jobcontrol see <http://linuxcommand.org/lc3_lts0100.php>
+* Writing shell scripts: See <http://linuxcommand.org/lc3_writing_shell_scripts.php>
+
+For further reading see <http://linuxcommand.org/lc3_learning_the_shell.php>
 
 ## Git: First steps
 
-For writing options: write to global ~/.gitconfig file rather than the 
-repository .git/config, write to $XDG_CONFIG_HOME/git/config file if this file 
-exists and the ~/.gitconfig file doesn’t.????????????????????????????
+Nice overview???
 [//]: # "Comment bla! bla[Caption] bla(H:/07 Rprogress/01 Packages/workflow-and-style/GitDataTransport.png)"
 
 ### Git: Installation on Windows
@@ -115,42 +147,87 @@ files - it is not just a list of the changed files.
 
 ### Git: Useful commands
 
-all commands can be prompted to the console. The "> git..." input is ommitted in the list
-(Only if the file is part of a package or project in Rstudio, "everything" can be done 
-from the git-ribbon in Rstudio????????????????)
+All commands can be prompted to the console. The "> git..." input is ommitted 
+in the list
 
-* **config --list**: List all configurations 
-* **init**: Initialisze git repository (**TODO SCN: If repo already exists, the 
-history will be deleted without asking!**)
+**Remark**:
+
+    Only if the file is part of a package or project in Rstudio, 
+    "everything" can be done from the git-ribbon in Rstudio!
+
+* **config** : Configure git.
+    - **config - -list**: List all configurations.
+    - **config - -global - -list**: List all global configurations.
+    - **config varname**: Display the value of git variable varname. 
+* **init**: Initialisze git repository. If the repo already exists, the 
+history will not be deleted. The default name for the starting branch is **master**.
 * **status**: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
     - Modified files
     - Branches
-* **clone**: E.g. git clone https://github.com/ims-fhs/workflow-and-style
-* **branch**: Display active branches. Note: A branch in Git is simply a 
+* **clone**: Clones a repository into a newly created directory, creates 
+remote-tracking branches for each branch in the cloned repository, and creates 
+and checks out an initial branch that is forked from the cloned repository’s 
+currently active branch. E.g. git clone https://github.com/ims-fhs/workflow-and-style.  
+The default shortname for the remote server is then **origin**.
+* **branch newbranch**: Create new branch "newbranch". Note: A branch in Git is simply a 
 lightweight movable pointer to one of these commits. The default branch name 
-in Git is master. As you start making commits, you’re given a master branch 
-that points to the last commit you made. Every time you commit, it moves 
-forward automatically. The “master” branch in Git is not a special branch. 
-It is exactly like any other branch. The only reason nearly every repository 
-has one is that the git init command creates it by default and most people 
-don’t bother to change it. 
-    - **branch -d**: Delete branch.
+in Git is master. The only reason nearly every repository has one is that the 
+git init command creates it by default and most people don’t bother to change it. 
+As you start making commits, you’re given a master branch that points to the last 
+commit you made. Every time you commit, it moves forward automatically. 
+    - **branch -d** branch: Delete branch.
     - **branch -v**: Display branches including description.
-* **log --oneline --decorate**: Show branches including pointers. Read 
-**<https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell> !!!**
-* **add**: Add file to tracking, e.g. git add workflow and style.Rmd????????????????
+    - **branch -r**: Display remote branches.
+    - **branch -l**: Display local branches.
+    - **branch -av**: Display all branches including remotes and description of each.
+    - **branch - -merged**: Display all merged branches.
+    - **branch - -set-upstream** local branch serverbranch: ???????????????????
+    Corresponds to git config branch.localbranch.remote origin + 
+    git config branch.localbranch.merge refs/heads/localbranch
+* **add** file: Add file to tracking, e.g. git add workflow-and-style.Rmd
 (Only useful after you start with commitments.)
+* **checkout** branch: Switching to specific branche. Update files in the working tree to 
+match the version in the index or the specified tree. If no paths are given, git 
+checkout will also update HEAD to set the specified branch as the current branch.  
+To prepare for working on branch, switch to it by updating the index and the 
+files in the working tree, and by pointing HEAD at the branch. Local 
+modifications to the files in the working tree are kept, so that they can be 
+committed to the branch.
+    - **checkout -b**: create a branch and switch to it at the same time 
+    (= branch name + checkout name).
+* **fetch** origin branch: Update remote branch, that is refresh "what others do".
+Get all data from branch on the origin (Normally the remoteserver has shortname 
+origin, see clone!). No merging!
+* **merge**: Merge to branches together. If you changed the same part of the 
+same file differently in two branches you’re merging together, Git won’t be 
+able to merge them cleanly and an error results. Use "status" to get the unmerged
+files. In this case the version in HEAD (your master branch, if you have checked 
+out that when you ran your merge command) is the top part of that block 
+(everything above the =======)
 * **commit --amend**: This command takes your staging area and uses it for the 
-commit. If you’ve made no changes since your last commit (for instance, you run 
-this command immediately after your previous commit), then your snapshot will 
-look exactly the same, and all you’ll change is your commit message. The same 
-commit-message editor fires up, but it already contains the message of your 
-previous commit. You can edit the message the same as always, but it overwrites 
-your previous commit.
-* **push** [remote-name] [branch-name]: Pushing local branches to the repository 
-is almost the same as pushing the master branch to the repo. Simply change master 
-to the branch name. E.g. git push origin newbranch????????????????????????
+commit.
+    - **commit -a -m** "text": Stage everything (-a, could be also done with a 
+    preceding add files) and attach text (Comment) to the commit. See also log.
+    - **commit --amend**: You can edit the message as always, but it overwrites 
+    your previous commit. If you’ve made no changes since your last commit 
+    (for instance, you run this command immediately after your previous commit), 
+    then your snapshot will look exactly the same, and all you’ll change is your 
+    commit message. The same commit-message editor fires up, but it already 
+    contains the message of your previous commit. 
+* **log**: Show the whole commit history. **Read** 
+<https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell> **!!!**
+    - **log -2: Show last two commits.
+    - **log - -pretty=format**: "%h - %an, %ad: %s: Nice format, shows hash, author
+    name, date and commit comment.
+    - **log --oneline --decorate**: Show branches including pointers.
+* **push** remote-name localbranch:remotebranch: Pushing localbranche to the 
+repository remotename (Normally called origin) in remotebranch. If remotebranch does 
+not exist, it is automatically created. If only one branch is specified, it is 
+assumed that localbranch = remotebranch.  
+**Attantion**: **push** remote-name :remotebranch **deletes** the remotebranch. 
+Use push -u remoteserver remotebranch instead (See below).
+E.g. git push origin newbranch:repobranch.
     - push -u: "Upstream" would refer to the main repo that other people will be pulling 
     from, e.g. your GitHub repo. The -u option automatically sets that upstream 
     for you, linking your repo to a central one. That way, in the future, Git 
@@ -163,43 +240,65 @@ to the branch name. E.g. git push origin newbranch????????????????????????
     However, git push will by default push all branches that have the same name 
     on the remote. To limit this behavior to just the current branch, set this 
     configuration option: git config --global push.default tracking
-    - push --mirror: E.g. git push --mirror https://github.com/ims-fhs/workflow-and-style.git????????????????
-* **pull** [remote-name] [branch-name]: Begin tracking file by doing this from 
-the master branch. 
-    - pull -u: Sometimes, git pull will ask where to fetch from. In that 
-    case use get pull -u origin master and then git pull.
-* **checkout** [branch]: Switching branches.Updates files in the working tree to 
-match the version in the index or the specified tree. If no paths are given, git 
-checkout will also update HEAD to set the specified branch as the current branch.  
-To prepare for working on <branch>, switch to it by updating the index and the 
-files in the working tree, and by pointing HEAD at the branch. Local 
-modifications to the files in the working tree are kept, so that they can be 
-committed to the <branch>.????????????????????????????????
-    - **checkout -b**: create a branch and switch to it at the same time.
-* **merge**: Merge to branches together. If you changed the same part of the 
-same file differently in two branches you’re merging together, Git won’t be 
-able to merge them cleanly and an error results. Use "status" to get the unmerged
-files. In this case the version in HEAD (your master branch, if you have checked 
-out that when you ran your merge command) is the top part of that block 
-(everything above the =======)
-
-When you use remote repositories
-
-* **remote**: Manage your remote repositories. Remote repositories are versions 
-of your project that are hosted on the Internet or network somewhere. You can 
-have several of them. Collaborating with others involves managing these remote repositories 
-and pushing and pulling data to and from them when you need to share work. 
+    - push --mirror: Create identical copy of current folder?????????????????
+* **pull** remote-name branch-name: Begin tracking file by doing this from 
+the master branch. "pull = fetch + merge"
+    - pull -u: Equivalent to --update-head-ok and different from push -u! By 
+    default git fetch refuses to update the head which corresponds to the 
+    current branch. This flag disables the check. This is purely for the internal 
+    use for git pull to communicate with git fetch, and unless you are 
+    implementing your own Porcelain you are not supposed to use it.
+* **tag**: list all tags. A Tag is a specific point in history, e.g. the 
+publication of the code (Release V1.0).
+    - **tag -a Vxxx -m text**: Create an annotated tag with tagging maessage 
+    text = "my text" or text = commit checksum (something like 67a465f).
+    - **tag -l "xy"**: Search for tags starting with xy.
+* **remote**: When using and manageing remote repoitories. Remote repositories 
+are versions of your project that are hosted on the Internet or network somewhere. 
+You can have several of them. Collaborating with others involves managing these 
+remote repositories and pushing and pulling data to and from them when you need 
+to share work. Be careful with fork (Github).
     - **remote -v**: specify -v, which shows you the URLs that Git has stored for 
     the shortname to be used when reading and writing to that remote 
-    -  **remote add ** [file] [source]: Add file in source to tracking. E.g. remote add was
-    https://github.com/ims-fhs/workflow-and-style or simply
+    -  **remote add ** shortname server: Add shortname of server to tracking. 
+    E.g. remote add origin https://github.com/ims-fhs/workflow-and-style.
+    Only visible after a push!
     - **git remote set-url**: Change your remote's URL from SSH to HTTPS with the 
     it remote set-url command.E.g. git remote set-url origin 
-    https://github.com/USERNAME/OTHERREPOSITORY.git?????????????????????????????
+    https://github.com/USERNAME/OTHERREPOSITORY.git
     And change it back: git remote set-url origin 
-    git@github.com:USERNAME/OTHERREPOSITORY.git????????????????????????????????
-    - **remote rename** [oldname] [newname]
-    - **remote rm** [name]
+    git@github.com:USERNAME/OTHERREPOSITORY.git
+    - **remote rename** shortname newname: Rename shortname.
+    - **remote rm** shortname: Remove shortname.
+    - **remote show shortname: Show details from shortname. Good to check wether
+    shortname exists.
+
+**Concerning fork and branch**: All branches on GitHub will be copied 
+in a fork. (Obviously, this doesn’t include branches that were never pushed 
+to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
+nothing is copied to your PC. It’s not quite the same as a Git clone. See 
+the manual for git-clone(1) if wonder “what’s copied when I clone a project?”.
+You cannot always make a branch or pull an existing branch and push back to it, 
+because you are not registered as a collaborator for that specific project.
+Forking is nothing more than a clone on the GitHub server side:
+
+  * without the possibility to directly push back
+  * with fork queue feature added to manage the merge request 
+  
+You keep a fork in sync with the original project by:
+
+  * adding the original project as a remote
+  * fetching regularly from that original project
+  * rebase your current development on top of the branch of interest you got 
+
+updated from that fetch.  
+The rebase allows you to make sure your changes are straightforward (no merge 
+conflict to handle), making your pulling request that more easy when you want 
+the maintainer of the original project to include your patches in his project.  
+The goal is really to allow collaboration even though direct participation is 
+not always possible.See <http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github>
+for more information, escpessially for the dieeference between **upstream** and 
+**origin**
 
 For further reading see <https://www.ralfebert.de/tutorials/git/>
 
