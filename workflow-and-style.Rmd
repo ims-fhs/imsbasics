@@ -1,0 +1,258 @@
+---
+title: "workflow-and-style"
+author: "SQC"
+date: "5. Januar 2016"
+output: html_document
+---
+
+
+# 1. IMS R style guide
+
+External links: 
+
+* Hadley style guide: <http://stat405.had.co.nz/r-style.html>  
+* Google style guide: <https://google.github.io/styleguide/Rguide.xml>
+
+If hadley and google contradict each other:
+
+1. prio: hadley
+2. prio: google
+
+Files end with .R: meaningful-file.R  
+Variables: meaningful_variable  
+Functions: meaningful_function  
+
+Indentation  
+When indenting your code, use two spaces.  Never use tabs or mix tabs and spaces.
+Spacing
+Place spaces around all binary operators (=, +, -, <-, etc.).
+Do not place a space before a comma, but always place one after a comma.
+Place a space before left parenthesis, except in a function call.
+
+General Layout and Ordering
+
+1. Copyright statement comment
+2. Author comment
+3. File description comment, including purpose of program, inputs, and outputs
+4. source() and library() statements
+5. Function definitions
+6. Executed statements, if applicable (e.g., print, plot)
+
+Unit tests should go in a separate file named test_originalfunction(s).R.  
+
+Install packages with install.packages("package")  
+
+Include non-standard libraries using libraray(package)  
+
+
+# 2. Preliminaries
+
+External links:
+
+* Hadley: How to set up Rstudio, git/SVN and github <http://r-pkgs.had.co.nz/git.html>
+* Github help on git's clone, fetch, pull, merge <https://help.github.com/articles/fetching-a-remote/>
+* Excellent **git tutorial**: <https://git-scm.com/book/en/v2/>
+* Not needed? <https://github.com/STAT545-UBC/Discussion/issues/3>
+
+Existing Github accounts
+
+* symbolrush (User)
+* Christoph999 (User)
+* ims-fhs (Organisation with rights to set folders as private)
+
+Furthermore, we assume for the following that we have an existing github repository 
+<https://github.com/ims-fhs/workflow-and-style>  
+and  
+working with testthat is possible: Open or create project (including package) and type the 
+following command in the console:  
+> devtools::use_testthat()  
+This creates the test_that folders. For Details see Hadley "R packages", Ch. 7. 
+
+**set up R / Rstudiuo with git and roxygen**
+
+## Shell: First steps
+
+Open a (Linux???????????) shell in Rstudio (Rstudio => Tools => Shell...). The following commands are possible
+* **rm**: Remove file, e.g. rm example.txt
+* **mv**: Rename a file, e.g. mv old.txt new.txt
+
+For further reading see <http://linuxcommand.org/lc3_learning_the_shell.php>??????????????????????????????????????????
+
+## Git: First steps
+
+For writing options: write to global ~/.gitconfig file rather than the 
+repository .git/config, write to $XDG_CONFIG_HOME/git/config file if this file 
+exists and the ~/.gitconfig file doesn’t.????????????????????????????
+[//]: # "Comment bla! bla[Caption] bla(H:/07 Rprogress/01 Packages/workflow-and-style/GitDataTransport.png)"
+
+### Git: Installation on Windows
+
+Git for Windows is provided as installer package by the msysgit project. 
+Download the latest package starting with "Git-", not a "msysgit-..." package 
+(the latter are supposed to be used to build git yourself). Git for Windows 
+comes with a UNIX environment as far as needed by git and also ships with a 
+Bash shell for using the git command line tools.
+> git version 
+
+### Git: First steps - The staging index
+
+Git internally holds a thing called the index, which is a snapshot of your 
+project files. After you have just created an empty repository, the index will 
+be empty. You must manually stage the files from your working tree to the index 
+using git add:  
+> git add somefile.txt
+
+git add works recursively, so you can also add whole folders:  
+> git add somefolder
+
+The same applies if you change a file in your working tree - you have to add 
+this change to the index with git add:  
+> edit somefile.txt  
+> git add somefile.txt
+
+It’s important to realize that the index is a full snapshot of your project 
+files - it is not just a list of the changed files.
+
+### Git: Useful commands
+
+all commands can be prompted to the console. The "> git..." input is ommitted in the list
+(Only if the file is part of a package or project in Rstudio, "everything" can be done 
+from the git-ribbon in Rstudio????????????????)
+
+* **config --list**: List all configurations 
+* **init**: Initialisze git repository (**TODO SCN: If repo already exists, the 
+history will be deleted without asking!**)
+* **status**: Get the status, displays
+    - Tracked **AND** Untracked (=new!) files
+    - Modified files
+    - Branches
+* **clone**: E.g. git clone https://github.com/ims-fhs/workflow-and-style
+* **branch**: Display active branches. Note: A branch in Git is simply a 
+lightweight movable pointer to one of these commits. The default branch name 
+in Git is master. As you start making commits, you’re given a master branch 
+that points to the last commit you made. Every time you commit, it moves 
+forward automatically. The “master” branch in Git is not a special branch. 
+It is exactly like any other branch. The only reason nearly every repository 
+has one is that the git init command creates it by default and most people 
+don’t bother to change it. 
+    - **branch -d**: Delete branch.
+    - **branch -v**: Display branches including description.
+* **log --oneline --decorate**: Show branches including pointers. Read 
+**<https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell> !!!**
+* **add**: Add file to tracking, e.g. git add workflow and style.Rmd????????????????
+(Only useful after you start with commitments.)
+* **commit --amend**: This command takes your staging area and uses it for the 
+commit. If you’ve made no changes since your last commit (for instance, you run 
+this command immediately after your previous commit), then your snapshot will 
+look exactly the same, and all you’ll change is your commit message. The same 
+commit-message editor fires up, but it already contains the message of your 
+previous commit. You can edit the message the same as always, but it overwrites 
+your previous commit.
+* **push** [remote-name] [branch-name]: Pushing local branches to the repository 
+is almost the same as pushing the master branch to the repo. Simply change master 
+to the branch name. E.g. git push origin newbranch????????????????????????
+    - push -u: "Upstream" would refer to the main repo that other people will be pulling 
+    from, e.g. your GitHub repo. The -u option automatically sets that upstream 
+    for you, linking your repo to a central one. That way, in the future, Git 
+    "knows" where you want to push to and where you want to pull from, so you 
+    can use git pull or git push without arguments. A little bit down, this 
+    article explains and demonstrates this concept.
+    “Tracking” is essentially a link between a local and remote branch. 
+    When working on a local branch that tracks some other branch, 
+    you can git pull and git push without any extra arguments and git will know what to do.
+    However, git push will by default push all branches that have the same name 
+    on the remote. To limit this behavior to just the current branch, set this 
+    configuration option: git config --global push.default tracking
+    - push --mirror: E.g. git push --mirror https://github.com/ims-fhs/workflow-and-style.git????????????????
+* **pull** [remote-name] [branch-name]: Begin tracking file by doing this from 
+the master branch. 
+    - pull -u: Sometimes, git pull will ask where to fetch from. In that 
+    case use get pull -u origin master and then git pull.
+* **checkout** [branch]: Switching branches.Updates files in the working tree to 
+match the version in the index or the specified tree. If no paths are given, git 
+checkout will also update HEAD to set the specified branch as the current branch.  
+To prepare for working on <branch>, switch to it by updating the index and the 
+files in the working tree, and by pointing HEAD at the branch. Local 
+modifications to the files in the working tree are kept, so that they can be 
+committed to the <branch>.????????????????????????????????
+    - **checkout -b**: create a branch and switch to it at the same time.
+* **merge**: Merge to branches together. If you changed the same part of the 
+same file differently in two branches you’re merging together, Git won’t be 
+able to merge them cleanly and an error results. Use "status" to get the unmerged
+files. In this case the version in HEAD (your master branch, if you have checked 
+out that when you ran your merge command) is the top part of that block 
+(everything above the =======)
+
+When you use remote repositories
+
+* **remote**: Manage your remote repositories. Remote repositories are versions 
+of your project that are hosted on the Internet or network somewhere. You can 
+have several of them. Collaborating with others involves managing these remote repositories 
+and pushing and pulling data to and from them when you need to share work. 
+    - **remote -v**: specify -v, which shows you the URLs that Git has stored for 
+    the shortname to be used when reading and writing to that remote 
+    -  **remote add ** [file] [source]: Add file in source to tracking. E.g. remote add was
+    https://github.com/ims-fhs/workflow-and-style or simply
+    - **git remote set-url**: Change your remote's URL from SSH to HTTPS with the 
+    it remote set-url command.E.g. git remote set-url origin 
+    https://github.com/USERNAME/OTHERREPOSITORY.git?????????????????????????????
+    And change it back: git remote set-url origin 
+    git@github.com:USERNAME/OTHERREPOSITORY.git????????????????????????????????
+    - **remote rename** [oldname] [newname]
+    - **remote rm** [name]
+
+For further reading see <https://www.ralfebert.de/tutorials/git/>
+
+See also <https://git-scm.com/docs/>
+
+# 3. Getting started with git and github
+
+## Case: You want to join a project
+
+Assume you have an existing github repo 
+<https://github.com/ims-fhs/workflow-and-style>.
+and you want to join working on it. Do the following steps:
+
+* shell > cd working directory (Go the place for the new folder)
+* shell > git clone https://github.com/ims-fhs/workflow-and-style (clone repo)
+* shell > git push -u origin master (Only necessary if...?)
+* If you have already existing files, just copy them in the new folder by hand.
+Otherwise create a new file... All changes will then be visible in git! 
+* Restarted RStudio (?)
+* If you have reached a certain status you want to share, do the following two 
+steps:
+    - Rstudio => Git -> Commit
+    - Rstudio => Git -> Push (**Only works, when you are a collaborator**)
+
+
+## Case: You want somebody else to join a project
+
+Assume you worked on "workflow-and-style" project or package or folder and you 
+want others to join the project
+
+* Rstudio => Create new project or package or file. If you create a new project 
+or package, you can set up the default to create a **git repository**. If the 
+default "create git repo" was not set, do
+    - shell > cd working directory (The place for the new folder)
+    - shell > git init
+and
+    - Rstudio => Tools => Project options => Git/SVN ... Use Git!
+    - Rstudio => Tools => Global options => Git/SVN .. Use Git!
+* Create github repo <https://github.com/ims-fhs/workflow-and-style>.
+and add your partner as collaborator (Github repo => Settings => Collaborators 
+and teams.
+* shell > git remote add origin https://github.com/Christoph999/workflow-and-style
+(define origin for files? "switch origin of GitHub to "https://..." helped. 
+Afterwards, push via shell possible.)
+* shell > git pull origin master (pull files from origin (defined above!) to master)
+* shell > git push -u origin master
+
+
+version control in Rstudio can only accessed within an project. If you have a folder 
+which is not specified as project or package use the Rstudio project dialog...
+File => New project => Existing directory => specify parent folder of file
+
+
+## Case: Create new branch from master??????
+
+
