@@ -426,6 +426,15 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 * Change to the `unstaged` window
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
 
+## Case: You want to start work on a package but on your own "work in progress (wip)" branch
+
+> git checkout -b wip
+...Start to work on the branch... 
+> git commit
+> git push origin wip
+
+??? Path and correspondence set correctly?
+See git remote show origin
 ***
 
 Most up to date auth token:
