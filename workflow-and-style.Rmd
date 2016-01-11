@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "11 Januar 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -88,8 +88,7 @@ user.
 
 **set up R / Rstudiuo with git and roxygen**
 When you change the project in RStudio, you start with a **clear environment** 
-and a **clear shell**!
-?????????????????????????
+and a **clear shell**
 
 ## Shell: First steps
 
@@ -109,6 +108,7 @@ These to commands are identical and the arguments just read `- -longargument = -
 The first variant is fast to write, the second one is easy (fast) to read and understand.
 
 The following commands are possible
+
 * Navigation `cd, pwd` see <http://linuxcommand.org/lc3_lts0020.php>
 * Looking around `ls, less, file` see <http://linuxcommand.org/lc3_lts0030.php>
     - `q` = Quit!
@@ -117,13 +117,13 @@ The following commands are possible
     - `mv`: Rename a file, e.g. mv old.txt new.txt
     - Wildcards * and ?, e.g. cp *.txt existingdirectory
 * Commands `type, which, help, man`, e.g. `help cd` or
-* I/O redirection see <http://linuxcommand.org/lc3_lts0070.php>
-* Expansions see <http://linuxcommand.org/lc3_lts0080.php>
-* Permissions see <http://linuxcommand.org/lc3_lts0090.php>
-* Jobcontrol see <http://linuxcommand.org/lc3_lts0100.php>
-* Writing shell scripts: See <http://linuxcommand.org/lc3_writing_shell_scripts.php>
+* [I/O redirection](http://linuxcommand.org/lc3_lts0070.php)
+* [Expansions](http://linuxcommand.org/lc3_lts0080.php)
+* [Permissions](http://linuxcommand.org/lc3_lts0090.php
+* [Jobcontrol](http://linuxcommand.org/lc3_lts0100.php
+* [Writing shell scripts](http://linuxcommand.org/lc3_writing_shell_scripts.php
 
-For further reading see <http://linuxcommand.org/lc3_learning_the_shell.php>
+[For further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
 
 ## Git: First steps
 ![Git Data Transport](GitDataTransport.png)
@@ -157,7 +157,6 @@ git add works recursively, so you can also add whole folders:
 The same applies if you change a file in your working tree - you have to add 
 this change to the index with git add:  
 ```
-> edit somefile.txt  
 > git add somefile.txt
 ```
 
@@ -178,7 +177,7 @@ in the list
     - `config - -list`: List all configurations.
     - `config - -global - -list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
-* `init`: Initialisze git repository. If the repo already exists, the 
+* `init`: Initialize git repository. If the repo already exists, the 
 history will not be deleted. The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
@@ -195,23 +194,13 @@ in Git is master. The only reason nearly every repository has one is that the
 git init command creates it by default and most people don’t bother to change it. 
 As you start making commits, you’re given a master branch that points to the last 
 commit you made. Every time you commit, it moves forward automatically. 
-<<<<<<< HEAD
-    - **branch -d** branch: Delete branch.
-    - **branch -v**: Display branches including description.
-    - **branch -r**: Display remote branches.
-    - **branch -l**: Display local branches.
-    - **branch -av**: Display all branches including remotes and description of each.
-    - **branch - -merged**: Display all merged branches.
-    - **branch -u** server/branch localbranch (-u = - -set-upstream):
-=======
     - `branch -d` branch: Delete branch.
     - `branch -v`: Display branches including description.
     - `branch -r`: Display remote branches.
     - `branch -l`: Display local branches.
     - `branch -av`: Display all branches including remotes and description of each.
     - `branch - -merged`: Display all merged branches.
-    - `branch - -set-upstream` local branch serverbranch: ???????????????????
->>>>>>> 3bdb5ca1735725c6dd270e487eca41fea1c75f20
+    - `branch -u remoteserver/branch localbranch` (-u = - -set-upstream):
     Corresponds to git config branch.localbranch.remote origin + 
     git config branch.localbranch.merge refs/heads/localbranch
     - `branch -m` oldname newname: Rename a branch while pointed to any branch. 
@@ -238,19 +227,12 @@ them cleanly and an error results. Use "status" to get the unmerged files. In
 this case the version in HEAD (your master branch, if you have checked out that 
 when you ran your merge command) is the top part of that block (everything 
 above the =======)
-<<<<<<< HEAD
-* **commit - -amend**: This command takes your staging area and uses it for the 
-=======
-* `commit --amend`: This command takes your staging area and uses it for the 
->>>>>>> 3bdb5ca1735725c6dd270e487eca41fea1c75f20
-commit.
-    - `commit -a -m` "text": Stage everything (-a, could be also done with a 
+* `commit`: ToDo SQC????????????????????????????????
+    - `commit - -amend`: This command takes your staging area and uses it for the
+    commit.
+    - `commit -a -m "text"`: Stage everything (-a, could be also done with a 
     preceding add files) and attach text (Comment) to the commit. See also log.
-<<<<<<< HEAD
-    - **commit - -amend**: You can edit the message as always, but it overwrites 
-=======
-    - `commit --amend`: You can edit the message as always, but it overwrites 
->>>>>>> 3bdb5ca1735725c6dd270e487eca41fea1c75f20
+    - `commit - -amend`: You can edit the message as always, but it overwrites 
     your previous commit. If you’ve made no changes since your last commit 
     (for instance, you run this command immediately after your previous commit), 
     then your snapshot will look exactly the same, and all you’ll change is your 
@@ -261,13 +243,8 @@ commit.
     - `log -2: Show last two commits.
     - `log - -pretty=format`: "%h - %an, %ad: %s: Nice format, shows hash, author
     name, date and commit comment.
-<<<<<<< HEAD
-    - **log - -oneline - -decorate**: Show branches including pointers.
-* **push** remote-name localbranch:remotebranch: Pushing localbranche to the 
-=======
-    - `log --oneline --decorate`: Show branches including pointers.
+    - `log - -oneline - -decorate`: Show branches including pointers.
 * `push remote-name localbranch:remotebranch`: Pushing localbranche to the 
->>>>>>> 3bdb5ca1735725c6dd270e487eca41fea1c75f20
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
 **Attention**: "push remote-name :remotebranch" **deletes** the remotebranch. 
@@ -287,29 +264,19 @@ E.g. `git push origin newbranch:repobranch`.
     current branch, set this configuration option: 
 <<<<<<< HEAD
     git config - -global push.default tracking
-    - **push - -all** shortname: Push (and pull!) all the branches to the 
+    - `push - -all shortname`: Push (and pull!) all the branches to the 
     remoteserver by default, including the newly created ones. Combination 
     -u - -all possible.
-    - **push - -tags** shortname: Push (and pull!) all tags.
-    - **push - -mirror**: Create identical copy of current folder?????????????????
-* **pull** remoteserver remotebranch: Begin tracking file by doing this from 
+    - `push - -tags shortname`: Push (and pull!) all tags.
+    - `push - -mirror`: Create identical copy of current folder?????????????????
+* `pull remoteserver remotebranch`: Begin tracking file by doing this from 
 the master branch. "pull = fetch + merge"
-    - **pull** remoteserver remotebranch:localbranch: **Pay Attention** because 
+    - `pull remoteserver remotebranch`:localbranch: **Pay Attention** because 
     you fetch to localbranch (which is ok) but the merge is to the present branch 
     which might not be ok, if remotebranch does not exist. Then you have to run 
     first git checkout -b remotebranch first.
-    - **pull -u**: Equivalent to - -update-head-ok and different from push -u! By 
-=======
-    git config --global push.default tracking
-    - `push --all shortname`: Push (and pull!) all the branches by default, including 
-    the newly created ones. Combination -u --all possible.?????????????
-    - `push --tags shortname`: Push (and pull!??????????) all tags.
-    - `push --mirror`: Create identical copy of current folder?????????????????
-* `pull remote-name branch-name`: Begin tracking file by doing this from 
-the master branch. "pull = fetch + merge"
-    - `pull -u`: Equivalent to --update-head-ok and different from push -u! By 
->>>>>>> 3bdb5ca1735725c6dd270e487eca41fea1c75f20
-    default git fetch refuses to update the head which corresponds to the 
+    - `pull -u remoteserver`: Equivalent to - -update-head-ok and different from 
+    push -u! By default git fetch refuses to update the head which corresponds to the 
     current branch. This flag disables the check. This is purely for the internal 
     use for git pull to communicate with git fetch, and unless you are 
     implementing your own Porcelain you are not supposed to use it.
@@ -325,7 +292,7 @@ remote repositories and pushing and pulling data to and from them when you need
 to share work. Be careful with fork (Github).
     - `remote -v`: specify -v, which shows you the URLs that Git has stored for 
     the shortname to be used when reading and writing to that remote 
-    - `remote show` shortname: Show information about remote serverincluding
+    - `remote show shortname`: Show information about remote serverincluding
     upstream settings (if set).
     -  `remote add shortname server`: Add shortname of server to tracking. 
     E.g. remote add origin https://github.com/ims-fhs/workflow-and-style.
@@ -335,7 +302,7 @@ to share work. Be careful with fork (Github).
     https://github.com/USERNAME/OTHERREPOSITORY.git
     And change it back: git remote set-url origin 
     git@github.com:USERNAME/OTHERREPOSITORY.git
-    - `remote rename` shortname newname: Rename shortname.
+    - `remote rename shortname newname: Rename shortname.
     - `remote rm shortname`: Remove shortname.
     - `remote show shortname`: Show details from shortname. Good to check wether
     shortname exists.
@@ -356,9 +323,8 @@ You keep a fork in sync with the original project by:
 
   * adding the original project as a remote
   * fetching regularly from that original project
-  * rebase your current development on top of the branch of interest you got 
+  * rebase your current development on top of the branch of interest you got updated from that fetch.  
 
-updated from that fetch.  
 The rebase allows you to make sure your changes are straightforward (no merge 
 conflict to handle), making your pulling request that more easy when you want 
 the maintainer of the original project to include your patches in his project.  
@@ -375,6 +341,12 @@ See also <https://git-scm.com/docs/>
 
 # Getting started with git and github
 
+## Case: You want to install a package somebody else wrote for you
+In RStudio use the following command in the R console
+```
+devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c153e20e36d45094ed")
+```
+
 ## Case: You want to join a project
 
 Assume you have an existing github repo 
@@ -383,15 +355,14 @@ and you want to join working on it. Do the following steps:
 
 * `shell > cd working directory` (Go the place for the new folder)
 * `shell > git clone https://github.com/ims-fhs/workflow-and-style` (clone repo)
-* `shell > git push -u origin master` (TODO(SQC): Löschen?) 
+* Eventually: `shell > git push -u origin master` and Restart RStudio (if the Arrows 
+in the Git Section of RStudio are greyed out.)
 * If you have already existing files, just copy them in the new folder by hand.
 Otherwise create a new file... All changes will then be visible in git! 
-* Restart RStudio
 * If you have reached a certain status you want to share, do the following two 
 steps:
     - Rstudio => Git -> Commit
     - Rstudio => Git -> Push (**Only works, when you are a collaborator**)
-
 
 ## Case: You want somebody else to join a project
 
@@ -415,15 +386,13 @@ Afterwards, push via shell possible.)
 * shell `> git pull origin master` (pull files from origin (defined above!) to master)
 * shell `> git push -u origin master`
 
-
-version control in Rstudio can only accessed within an project. If you have a folder 
+version control in Rstudio can be only accessed within an project. If you have a folder 
 which is not specified as project or package use the Rstudio project dialog...
 File => New project => Existing directory => specify parent folder of file
 
 
-## Case: Create new branch from master??????
-
-<<<<<<< HEAD
+## Case: Create new branch from master
+Do it on GitHub
 
 ## Case: Rename remote branch (Just a better name...)
 
@@ -431,9 +400,10 @@ If you want to rename a branch "both locally and remote" you only have to rename
 the branche remotely, which means
 > git push remoteserver remotesrever/oldbranch:refs/heads/newbranch
 > git push origin :oldbranch.
-=======
+
 ## Case: Commit the work you did
 You changed a file and want to commit your work. Within R Studio go to Git => Diff. Select the file you want to commit. The lower part of the editor shows your changes:
+
 * red: Everything you deleted
 * green: Everything you added
 
@@ -447,6 +417,7 @@ Insert a comment to the window topright that explains the changes you made. Pres
 ## Case: You changed something you didn't want to change
 You made false changes to a file and want to correct them before you commit.  
 Within R Studio go to Git => Diff. Select the file you want to repair. The lower part of the editor shows your changes:
+
 * red: Everything you deleted
 * green: Everything you added
 
@@ -456,5 +427,7 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
 
 ***
+
+Most up to date auth token:
 > 3bdb5ca1735725c6dd270e487eca41fea1c75f20
 
