@@ -199,12 +199,13 @@ committed to the branch.
 * **fetch** origin branch: Update remote branch, that is refresh "what others do".
 Get all data from branch on the origin (Normally the remoteserver has shortname 
 origin, see clone!). No merging!
-* **merge**: Merge to branches together. If you changed the same part of the 
-same file differently in two branches you’re merging together, Git won’t be 
-able to merge them cleanly and an error results. Use "status" to get the unmerged
-files. In this case the version in HEAD (your master branch, if you have checked 
-out that when you ran your merge command) is the top part of that block 
-(everything above the =======)
+* **merge** branch: Merge branche into the one which is actice (HEAD points 
+onto it. See git branch -av): If you changed the same part of the same file 
+differently in two branches you’re merging together, Git won’t be able to merge 
+them cleanly and an error results. Use "status" to get the unmerged files. In 
+this case the version in HEAD (your master branch, if you have checked out that 
+when you ran your merge command) is the top part of that block (everything 
+above the =======)
 * **commit --amend**: This command takes your staging area and uses it for the 
 commit.
     - **commit -a -m** "text": Stage everything (-a, could be also done with a 
@@ -227,11 +228,7 @@ branch is specified, it is assumed that localbranch = remotebranch.
 **Attantion**: "push remote-name :remotebranch" **deletes** the remotebranch. 
 Use push -u remoteserver remotebranch instead (See below).
 E.g. git push origin newbranch:repobranch.
-<<<<<<< HEAD
     - **push -u**: Necessary if you want git pull to know what to do. "Upstream" 
-=======
-    - push -u: Necessary if you want git pull to know what to do. "Upstream" 
->>>>>>> 9e908b94f831223f53af34ec6d0e571f6d8976a8
     refers to the main repo that other people will be pulling from, e.g. your 
     GitHub repo. The -u option automatically sets that upstream for you, linking 
     your repo to a central one. That way, in the future, Git "knows" where you 
