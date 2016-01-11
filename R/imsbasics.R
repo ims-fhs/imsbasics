@@ -128,6 +128,21 @@ cc <- function() {
 }
 
 
+# =============================================================================
+# Functions with dependencies:
+
+#' Function to remove all variables and close all graphs/ plots
+#' including Garbage Collection gc()
+clc <- function() {
+  clear_all_var()
+  close_all_graph()
+  gc()
+}
+
+
+# =============================================================================
+# Not used any more:
+#
 #' Function without functionality to show ims style guideline based on Hadley and google
 #' See workflow-and-style.Rmd for further details
 #'
@@ -154,21 +169,5 @@ cc <- function() {
 #'
 #' Install packages with install.packages("package")
 #' Include non-standard libraries using libraray(package)
-googlestyle <- function() {}
-
-
-# =============================================================================
-# Functions with dependencies:
-
-#' Function to remove all variables and close all graphs/ plots
-#' including Garbage Collection gc()
-clc <- function() {
-  clear_all_var()
-  close_all_graph()
-  gc()
-}
-
-
-# =============================================================================
-# Not used any more:
+# googlestyle <- function() {}
 
