@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "11 Januar 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -88,8 +88,7 @@ user.
 
 **set up R / Rstudiuo with git and roxygen**
 When you change the project in RStudio, you start with a **clear environment** 
-and a **clear shell**!
-?????????????????????????
+and a **clear shell**
 
 ## Shell: First steps
 
@@ -109,6 +108,7 @@ These to commands are identical and the arguments just read `- -longargument = -
 The first variant is fast to write, the second one is easy (fast) to read and understand.
 
 The following commands are possible
+
 * Navigation `cd, pwd` see <http://linuxcommand.org/lc3_lts0020.php>
 * Looking around `ls, less, file` see <http://linuxcommand.org/lc3_lts0030.php>
     - `q` = Quit!
@@ -157,7 +157,6 @@ git add works recursively, so you can also add whole folders:
 The same applies if you change a file in your working tree - you have to add 
 this change to the index with git add:  
 ```
-> edit somefile.txt  
 > git add somefile.txt
 ```
 
@@ -178,7 +177,7 @@ in the list
     - `config - -list`: List all configurations.
     - `config - -global - -list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
-* `init`: Initialisze git repository. If the repo already exists, the 
+* `init`: Initialize git repository. If the repo already exists, the 
 history will not be deleted. The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
@@ -286,7 +285,7 @@ remote repositories and pushing and pulling data to and from them when you need
 to share work. Be careful with fork (Github).
     - `remote -v`: specify -v, which shows you the URLs that Git has stored for 
     the shortname to be used when reading and writing to that remote 
-    - `remote show` shortname: Show information about remote serverincluding
+    - `remote show shortname`: Show information about remote serverincluding
     upstream settings (if set).
     -  `remote add shortname server`: Add shortname of server to tracking. 
     E.g. remote add origin https://github.com/ims-fhs/workflow-and-style.
@@ -296,7 +295,7 @@ to share work. Be careful with fork (Github).
     https://github.com/USERNAME/OTHERREPOSITORY.git
     And change it back: git remote set-url origin 
     git@github.com:USERNAME/OTHERREPOSITORY.git
-    - `remote rename` shortname newname: Rename shortname.
+    - `remote rename shortname newname: Rename shortname.
     - `remote rm shortname`: Remove shortname.
     - `remote show shortname`: Show details from shortname. Good to check wether
     shortname exists.
@@ -317,9 +316,8 @@ You keep a fork in sync with the original project by:
 
   * adding the original project as a remote
   * fetching regularly from that original project
-  * rebase your current development on top of the branch of interest you got 
+  * rebase your current development on top of the branch of interest you got updated from that fetch.  
 
-updated from that fetch.  
 The rebase allows you to make sure your changes are straightforward (no merge 
 conflict to handle), making your pulling request that more easy when you want 
 the maintainer of the original project to include your patches in his project.  
@@ -350,14 +348,15 @@ and you want to join working on it. Do the following steps:
 
 * `shell > cd working directory` (Go the place for the new folder)
 * `shell > git clone https://github.com/ims-fhs/workflow-and-style` (clone repo)
-* `shell > git push -u origin master` (TODO(SQC): Löschen?) 
+* Eventually: `shell > git push -u origin master` and Restart RStudio (if the Arrows in the Git Section of RStudio are greyed out.)
 * If you have already existing files, just copy them in the new folder by hand.
 Otherwise create a new file... All changes will then be visible in git! 
-* Restart RStudio
 * If you have reached a certain status you want to share, do the following two 
 steps:
     - Rstudio => Git -> Commit
     - Rstudio => Git -> Push (**Only works, when you are a collaborator**)
+
+
 
 
 ## Case: You want somebody else to join a project
@@ -388,10 +387,12 @@ which is not specified as project or package use the Rstudio project dialog...
 File => New project => Existing directory => specify parent folder of file
 
 
-## Case: Create new branch from master??????
+## Case: Create new branch from master
+Do it on GitHub
 
 ## Case: Commit the work you did
 You changed a file and want to commit your work. Within R Studio go to Git => Diff. Select the file you want to commit. The lower part of the editor shows your changes:
+
 * red: Everything you deleted
 * green: Everything you added
 
@@ -405,6 +406,7 @@ Insert a comment to the window topright that explains the changes you made. Pres
 ## Case: You changed something you didn't want to change
 You made false changes to a file and want to correct them before you commit.  
 Within R Studio go to Git => Diff. Select the file you want to repair. The lower part of the editor shows your changes:
+
 * red: Everything you deleted
 * green: Everything you added
 

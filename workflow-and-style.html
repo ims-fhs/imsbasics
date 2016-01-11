@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="SQC" />
+<meta name="author" content="SQC, SCN" />
 
 
 <title>workflow-and-style</title>
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">workflow-and-style</h1>
-<h4 class="author"><em>SQC</em></h4>
+<h4 class="author"><em>SQC, SCN</em></h4>
 <h4 class="date"><em>11 Januar 2016</em></h4>
 </div>
 
@@ -85,14 +85,15 @@ img {
 </ul></li>
 </ul></li>
 <li><a href="#getting-started-with-git-and-github"><span class="toc-section-number">3</span> Getting started with git and github</a><ul>
-<li><a href="#case-you-want-to-join-a-project"><span class="toc-section-number">3.1</span> Case: You want to join a project</a></li>
-<li><a href="#case-you-want-somebody-else-to-join-a-project"><span class="toc-section-number">3.2</span> Case: You want somebody else to join a project</a></li>
-<li><a href="#case-create-new-branch-from-master"><span class="toc-section-number">3.3</span> Case: Create new branch from master??????</a></li>
-<li><a href="#case-commit-the-work-you-did"><span class="toc-section-number">3.4</span> Case: Commit the work you did</a><ul>
-<li><a href="#you-want-to-commit-everything-you-changed"><span class="toc-section-number">3.4.1</span> You want to commit everything you changed</a></li>
-<li><a href="#you-want-to-commit-only-part-of-what-you-changed"><span class="toc-section-number">3.4.2</span> You want to commit only part of what you changed</a></li>
+<li><a href="#case-you-want-to-install-a-package-somebody-else-wrote-for-you"><span class="toc-section-number">3.1</span> Case: You want to install a package somebody else wrote for you</a></li>
+<li><a href="#case-you-want-to-join-a-project"><span class="toc-section-number">3.2</span> Case: You want to join a project</a></li>
+<li><a href="#case-you-want-somebody-else-to-join-a-project"><span class="toc-section-number">3.3</span> Case: You want somebody else to join a project</a></li>
+<li><a href="#case-create-new-branch-from-master"><span class="toc-section-number">3.4</span> Case: Create new branch from master</a></li>
+<li><a href="#case-commit-the-work-you-did"><span class="toc-section-number">3.5</span> Case: Commit the work you did</a><ul>
+<li><a href="#you-want-to-commit-everything-you-changed"><span class="toc-section-number">3.5.1</span> You want to commit everything you changed</a></li>
+<li><a href="#you-want-to-commit-only-part-of-what-you-changed"><span class="toc-section-number">3.5.2</span> You want to commit only part of what you changed</a></li>
 </ul></li>
-<li><a href="#case-you-changed-something-you-didnt-want-to-change"><span class="toc-section-number">3.5</span> Case: You changed something you didn’t want to change</a></li>
+<li><a href="#case-you-changed-something-you-didnt-want-to-change"><span class="toc-section-number">3.6</span> Case: You changed something you didn’t want to change</a></li>
 </ul></li>
 </ul>
 </div>
@@ -156,7 +157,7 @@ img {
 <pre><code>&gt; devtools::use_testthat()</code></pre>
 <p>This creates the test_that folders. For Details see Hadley “R packages”, Ch. 7.</p>
 <p><strong>Note about fork and branch</strong>: When talking about version control, we have to distinguish “fork a branch” and “Create a new branch”: In contrast to “branch”, “fork” is a pure github to github operation where everything gets copied to another user.</p>
-<p><strong>set up R / Rstudiuo with git and roxygen</strong> When you change the project in RStudio, you start with a <strong>clear environment</strong> and a <strong>clear shell</strong>! ?????????????????????????</p>
+<p><strong>set up R / Rstudiuo with git and roxygen</strong> When you change the project in RStudio, you start with a <strong>clear environment</strong> and a <strong>clear shell</strong></p>
 </div>
 <div id="shell-first-steps" class="section level2">
 <h2><span class="header-section-number">2.3</span> Shell: First steps</h2>
@@ -165,7 +166,26 @@ img {
 <li><code>ls -r</code> or</li>
 <li><code>ls - -reverse</code> These to commands are identical and the arguments just read <code>- -longargument = -abbreviatedarg</code>. The first variant is fast to write, the second one is easy (fast) to read and understand.</li>
 </ul>
-<p>The following commands are possible * Navigation <code>cd, pwd</code> see <a href="http://linuxcommand.org/lc3_lts0020.php" class="uri">http://linuxcommand.org/lc3_lts0020.php</a> * Looking around <code>ls, less, file</code> see <a href="http://linuxcommand.org/lc3_lts0030.php" class="uri">http://linuxcommand.org/lc3_lts0030.php</a> - <code>q</code> = Quit! * Manipulating files <code>cp, mv, rm, mkdir</code> see <a href="http://linuxcommand.org/lc3_lts0050.php" class="uri">http://linuxcommand.org/lc3_lts0050.php</a> - <code>rm</code>: Remove file, e.g. rm example.txt - <code>mv</code>: Rename a file, e.g. mv old.txt new.txt - Wildcards * and ?, e.g. cp <em>.txt existingdirectory </em> Commands <code>type, which, help, man</code>, e.g. <code>help cd</code> or * I/O redirection see <a href="http://linuxcommand.org/lc3_lts0070.php" class="uri">http://linuxcommand.org/lc3_lts0070.php</a> * Expansions see <a href="http://linuxcommand.org/lc3_lts0080.php" class="uri">http://linuxcommand.org/lc3_lts0080.php</a> * Permissions see <a href="http://linuxcommand.org/lc3_lts0090.php" class="uri">http://linuxcommand.org/lc3_lts0090.php</a> * Jobcontrol see <a href="http://linuxcommand.org/lc3_lts0100.php" class="uri">http://linuxcommand.org/lc3_lts0100.php</a> * Writing shell scripts: See <a href="http://linuxcommand.org/lc3_writing_shell_scripts.php" class="uri">http://linuxcommand.org/lc3_writing_shell_scripts.php</a></p>
+<p>The following commands are possible</p>
+<ul>
+<li>Navigation <code>cd, pwd</code> see <a href="http://linuxcommand.org/lc3_lts0020.php" class="uri">http://linuxcommand.org/lc3_lts0020.php</a></li>
+<li>Looking around <code>ls, less, file</code> see <a href="http://linuxcommand.org/lc3_lts0030.php" class="uri">http://linuxcommand.org/lc3_lts0030.php</a>
+<ul>
+<li><code>q</code> = Quit!</li>
+</ul></li>
+<li>Manipulating files <code>cp, mv, rm, mkdir</code> see <a href="http://linuxcommand.org/lc3_lts0050.php" class="uri">http://linuxcommand.org/lc3_lts0050.php</a>
+<ul>
+<li><code>rm</code>: Remove file, e.g. rm example.txt</li>
+<li><code>mv</code>: Rename a file, e.g. mv old.txt new.txt</li>
+<li>Wildcards * and ?, e.g. cp *.txt existingdirectory</li>
+</ul></li>
+<li>Commands <code>type, which, help, man</code>, e.g. <code>help cd</code> or</li>
+<li>I/O redirection see <a href="http://linuxcommand.org/lc3_lts0070.php" class="uri">http://linuxcommand.org/lc3_lts0070.php</a></li>
+<li>Expansions see <a href="http://linuxcommand.org/lc3_lts0080.php" class="uri">http://linuxcommand.org/lc3_lts0080.php</a></li>
+<li>Permissions see <a href="http://linuxcommand.org/lc3_lts0090.php" class="uri">http://linuxcommand.org/lc3_lts0090.php</a></li>
+<li>Jobcontrol see <a href="http://linuxcommand.org/lc3_lts0100.php" class="uri">http://linuxcommand.org/lc3_lts0100.php</a></li>
+<li>Writing shell scripts: See <a href="http://linuxcommand.org/lc3_writing_shell_scripts.php" class="uri">http://linuxcommand.org/lc3_writing_shell_scripts.php</a></li>
+</ul>
 <p>For further reading see <a href="http://linuxcommand.org/lc3_learning_the_shell.php" class="uri">http://linuxcommand.org/lc3_learning_the_shell.php</a></p>
 </div>
 <div id="git-first-steps" class="section level2">
@@ -183,8 +203,7 @@ img {
 <p>git add works recursively, so you can also add whole folders:</p>
 <pre><code>&gt; git add somefolder</code></pre>
 <p>The same applies if you change a file in your working tree - you have to add this change to the index with git add:</p>
-<pre><code>&gt; edit somefile.txt  
-&gt; git add somefile.txt</code></pre>
+<pre><code>&gt; git add somefile.txt</code></pre>
 <p>It’s important to realize that the index is a full snapshot of your project files - it is not just a list of the changed files.</p>
 </div>
 <div id="git-useful-commands" class="section level3">
@@ -200,7 +219,7 @@ img {
 <li><code>config - -global - -list</code>: List all global configurations.</li>
 <li><code>config varname</code>: Display the value of git variable varname.</li>
 </ul></li>
-<li><code>init</code>: Initialisze git repository. If the repo already exists, the history will not be deleted. The default name for the starting branch is <strong>master</strong>.</li>
+<li><code>init</code>: Initialize git repository. If the repo already exists, the history will not be deleted. The default name for the starting branch is <strong>master</strong>.</li>
 <li><code>status</code>: Get the status, displays
 <ul>
 <li>Tracked <strong>AND</strong> Untracked (=new!) files</li>
@@ -256,10 +275,10 @@ img {
 <li><code>remote</code>: When using and manageing remote repoitories. Remote repositories are versions of your project that are hosted on the Internet or network somewhere. You can have several of them. Collaborating with others involves managing these remote repositories and pushing and pulling data to and from them when you need to share work. Be careful with fork (Github).
 <ul>
 <li><code>remote -v</code>: specify -v, which shows you the URLs that Git has stored for the shortname to be used when reading and writing to that remote</li>
-<li><code>remote show</code> shortname: Show information about remote serverincluding upstream settings (if set).</li>
+<li><code>remote show shortname</code>: Show information about remote serverincluding upstream settings (if set).</li>
 <li><code>remote add shortname server</code>: Add shortname of server to tracking. E.g. remote add origin <a href="https://github.com/ims-fhs/workflow-and-style" class="uri">https://github.com/ims-fhs/workflow-and-style</a>. Only visible after a push!</li>
 <li><code>git remote set-url</code>: Change your remote’s URL from SSH to HTTPS with the it remote set-url command.E.g. git remote set-url origin <a href="https://github.com/USERNAME/OTHERREPOSITORY.git" class="uri">https://github.com/USERNAME/OTHERREPOSITORY.git</a> And change it back: git remote set-url origin <a href="mailto:git@github.com">git@github.com</a>:USERNAME/OTHERREPOSITORY.git</li>
-<li><code>remote rename</code> shortname newname: Rename shortname.</li>
+<li>`remote rename shortname newname: Rename shortname.</li>
 <li><code>remote rm shortname</code>: Remove shortname.</li>
 <li><code>remote show shortname</code>: Show details from shortname. Good to check wether shortname exists.</li>
 </ul></li>
@@ -273,9 +292,9 @@ img {
 <ul>
 <li>adding the original project as a remote</li>
 <li>fetching regularly from that original project</li>
-<li>rebase your current development on top of the branch of interest you got</li>
+<li>rebase your current development on top of the branch of interest you got updated from that fetch.</li>
 </ul>
-<p>updated from that fetch.<br />The rebase allows you to make sure your changes are straightforward (no merge conflict to handle), making your pulling request that more easy when you want the maintainer of the original project to include your patches in his project.<br />The goal is really to allow collaboration even though direct participation is not always possible.See <a href="http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github" class="uri">http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github</a> for more information, escpessially for the dieeference between <strong>upstream</strong> and <strong>origin</strong></p>
+<p>The rebase allows you to make sure your changes are straightforward (no merge conflict to handle), making your pulling request that more easy when you want the maintainer of the original project to include your patches in his project.<br />The goal is really to allow collaboration even though direct participation is not always possible.See <a href="http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github" class="uri">http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github</a> for more information, escpessially for the dieeference between <strong>upstream</strong> and <strong>origin</strong></p>
 <p>For further reading see <a href="https://www.ralfebert.de/tutorials/git/" class="uri">https://www.ralfebert.de/tutorials/git/</a></p>
 <p>See also <a href="https://git-scm.com/docs/" class="uri">https://git-scm.com/docs/</a></p>
 <hr />
@@ -284,15 +303,19 @@ img {
 </div>
 <div id="getting-started-with-git-and-github" class="section level1">
 <h1><span class="header-section-number">3</span> Getting started with git and github</h1>
+<div id="case-you-want-to-install-a-package-somebody-else-wrote-for-you" class="section level2">
+<h2><span class="header-section-number">3.1</span> Case: You want to install a package somebody else wrote for you</h2>
+<p>In RStudio use the following command in the R console</p>
+<pre><code>devtools::install_github(&quot;ims-fhs/repo&quot;, auth_token = &quot;35b77ed8d745a9572409e6c153e20e36d45094ed&quot;)</code></pre>
+</div>
 <div id="case-you-want-to-join-a-project" class="section level2">
-<h2><span class="header-section-number">3.1</span> Case: You want to join a project</h2>
+<h2><span class="header-section-number">3.2</span> Case: You want to join a project</h2>
 <p>Assume you have an existing github repo <a href="https://github.com/ims-fhs/workflow-and-style" class="uri">https://github.com/ims-fhs/workflow-and-style</a>. and you want to join working on it. Do the following steps:</p>
 <ul>
 <li><code>shell &gt; cd working directory</code> (Go the place for the new folder)</li>
 <li><code>shell &gt; git clone https://github.com/ims-fhs/workflow-and-style</code> (clone repo)</li>
-<li><code>shell &gt; git push -u origin master</code> (TODO(SQC): Löschen?)</li>
+<li>Eventually: <code>shell &gt; git push -u origin master</code> and Restart RStudio (if the Arrows in the Git Section of RStudio are greyed out.)</li>
 <li>If you have already existing files, just copy them in the new folder by hand. Otherwise create a new file… All changes will then be visible in git!</li>
-<li>Restart RStudio</li>
 <li>If you have reached a certain status you want to share, do the following two steps:
 <ul>
 <li>Rstudio =&gt; Git -&gt; Commit</li>
@@ -301,7 +324,7 @@ img {
 </ul>
 </div>
 <div id="case-you-want-somebody-else-to-join-a-project" class="section level2">
-<h2><span class="header-section-number">3.2</span> Case: You want somebody else to join a project</h2>
+<h2><span class="header-section-number">3.3</span> Case: You want somebody else to join a project</h2>
 <p>Assume you worked on “workflow-and-style” project or package or folder and you want others to join the project</p>
 <ul>
 <li>Rstudio =&gt; Create new project or package or file. If you create a new project or package, you can set up the default to create a <strong>git repository</strong>. If the default “create git repo” was not set, do
@@ -319,17 +342,22 @@ img {
 <p>version control in Rstudio can only accessed within an project. If you have a folder which is not specified as project or package use the Rstudio project dialog… File =&gt; New project =&gt; Existing directory =&gt; specify parent folder of file</p>
 </div>
 <div id="case-create-new-branch-from-master" class="section level2">
-<h2><span class="header-section-number">3.3</span> Case: Create new branch from master??????</h2>
+<h2><span class="header-section-number">3.4</span> Case: Create new branch from master</h2>
+<p>Do it on GitHub</p>
 </div>
 <div id="case-commit-the-work-you-did" class="section level2">
-<h2><span class="header-section-number">3.4</span> Case: Commit the work you did</h2>
-<p>You changed a file and want to commit your work. Within R Studio go to Git =&gt; Diff. Select the file you want to commit. The lower part of the editor shows your changes: * red: Everything you deleted * green: Everything you added</p>
+<h2><span class="header-section-number">3.5</span> Case: Commit the work you did</h2>
+<p>You changed a file and want to commit your work. Within R Studio go to Git =&gt; Diff. Select the file you want to commit. The lower part of the editor shows your changes:</p>
+<ul>
+<li>red: Everything you deleted</li>
+<li>green: Everything you added</li>
+</ul>
 <div id="you-want-to-commit-everything-you-changed" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> You want to commit everything you changed</h3>
+<h3><span class="header-section-number">3.5.1</span> You want to commit everything you changed</h3>
 <p>Insert a comment to the window topright that explains the changes you made. Press commit.</p>
 </div>
 <div id="you-want-to-commit-only-part-of-what-you-changed" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> You want to commit only part of what you changed</h3>
+<h3><span class="header-section-number">3.5.2</span> You want to commit only part of what you changed</h3>
 <ul>
 <li>Select the part you don’t want to commit, with <code>shift</code> held down. Press <code>unstage selection</code>.</li>
 <li>Repeat until only the parts you want to commit are shown in the <code>staged</code> window.</li>
@@ -337,13 +365,15 @@ img {
 </div>
 </div>
 <div id="case-you-changed-something-you-didnt-want-to-change" class="section level2">
-<h2><span class="header-section-number">3.5</span> Case: You changed something you didn’t want to change</h2>
-<p>You made false changes to a file and want to correct them before you commit.<br />Within R Studio go to Git =&gt; Diff. Select the file you want to repair. The lower part of the editor shows your changes: * red: Everything you deleted * green: Everything you added</p>
+<h2><span class="header-section-number">3.6</span> Case: You changed something you didn’t want to change</h2>
+<p>You made false changes to a file and want to correct them before you commit.<br />Within R Studio go to Git =&gt; Diff. Select the file you want to repair. The lower part of the editor shows your changes:</p>
 <ul>
+<li>red: Everything you deleted</li>
+<li><p>green: Everything you added</p></li>
 <li>Select the parts you changed by fault, with <code>shift</code> held down. Press <code>unstage selection</code>.</li>
 <li>Repeat until only the changes you want to be preserved are shown in the <code>staged</code> window.</li>
 <li>Change to the <code>unstaged</code> window</li>
-<li>Select the parts you changed by fault, with <code>shift</code> held down. Press <code>Discard selection</code>.</li>
+<li><p>Select the parts you changed by fault, with <code>shift</code> held down. Press <code>Discard selection</code>.</p></li>
 </ul>
 <hr />
 </div>
