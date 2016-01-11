@@ -434,8 +434,9 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 > git push origin wip
 (Should be already set: git config branch.master.remote origin => See git remote 
 show origin)
- git config branch.master.merge refs/heads/master
+> git config branch.master.merge refs/heads/master
 > git branch -d wip
+
 
 ??? Path and correspondence set correctly?
 See git remote show origin
