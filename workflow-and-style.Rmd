@@ -222,24 +222,24 @@ commit.
     name, date and commit comment.
     - **log --oneline --decorate**: Show branches including pointers.
 * **push** remote-name localbranch:remotebranch: Pushing localbranche to the 
-repository remotename (Normally called origin) in remotebranch. If remotebranch does 
-not exist, it is automatically created. If only one branch is specified, it is 
-assumed that localbranch = remotebranch.  
+repository remotename (Normally called origin) in remotebranch. If only one 
+branch is specified, it is assumed that localbranch = remotebranch.  
 **Attantion**: "push remote-name :remotebranch" **deletes** the remotebranch. 
 Use push -u remoteserver remotebranch instead (See below).
 E.g. git push origin newbranch:repobranch.
-    - push -u: "Upstream" would refer to the main repo that other people will be pulling 
-    from, e.g. your GitHub repo. The -u option automatically sets that upstream 
-    for you, linking your repo to a central one. That way, in the future, Git 
-    "knows" where you want to push to and where you want to pull from, so you 
-    can use git pull or git push without arguments. A little bit down, this 
-    article explains and demonstrates this concept.
-    “Tracking” is essentially a link between a local and remote branch. 
-    When working on a local branch that tracks some other branch, 
-    you can git pull and git push without any extra arguments and git will know what to do.
-    However, git push will by default push all branches that have the same name 
-    on the remote. To limit this behavior to just the current branch, set this 
-    configuration option: git config --global push.default tracking
+    - push -u: Necessary if you want git pull to know what to do. "Upstream" 
+    refers to the main repo that other people will be pulling from, e.g. your 
+    GitHub repo. The -u option automatically sets that upstream for you, linking 
+    your repo to a central one. That way, in the future, Git "knows" where you 
+    want to push to and where you want to pull from, so you can use git pull or 
+    git push without arguments. A little bit down, this article explains and 
+    demonstrates this concept. “Tracking” is essentially a link between a local 
+    and remote branch. When working on a local branch that tracks some other 
+    branch, you can git pull and git push without any extra arguments and git 
+    will know what to do. However, git push will by default push all branches 
+    that have the same name on the remote. To limit this behavior to just the 
+    current branch, set this configuration option: 
+    git config --global push.default tracking
     - push --mirror: Create identical copy of current folder?????????????????
 * **pull** remote-name branch-name: Begin tracking file by doing this from 
 the master branch. "pull = fetch + merge"
