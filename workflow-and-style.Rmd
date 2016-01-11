@@ -225,7 +225,7 @@ commit.
 repository remotename (Normally called origin) in remotebranch. If remotebranch does 
 not exist, it is automatically created. If only one branch is specified, it is 
 assumed that localbranch = remotebranch.  
-**Attantion**: **push** remote-name :remotebranch **deletes** the remotebranch. 
+**Attantion**: "push remote-name :remotebranch" **deletes** the remotebranch. 
 Use push -u remoteserver remotebranch instead (See below).
 E.g. git push origin newbranch:repobranch.
     - push -u: "Upstream" would refer to the main repo that other people will be pulling 
@@ -260,6 +260,8 @@ remote repositories and pushing and pulling data to and from them when you need
 to share work. Be careful with fork (Github).
     - **remote -v**: specify -v, which shows you the URLs that Git has stored for 
     the shortname to be used when reading and writing to that remote 
+    - **remote show** shortname: Show information about remote serverincluding
+    upstream settings (if set).
     -  **remote add ** shortname server: Add shortname of server to tracking. 
     E.g. remote add origin https://github.com/ims-fhs/workflow-and-style.
     Only visible after a push!
