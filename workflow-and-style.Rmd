@@ -431,10 +431,9 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 > git checkout -b wip
 ...Start to work on the branch... 
 > git commit
-> git push origin wip
-(Should be already set: git config branch.master.remote origin => See git remote 
-show origin)
-> git config branch.master.merge refs/heads/master
+> git push -u origin wip
+
+When everything is done: ?????????????????????
 > git branch -d wip
 
 
