@@ -336,6 +336,12 @@ See also <https://git-scm.com/docs/>
 
 # Getting started with git and github
 
+## Case: You want to install a package somebody else wrote for you
+In RStudio use the following command in the R console
+```
+devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c153e20e36d45094ed")
+```
+
 ## Case: You want to join a project
 
 Assume you have an existing github repo 
