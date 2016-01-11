@@ -227,7 +227,11 @@ branch is specified, it is assumed that localbranch = remotebranch.
 **Attantion**: "push remote-name :remotebranch" **deletes** the remotebranch. 
 Use push -u remoteserver remotebranch instead (See below).
 E.g. git push origin newbranch:repobranch.
+<<<<<<< HEAD
     - **push -u**: Necessary if you want git pull to know what to do. "Upstream" 
+=======
+    - push -u: Necessary if you want git pull to know what to do. "Upstream" 
+>>>>>>> 9e908b94f831223f53af34ec6d0e571f6d8976a8
     refers to the main repo that other people will be pulling from, e.g. your 
     GitHub repo. The -u option automatically sets that upstream for you, linking 
     your repo to a central one. That way, in the future, Git "knows" where you 
@@ -358,5 +362,4 @@ File => New project => Existing directory => specify parent folder of file
 
 
 ## Case: Create new branch from master??????
-
 
