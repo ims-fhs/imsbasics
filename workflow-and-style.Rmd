@@ -182,7 +182,7 @@ commit you made. Every time you commit, it moves forward automatically.
     - **branch -l**: Display local branches.
     - **branch -av**: Display all branches including remotes and description of each.
     - **branch - -merged**: Display all merged branches.
-    - **branch - -set-upstream** local branch serverbranch: ???????????????????
+    - **branch -u** server/branch localbranch (-u = - -set-upstream):
     Corresponds to git config branch.localbranch.remote origin + 
     git config branch.localbranch.merge refs/heads/localbranch
     - **branch -m** oldname newname: Rename a branch while pointed to any branch. 
@@ -209,11 +209,11 @@ them cleanly and an error results. Use "status" to get the unmerged files. In
 this case the version in HEAD (your master branch, if you have checked out that 
 when you ran your merge command) is the top part of that block (everything 
 above the =======)
-* **commit --amend**: This command takes your staging area and uses it for the 
+* **commit - -amend**: This command takes your staging area and uses it for the 
 commit.
     - **commit -a -m** "text": Stage everything (-a, could be also done with a 
     preceding add files) and attach text (Comment) to the commit. See also log.
-    - **commit --amend**: You can edit the message as always, but it overwrites 
+    - **commit - -amend**: You can edit the message as always, but it overwrites 
     your previous commit. If you’ve made no changes since your last commit 
     (for instance, you run this command immediately after your previous commit), 
     then your snapshot will look exactly the same, and all you’ll change is your 
@@ -224,7 +224,7 @@ commit.
     - **log -2: Show last two commits.
     - **log - -pretty=format**: "%h - %an, %ad: %s: Nice format, shows hash, author
     name, date and commit comment.
-    - **log --oneline --decorate**: Show branches including pointers.
+    - **log - -oneline - -decorate**: Show branches including pointers.
 * **push** remote-name localbranch:remotebranch: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
@@ -243,14 +243,19 @@ E.g. git push origin newbranch:repobranch.
     will know what to do. However, git push will by default push all branches 
     that have the same name on the remote. To limit this behavior to just the 
     current branch, set this configuration option: 
-    git config --global push.default tracking
-    - **push --all** shortname: Push (and pull!) all the branches by default, including 
-    the newly created ones. Combination -u --all possible.?????????????
-    - **push --tags** shortname: Push (and pull!??????????) all tags.
-    - **push --mirror**: Create identical copy of current folder?????????????????
-* **pull** remote-name branch-name: Begin tracking file by doing this from 
+    git config - -global push.default tracking
+    - **push - -all** shortname: Push (and pull!) all the branches to the 
+    remoteserver by default, including the newly created ones. Combination 
+    -u - -all possible.
+    - **push - -tags** shortname: Push (and pull!) all tags.
+    - **push - -mirror**: Create identical copy of current folder?????????????????
+* **pull** remoteserver remotebranch: Begin tracking file by doing this from 
 the master branch. "pull = fetch + merge"
-    - pull -u: Equivalent to --update-head-ok and different from push -u! By 
+    - **pull** remoteserver remotebranch:localbranch: **Pay Attention** because 
+    you fetch to localbranch (which is ok) but the merge is to the present branch 
+    which might not be ok, if remotebranch does not exist. Then you have to run 
+    first git checkout -b remotebranch first.
+    - **pull -u**: Equivalent to - -update-head-ok and different from push -u! By 
     default git fetch refuses to update the head which corresponds to the 
     current branch. This flag disables the check. This is purely for the internal 
     use for git pull to communicate with git fetch, and unless you are 
@@ -362,4 +367,12 @@ File => New project => Existing directory => specify parent folder of file
 
 
 ## Case: Create new branch from master??????
+
+
+## Case: Rename remote branch (Just a better name...)
+
+If you want to rename a branch "both locally and remote" you only have to rename 
+the branche remotely, which means
+> git push remoteserver remotesrever/oldbranch:refs/heads/newbranch
+> git push origin :oldbranch.
 
