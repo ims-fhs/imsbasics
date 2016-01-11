@@ -440,6 +440,7 @@ show origin)
 
 ??? Path and correspondence set correctly?
 See git remote show origin
+a bit work...
 ***
 
 Most up to date auth token:
