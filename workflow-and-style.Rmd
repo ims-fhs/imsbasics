@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "11 Januar 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -124,12 +124,21 @@ devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c15
 
 # Git and GitHub
 
-## External Sources
+## External Sources and quick tour for impatient guys
 
 * Hadley: How to set up Rstudio, git/SVN and github <http://r-pkgs.had.co.nz/git.html>
 * Github help on git's clone, fetch, pull, merge <https://help.github.com/articles/fetching-a-remote/>
 * Excellent [git tutorial](https://git-scm.com/book/en/v2/). **Read at least the
 the first three chapters**.
+
+Use the following commands to track and understand what is going on. For 
+explanations see below. However, these commands are save and you can't screw 
+anything up!
+```
+> git status
+> git branch -av
+> git remote show origin
+```
 
 ## Existing Github accounts
 
@@ -489,12 +498,16 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
 
 
-## Case:
-`checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
-    copy of `remoteserver/remotebranch`. Furthermore, the branch is being set up 
-    to track the remote branch, which usually means the remoteserver/remotebranch 
-    branch. This is of interest if you you want to join a project. Thus, 
-    checkout also works remotely.
+## Case: You have an existing remote branch which you don't want to change but you need to work on it
+
+```
+> git checkout -b newbranch remoteserver/remotebranch
+```
+...Wirk on it and commit changes...
+```
+> git push -u origin newbranch
+```
+Afterwards, you can push from Rstudio again...
 
 ## Case: You want to start work on a package based on your own "work in progress (wip)" branch
 We assume you start with master (HEAD points on master). To create an identical 
