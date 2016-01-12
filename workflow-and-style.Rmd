@@ -441,7 +441,8 @@ When everything is done: ?????????????????????
 See git remote show origin
 a bit work...
 
-a bit work 12.1.
+a bit work 12.1. (push)
+another bit of stupid work (push -u)
 ***
 
 Most up to date auth token:
