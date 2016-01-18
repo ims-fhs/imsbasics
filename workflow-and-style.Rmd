@@ -525,6 +525,24 @@ At some point deleting the local branch makes perhaps sence:
 > git branch -d wip  
 ```
 
+
+# Debugging
+
+Some useful hints from [here](http://adv-r.had.co.nz/Exceptions-Debugging.html)
+
+* It’s a great idea to adopt the scientific method. Generate hypotheses, design 
+experiments to test them, and record your results. This may seem like a lot of 
+work, but a systematic approach will end up saving you time. I often waste a lot 
+of time relying on my intuition to solve a bug (“oh, it must be an off-by-one 
+error, so I’ll just subtract 1 here”), when I would have been better off taking 
+a systematic approach.
+* **Fix it and test it:** Once you’ve found the bug, you need to figure out how 
+to fix it and to check that the fix actually worked. Again, it’s very useful to 
+have automated tests in place. Not only does this help to ensure that you’ve 
+actually fixed the bug, it also helps to ensure you haven’t introduced any new 
+bugs in the process. In the absence of automated tests, make sure to carefully 
+record the correct output, and check against the inputs that previously failed.
+
 ***
 
 Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
