@@ -401,6 +401,56 @@ the branche remotely, which means
 > git push remoteserver remotesrever/oldbranch:refs/heads/newbranch
 > git push origin :oldbranch.
 
+## Case: Commit the work you did on the console
+You work on a project that is not manipulated within R Studio. Therefore you cannot use R Studio's integrated Git Support to commit the work you did. Poor you. You have to get along with the console.
+
+### You're clever and think to pull the remote repository before you work on the project
+1. Before you start working on your project: Open the console, go to the working directory your project is stored.
+> cd to-working-directory-of-your-project
+> git init
+> git pull origin master
+
+2. Change the files you want to change.
+
+3. Commit them.
+> git commit -a -m "text"
+
+4. Push your changes back to the remote repository.
+> git push -u origin master
+
+### You forgot to first pull the project, nobody worked on the remote repo
+1. You already made your changes when you read this document
+
+2. Commit them.
+> git commit -a -m "text"
+
+3. Push your changes back to the remote repository.
+> git push -u origin master
+
+### You forgot to first pull the project, somebody worked on the remote repo 
+1. You already made your changes when you read this document
+
+2. Commit them.
+> git commit -a -m "text"
+
+3. You cannot push them back because you're in `detachedHEAD` status
+> git status
+
+returns you this unhappy message.
+
+4. You have to checkout the remote repository into a new branch
+> git checkout -b newbranch
+
+5. Now you can merge the newbranch from step 3. with your local master
+> git checkout master
+> git merge newbranch
+
+6. Now you can delete the branch from step 4 and push them back to the remote repo
+> git branch -d newbranch
+> git push -u origin master
+
+
+
 ## Case: Commit the work you did
 You changed a file and want to commit your work. Within R Studio go to Git => Diff. Select the file you want to commit. The lower part of the editor shows your changes:
 
