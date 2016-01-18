@@ -205,10 +205,10 @@ commit you made. Every time you commit, it moves forward automatically.
     git config branch.localbranch.merge refs/heads/localbranch
     - `branch -m` oldname newname: Rename a branch while pointed to any branch. 
     If you want to rename the current branch, you can simply do 
-    git branch -m newname
+    `git branch -m newname`
 * `add` file: Add file to tracking, e.g. git add workflow-and-style.Rmd
 (Only useful after you start with commitments.)
-* `checkout` branch: Switching to specific branche. Update files in the working tree to 
+* `checkout branch`: Switching to specific branche. Update files in the working tree to 
 match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
 To prepare for working on branch, switch to it by updating the index and the 
@@ -217,11 +217,11 @@ modifications to the files in the working tree are kept, so that they can be
 committed to the branch.
     - `checkout -b`: create a branch and switch to it at the same time 
     (= branch name + checkout name).
-* `fetch` origin branch: Update remote branch, that is refresh "what others do".
+* `fetch origin branch`: Update remote branch, that is refresh "what others do".
 Get all data from branch on the origin (Normally the remoteserver has shortname 
 origin, see clone!). No merging!
-* `merge` branch: Merge branche into the one which is actice (HEAD points 
-onto it. See git branch -av): If you changed the same part of the same file 
+* `merge branch`: Merge branche into the one which is actice (HEAD points 
+onto it. See `git branch -av`): If you changed the same part of the same file 
 differently in two branches you’re merging together, Git won’t be able to merge 
 them cleanly and an error results. Use "status" to get the unmerged files. In 
 this case the version in HEAD (your master branch, if you have checked out that 
@@ -240,7 +240,7 @@ above the =======)
     contains the message of your previous commit. 
 * `log`: Show the whole commit history. **Read** 
 <https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell> **!!!**
-    - `log -2: Show last two commits.
+    - `log -2`: Show last two commits.
     - `log - -pretty=format`: "%h - %an, %ad: %s: Nice format, shows hash, author
     name, date and commit comment.
     - `log - -oneline - -decorate`: Show branches including pointers.
