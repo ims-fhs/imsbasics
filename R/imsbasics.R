@@ -21,7 +21,7 @@ load_rdata <- function(filename, path) {
     # Needs "data" folder in testthat folder. Normally this is the expected place
     # to find data
     path <- paste0(getwd(), "/data/")
-    warning(paste0("Path is set to ", path))
+    warning(paste0("In save_rdata: Path is set to ", path))
     file <- paste0(path, "/", filename)
 
     # Use path and load file:
@@ -72,7 +72,7 @@ save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
 
   # Check that you don't overwrite a file:
   if (file.exists(paste0(path, filename))) {
-    warning("File already exists")
+    warning("In save_rdata: File not saved: File already exists")
     return(NULL)
   } else {
     save(routes, file = paste0(path, filename))
