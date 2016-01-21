@@ -525,6 +525,31 @@ At some point deleting the local branch makes perhaps sence:
 > git branch -d wip  
 ```
 
+## Case: Undo a commit and redo
+
+This is most often done when you remembered what you just committed is 
+incomplete, or you misspelled your commit message1, or both.
+```
+> git commit -m "Something terribly misguided"
+```
+Leaves working 
+tree as it was before git commit.
+```
+> git reset --soft HEAD~
+```
+Make corrections to working tree files.
+```
+> git add ...
+```
+git add whatever changes you want to include in your new commit.
+```
+> git commit -c ORIG_HEAD
+```
+Commit the changes, reusing the old commit message. reset copied the old head 
+to .git/ORIG_HEAD; commit with -c ORIG_HEAD will open an editor, which 
+initially contains the log message from the old commit and allows you to edit 
+it. If you do not need to edit the message, you could use the -C option instead.
+
 
 # Debugging
 
