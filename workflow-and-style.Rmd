@@ -388,6 +388,16 @@ the master branch. "pull = fetch + merge"
     current branch. This flag disables the check. This is purely for the internal 
     use for git pull to communicate with git fetch, and unless you are 
     implementing your own Porcelain you are not supposed to use it.
+* `rebase branch`: Similar to merge - kind of rewrites history, which can be 
+summed up in a single line: **Do not rebase commits that exist outside your repository.**
+If you follow that guideline, you’ll be fine. If you don’t, people will hate 
+you, and you’ll be scorned by friends and family. When you rebase stuff, 
+you’re abandoning existing commits and creating new ones that are similar but 
+different. If you push commits somewhere and others pull them down and base 
+work on them, and then you rewrite those commits with git rebase and push them 
+up again, your collaborators will have to re-merge their work and things will 
+get messy when you try to pull their work back into yours. Again, read 
+[here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
