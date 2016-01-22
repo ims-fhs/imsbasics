@@ -233,8 +233,14 @@ this change to the index with git add:
 > git add somefile.txt
 ```
 
-It’s important to realize that the index is a full snapshot of your project 
+It's important to realize that the index is a full snapshot of your project 
 files - it is not just a list of the changed files.
+
+If you want to list all the files currently being tracked under the branch 
+master, you could use this command:
+```
+> git ls-tree -r master --name-only
+```
 
 ### Git: Useful commands
 
@@ -550,6 +556,48 @@ to .git/ORIG_HEAD; commit with -c ORIG_HEAD will open an editor, which
 initially contains the log message from the old commit and allows you to edit 
 it. If you do not need to edit the message, you could use the -C option instead.
 
+
+## Case: You worked on something and want to pass it to github
+
+Create a folder in Github. Then open a shell and add the remote repo
+```
+> git remote add origin https://github.com/account/remotefolder/
+```
+
+**Think about what to add to gitignore before you push. Do you want /data 
+tracked on the server?**
+
+Push your master branch to the remote repo:
+```
+> git push -u origin master
+```
+See also git push -u - -all!  
+Check what you have done, if you like:
+```
+> git remote show origin
+```
+
+[Reference](http://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore)
+
+## Case: Remove directory from remote repository after adding them to .gitignore
+
+The rules in your .gitignore file only apply to untracked files. Since the 
+files under that directory were already committed in your repository, you have 
+to unstage them, create a commit, and push that to GitHub:
+
+> git rm -r --cached some-directory
+> git commit -m 'Remove the now ignored directory "some-directory"'
+> git push origin master
+
+You can't delete the file from your history without rewriting the history of 
+your repository - you shouldn't do this if anyone else is working with your 
+repository, or you're using it from multiple computers. If you still want to 
+do that, you can use git filter-branch to rewrite the history - 
+[there is a helpful guide to that here](https://help.github.com/articles/remove-sensitive-data/).
+ToDo SCN?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/data not visible anymore? What happened the first time?
+
+Added /data to .gitognore and commited => That solved the problem...
 
 # Debugging
 
