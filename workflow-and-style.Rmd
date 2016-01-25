@@ -1,16 +1,16 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "11 Januar 2016"
+date: "25 Januar 2016"
 output:
-  html_document:
-    number_sections: yes
-    theme: united
-    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: united
     toc: yes
 ---
 
@@ -287,7 +287,7 @@ commit you made. Every time you commit, it moves forward automatically.
     `git branch -m newname`
 * `add file`: Add file to tracking, e.g. `git add myfile.txt` (Only useful after 
 you start with commitments.)
-* `checkout` branch: Switching to specific branche. Update files in the working tree to
+* `checkout branch`: Switching to specific branche. Update files in the working tree to
 match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
 To prepare for working on branch, switch to it by updating the index and the 
@@ -303,9 +303,9 @@ committed to the branch.
     checkout also works remotely.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
-* `fetch origin branch`: Update remote branch, that is refresh "what others do". 
-Get all data from branch on the origin (Normally the remoteserver has shortname 
-origin, see clone!). No merging!
+* `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
+others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
+the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
 * `merge branch`: Merge branche into the one which is actice (HEAD points 
 onto it. See `git branch -av`): If you changed the same part of the same file 
 differently in two branches you’re merging together, Git won’t be able to merge 
@@ -353,13 +353,13 @@ to share work. Be careful with fork (Github).
     - `remote rm shortname`: Remove shortname.
     - `remote show shortname`: Show details from shortname. Good to check wether
     shortname exists.
-* `push remotename localbranch:remotebranch`: Pushing localbranche to the 
+* `push remoteserver localbranch:remotebranch`: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
 **Attention**: "push remote-name :remotebranch" **deletes** the remotebranch. 
 Use `push -u remoteserver remotebranch` instead (See below).
-E.g. `git push origin newbranch:repobranch`.
-    - `push -u remotename remotebranch`: Necessary if you want git pull to know 
+E.g. `git push origin newbranch:remotebranch`.
+    - `push -u remoteserver remotebranch`: Necessary if you want git pull to know 
     what to do. "Upstream" refers to the main repo that other people will be 
     pulling from, e.g. your GitHub repo. The -u option automatically sets that 
     upstream for you, linking your repo to a central one. That way, in the future, 
