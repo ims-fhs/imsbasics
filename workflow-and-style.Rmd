@@ -256,8 +256,16 @@ in the list
     - `config - -list`: List all configurations.
     - `config - -global - -list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
-* `init`: Initialize git repository. If the repo already exists, the 
-history will not be deleted. The default name for the starting branch is **master**.
+* `init`: Initialize git repository. This command creates basically a .git 
+directory with subdirectories for objects, refs/heads, refs/tags, and template 
+files. An initial HEAD file that references the HEAD of the master branch is 
+also created. Therefore, right after `git init`, the master branch is not visible
+after `git branch -av`. This only happens, after the first commit. Before, you're 
+said to be "on an unborn branch", at this point.  
+If the repo already exists, the history will not be deleted. The primary reason 
+for rerunning git init is to pick up newly added templates (or to move the 
+repository to another place if --separate-git-dir is given).  
+The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
     - Modified files
@@ -434,9 +442,11 @@ Do it on GitHub
 
 ***
 
-# Getting started with git and github
+# Getting started with git and github - Useful cases
 
-## Case: You want to join a project
+**Order of cases?**
+
+## Case 1: You want to join a project
 
 Assume you have an existing github repo 
 <https://github.com/ims-fhs/myfolder>.
@@ -454,7 +464,7 @@ steps:
     - Rstudio => Git -> Push (Only works, if you are a collaborator and when 
     previous `push -u` was successful)
 
-## Case: You want somebody else to join a project
+## Case 2: You want somebody else to join a project
 
 Assume you worked on "workflow-and-style" project or package or folder and you 
 want others to join the project
@@ -480,7 +490,7 @@ version control in Rstudio can be only accessed within an project. If you have a
 which is not specified as project or package use the Rstudio project dialog...
 File => New project => Existing directory => specify parent folder of file
 
-## Case: Rename remote branch (Just a better name...)
+## Case 3: Rename remote branch (Just a better name...)
 If you want to rename a branch "both locally and remote" you only have to rename 
 the branche remotely, which means 
 ```
@@ -488,7 +498,7 @@ the branche remotely, which means
 > git push origin :oldbranch.
 ```
 
-## Case: Commit the work you did on the console
+## Case 4: Commit the work you did on the console
 You work on a project that is not manipulated within R Studio. Therefore you cannot use R Studio's integrated Git Support to commit the work you did. Poor you. You have to get along with the console.
 
 ### You're clever and think to pull the remote repository before you work on the project
@@ -538,7 +548,7 @@ returns you this unhappy message.
 
 
 
-## Case: Commit the work you did
+## Case 5: Commit the work you did
 You changed a file and want to commit your work. Within R Studio go to Git => Diff. Select the file you want to commit. The lower part of the editor shows your changes:
 
 * red: Everything you deleted
@@ -551,7 +561,7 @@ Insert a comment to the window topright that explains the changes you made. Pres
 * Select the part you don't want to commit, with `shift` held down. Press `unstage selection`.
 * Repeat until only the parts you want to commit are shown in the `staged` window.
 
-## Case: You changed something you didn't want to change
+## Case 6: You changed something you didn't want to change
 You made false changes to a file and want to correct them before you commit.  
 Within R Studio go to Git => Diff. Select the file you want to repair. The lower part of the editor shows your changes:
 
@@ -564,7 +574,7 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
 
 
-## Case: You have an existing remote branch which you don't want to change but you need to work on it
+## Case 7: You have an existing remote branch which you don't want to change but you need to work on it
 
 ```
 > git checkout -b newbranch remoteserver/remotebranch
@@ -575,7 +585,7 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 ```
 Afterwards, you can push from Rstudio again...
 
-## Case: You want to start work on a package based on your own "work in progress (wip)" branch
+## Case 8: You want to start work on a package based on your own "work in progress (wip)" branch
 We assume you start with master (HEAD points on master). To create an identical 
 copy of master run
 ```
@@ -591,7 +601,7 @@ At some point deleting the local branch makes perhaps sence:
 > git branch -d wip  
 ```
 
-## Case: Undo a commit and redo
+## Case 9: Undo a commit and redo
 
 This is most often done when you remembered what you just committed is 
 incomplete, or you misspelled your commit message1, or both.
@@ -617,7 +627,7 @@ initially contains the log message from the old commit and allows you to edit
 it. If you do not need to edit the message, you could use the -C option instead.
 
 
-## Case: You worked on something and want to pass it to github
+## Case 10: You worked on something and want to pass it to github
 
 Create a folder in Github. Then open a shell and add the remote repo
 ```
@@ -639,7 +649,7 @@ Check what you have done, if you like:
 
 [Reference](http://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore)
 
-## Case: Remove directory from remote repository after adding them to .gitignore
+## Case 11: Remove directory from remote repository after adding them to .gitignore
 
 The rules in your .gitignore file only apply to untracked files. Since the 
 files under that directory were already committed in your repository, you have 
@@ -658,6 +668,48 @@ ToDo SCN?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 /data not visible anymore? What happened the first time?
 
 Added /data to .gitognore and commited => That solved the problem...
+
+## Case 12: You face a staging area with too many files which you never expect to be part of your project
+This means that `git status` shows untracked file on a higher level. It could 
+happen as follows: You had a repo and you cloned it. You ran `git clone url/to/repo.git` 
+from your directory say /home/repos/my. Now after the clone, you try `git status` 
+and shows untracked files from /home/repos.
+
+So how is this possible?
+
+1. You must have had a .git folder (probably an artifact of previous failed 
+clone, etc) in /home/repos ( or even /home etc.)
+2. Since you did git clone url/to/repo.git, git would have created a folder 
+repo at /home/repos/my/repo. But you did the git status from /home/repos/my. 
+So git goes to parent folders looking for .git and found it (as per 1) and hence 
+shows untracked files.
+
+So see if 2) is your case. Try changing directory to the folder that git has 
+created. Usually you should do a clone as git clone url/to/repo.git. (. at end) 
+if you are already in the folder where you want the repo to be.
+
+## Case 13: You want to remove git from a folder
+All the data git uses info is stored in .git/ , so removing it should work just 
+fine. Of course, make sure that your working copy is in the exact state that 
+you want it, because everything else will be lost. .git folder is hidden so 
+make sure you turn on Show hidden files, folders and disks option.
+
+From there, you can run git init to create a fresh repository.
+
+## Case 14: You complete messed up git for unknown reasons but a working older version is on github.
+Rename your messed up folder. Then you create a completely(!) new folder with 
+subfolders - renamaing the old folder won't help...  
+Then copy the necessary bare files, e.g. .png, .R, ... to the new folders.
+
+Create a new package (A project based on existing folders should also work???), 
+initialize git (`git init`) and commit you changes "First commit after rebuilding".
+Then proceed as in 4.6 using a newbranch(!).
+History is then clear and you are save as you last changes are in the previous 
+commit and the history is in newbranch.
+Think about what happend and merge master (your last changes) into newbranch.
+In the end you need `git push -u origin newbranch. You can the merge master and 
+newbranch later on when you fee save.
+
 
 # Debugging
 
