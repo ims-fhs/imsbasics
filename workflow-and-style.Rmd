@@ -1,16 +1,16 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "25 Januar 2016"
+date: "27 Januar 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -30,6 +30,7 @@ If hadley and google contradict each other:
 2. prio: google
 
 ## Naming Conventions
+Folders: `meaningful name` or `meaningfulname` for packages????? **SCN: Shortcuts????** 
 Files end with '.R': `meaningful-file.R`  
 Variables: `meaningful_variable`  
 Functions: `meaningful_function`
@@ -236,11 +237,12 @@ this change to the index with git add:
 It's important to realize that the index is a full snapshot of your project 
 files - it is not just a list of the changed files.
 
-If you want to list all the files currently being tracked under the branch 
+If you want to list all the files **currently being tracked** under the branch 
 master, you could use this command:
 ```
 > git ls-tree -r master --name-only
 ```
+Use `git status` to see untracked files.
 
 ### Git: Useful commands
 
@@ -256,6 +258,16 @@ in the list
     - `config - -list`: List all configurations.
     - `config - -global - -list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
+    - `config - -global alias.myshortname Realgitcommand`: Introduce shortcut
+    for "Real git command", e.g. `config - -global alias.ci "commit -v"`.
+    Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
+    is needed. Excample for a complex command (working on windows!):
+    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' 
+    --graph --date=short".
+    - `config - -global - - unset alias.myshortname`: Delete global shortcut. 
+    Does not work, if several shortcuts with the same name exist.
+    - `config - -global - - unset-all alias.myshortname`: Delete all global
+    shortcuts
 * `init`: Initialize git repository. This command creates basically a .git 
 directory with subdirectories for objects, refs/heads, refs/tags, and template 
 files. An initial HEAD file that references the HEAD of the master branch is 
@@ -281,7 +293,7 @@ in Git is master. The only reason nearly every repository has one is that the
 git init command creates it by default and most people don’t bother to change it. 
 As you start making commits, you’re given a master branch that points to the last 
 commit you made. Every time you commit, it moves forward automatically. 
-    - `branch -d` branch: Delete branch.
+    - `branch -d branch`: Delete branch.
     - `branch -v`: Display branches including description.
     - `branch -r`: Display remote branches.
     - `branch -l`: Display local branches.
@@ -294,7 +306,15 @@ commit you made. Every time you commit, it moves forward automatically.
     If you want to rename the current branch, you can simply do 
     `git branch -m newname`
 * `add file`: Add file to tracking, e.g. `git add myfile.txt` (Only useful after 
-you start with commitments.)
+you start with commitments.)  
+If `git add`is not successful, **look at your .gitignore file**.
+    - `add .`: Looks at the working tree and adds all those paths to the staged 
+    changes if they are either changed or are new and not ignored, it does not 
+    stage any 'rm' actions.
+    - `add -u`: Looks at all the already tracked files and stages the changes 
+    to those files if they are different or if they have been removed. It does 
+    not add any new files, it only stages changes to already tracked files.
+    - `add -A` is equivalent to `git add .` + `git add -u`.
 * `checkout branch`: Switching to specific branche. Update files in the working tree to
 match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
@@ -311,6 +331,12 @@ committed to the branch.
     checkout also works remotely.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
+    - `checkout shorthash`: checkout old version. See `git log` for possible hash
+    keys. As result you end up with a *detached HEAD**. This is on purpose, as 
+    you can play around without consequences. Read the note after command is executed!
+    With a subsequent `git checkout lastbranch`you go back as if nothing had happend.
+    **This is even true, when you modified and commit the old version. All changes 
+    are lost!** 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
 others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
 the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
@@ -332,9 +358,11 @@ will be called `master`)
     then your snapshot will look exactly the same, and all you’ll change is your 
     commit message. The same commit-message editor fires up, but it already 
     contains the message of your previous commit.
+    Do **not use - -ammend option after you pushed the last commit**. In this 
+    case you have to merge the two.
 * `log`: Show the whole commit history.
     - `log -2`: Show last two commits.
-    - `log - -pretty=format "%h - %an, %ad: %s:`: Nice format, shows 
+    - `log - -pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
     - `log - -oneline - -decorate`: Show branches including pointers.
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
@@ -709,6 +737,25 @@ commit and the history is in newbranch.
 Think about what happend and merge master (your last changes) into newbranch.
 In the end you need `git push -u origin newbranch. You can the merge master and 
 newbranch later on when you fee save.
+
+## Case 15: You want run "git add -A ." in each submodule.
+```
+git submodule foreach --recursive git add -A .
+```
+And then you could create a commit in every submodule with:
+```
+git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
+```
+(If you don't have other submodules nested inside those submodules, the 
+--recursive option is unnecessary.)  
+This is not recommended: You should carefully change into each 
+submodule in turn, and consider how you want to update them, treating each as 
+a standalone repository. Then only commit these new submodule versions in the 
+main project when you have tested that the project as a whole works with those 
+new versions of each submodule.
+
+Use git status to see untracked files. Empty folders are only visible, when you
+start to commit files in these new folders.
 
 
 # Debugging
