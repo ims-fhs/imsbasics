@@ -179,8 +179,10 @@ The following commands are possible
 * [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
     - `q` = Quit!
 * [Manipulating files](http://linuxcommand.org/lc3_lts0050.php) `cp, mv, rm, mkdir`
-    - `rm`: Remove file, e.g. rm example.txt
-    - `mv`: Rename a file, e.g. mv old.txt new.txt
+    - `rm name`: Remove file `name`.
+    - `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
+    `git add newname` + `git rm oldname`. For religion see
+    [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
     - Wildcards * and ?, e.g. cp *.txt existingdirectory
 * [Commands](http://linuxcommand.org/lc3_lts0060.php) `type, which, help, man`, 
 e.g. `help cd`
@@ -282,6 +284,7 @@ The default name for the starting branch is **master**.
     - Tracked **AND** Untracked (=new!) files
     - Modified files
     - Branches
+* `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
 and checks out an initial branch that is forked from the cloned repository’s 
@@ -329,6 +332,11 @@ committed to the branch.
     to track the remote branch, which usually means the remoteserver/remotebranch 
     branch. This is of interest if you you want to join a project. Thus, 
     checkout also works remotely.
+    In case of a "**fatal**: git checkout: updating paths is incompatible with 
+    switching branches...": This occurs when you are trying to checkout a remote 
+    branch that your local git repo is not aware of yet See `git remote show origin`.
+    If the remote branch is under "New remote branches" and not "Tracked remote 
+    branches" then you need to `fetch` them first.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
     - `checkout shorthash`: checkout old version. See `git log` for possible hash
@@ -365,6 +373,8 @@ will be called `master`)
     - `log - -pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
     - `log - -oneline - -decorate`: Show branches including pointers.
+    - `log --follow name`: Continue listing the history of a file `name`. 
+    beyond renames (works only for a single file).
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
     - `tag -a Vxxx -m text`: Create an annotated tag with tagging maessage 
