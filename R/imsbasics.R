@@ -2,7 +2,7 @@
 # Independent functions:
 
 #' Load data from specific folder to a variable in current environment.
-#' Call as routes <- imsbasics::load_rdata(filename, path)
+#' Call as data <- imsbasics::load_rdata(filename, path)
 #'
 #' @param filename, can be without ".RData"
 #' @param path in "../.." style. Default: getwd()
@@ -33,34 +33,34 @@ load_rdata <- function(filename, path) {
     temp_space <- new.env()
     # load file in temp.space as name.of.object:
     name_of_object <- load(file, temp_space)
-    # Assign data in name.f.objects to routes:
-    routes <- get(name_of_object, temp_space)
+    # Assign data in name.f.objects to data:
+    data <- get(name_of_object, temp_space)
     # Remove local variables to clean up environment:
     rm(temp_space, name_of_object)
 
     # Check that there are now entries twice:
     # Previously done in "removedoublicates.
-    if (length(routes) != length(unique(routes))) {
+    if (length(data) != length(unique(data))) {
       warning("in fileToVar: Double entries in data.")
     }
   } else {
     stop("Error in fileToVar: No such file")
-    routes <- NULL
+    data <- NULL
   }
-  return(routes)
+  return(data)
 }
 
 
 #' Save a specific variable in environmet to file in specific folder
-#' Call as cacheR::varToFile(routes, filename, path)
+#' Call as cacheR::varToFile(data, filename, path)
 #'
-#' @param routes: An object in the environment
+#' @param data: An object in the environment
 #' @param filename, can be without ".RData"
 #' @param path in "../.." style. Default: getwd()
 #'
 #' @return path to file ot NULL in case file already exists.
 #'
-save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
+save_rdata <- function(data, filename, path) { # "inverse" of load_rdata
   # Default file name:
   if (missing(path)) {
     path <- paste0(getwd(), "/")
@@ -75,7 +75,7 @@ save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
     warning("In save_rdata: File not saved: File already exists")
     return(NULL)
   } else {
-    save(routes, file = paste0(path, filename))
+    save(data, file = paste0(path, filename))
     return(path)
   }
 }
