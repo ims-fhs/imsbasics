@@ -83,6 +83,9 @@ Be careful with path conventions. R needs "/"!
 ```
 Be careful: Here, you have to add the system path "C:/R/R-x.x.x/bin;"
 ```
+To reach the path see `Systemsteuerung\System und Sicherheit\System`
+=> Umgebungsvariablen...
+
 For further help see <http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html>
 
 ## Install RStudio
@@ -175,6 +178,8 @@ The first variant is fast to write, the second one is easy (fast) to read and un
 
 The following commands are possible
 
+### Overview: Shell commands
+
 * [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`
 * [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
     - `q` = Quit!
@@ -193,6 +198,14 @@ e.g. `help cd`
 * [Writing shell scripts](http://linuxcommand.org/lc3_writing_shell_scripts.php)
 
 Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
+
+### Some useful commands for programming
+
+* `set variable=VALUE`: Assign value to new `variable`.
+    - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
+    - `set`: Display all existing variables.
+    - `set prefix`: Display all existing variables ending with `prefix`.
+* `ECHO %variable%`: Display value of existing variable.
 
 ## Git: First steps
 
@@ -320,6 +333,7 @@ If `git add`is not successful, **look at your .gitignore file**.
     to those files if they are different or if they have been removed. It does 
     not add any new files, it only stages changes to already tracked files.
     - `add -A` is equivalent to `git add .` + `git add -u`.
+    - `add folder/*`: Add folder to git.
 * `checkout branch`: Switching to specific branche. Update files in the working tree to
 match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
@@ -484,6 +498,17 @@ for more information, escpessially for the difference between **upstream** and
 
 For further reading see <https://www.ralfebert.de/tutorials/git/> and
 <https://git-scm.com/docs/>
+
+## Advanced Git: Hooks - the pre-commit hook
+For example files see appendix. The process is as follows:
+* Save the hook as `pre-commit` in /.git/hooks/ without any ending.
+* As described in the R-file, the version increases automatically.
+* If you don't want to increase the version run
+
+    SET inc=FALSE
+    git commit -a -m "Your message"
+
+For a complete list see [here]<http://ss64.com/nt/>.
 
 ## GitHub: Create new branch from master
 Do it on GitHub
@@ -778,7 +803,6 @@ new versions of each submodule.
 Use git status to see untracked files. Empty folders are only visible, when you
 start to commit files in these new folders.
 
-
 # Debugging
 
 Some useful hints from [here](http://adv-r.had.co.nz/Exceptions-Debugging.html)
@@ -795,6 +819,117 @@ have automated tests in place. Not only does this help to ensure that you’ve
 actually fixed the bug, it also helps to ensure you haven’t introduced any new 
 bugs in the process. In the absence of automated tests, make sure to carefully 
 record the correct output, and check against the inputs that previously failed.
+
+***
+
+# Appendix: Some useful hooks
+
+Source files are from [here]<https://gist.github.com/rmflight/8863882>
+
+## Pre-commit hook (Tested)
+
+```
+#!C:/R/R-3.2.2/bin/x64/Rscript
+
+# License: CC0 (just be nice and point others to where you got this)
+# Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
+#
+# This is a pre-commit hook that checks that there are files to be committed, 
+# and if there are, increments the package version in the DESCRIPTION file.
+#
+# To install it, simply copy this into the ".git/hooks/pre-commit" file of your 
+# git repo, change /path/2/Rscript, and make it executable. Note that 
+# /path/2/Rscript is the same as your /path/2/R/bin/R, or may be in /usr/bin/Rscript 
+# depending on your installation. This has been tested on both Linux and Windows 
+# installations.
+#
+# In instances where you do NOT want the version incremented, add the environment 
+# variable inc=FALSE to your git call e.g. "inc=FALSE git commit -m "commit message".
+# This is useful when you change the major version number for example.
+
+inc <- TRUE # default
+
+# get the environment variable and modify if necessary
+tmpEnv <- as.logical(Sys.getenv("inc"))
+if (!is.na(tmpEnv)) {
+  inc <- tmpEnv
+}
+
+# check that there are files that will be committed, don't want to increment 
+# version if there won't be a commit
+fileDiff <- system("git diff HEAD --name-only", intern = TRUE)
+
+if ((length(fileDiff) > 0) && inc) {
+
+  currDir <- getwd() # this should be the top level directory of the git repo
+  currDCF <- read.dcf("DESCRIPTION")
+  currVersion <- currDCF[1,"Version"]
+  splitVersion <- strsplit(currVersion, ".", fixed = TRUE)[[1]]
+  nVer <- length(splitVersion)
+  currEndVersion <- as.integer(splitVersion[nVer])
+  newEndVersion <- as.character(currEndVersion + 1)
+  splitVersion[nVer] <- newEndVersion
+  newVersion <- paste(splitVersion, collapse = ".")
+  currDCF[1,"Version"] <- newVersion
+  currDCF[1, "Date"] <- strftime(as.POSIXlt(Sys.Date()), "%Y-%m-%d")
+  write.dcf(currDCF, "DESCRIPTION")
+  system("git add DESCRIPTION")
+  cat("Incremented package version and added to commit!\n")
+}
+
+```
+
+## Post-commit hook (Not tested)
+
+```
+#!C:/R/R-3.2.2/bin/x64/Rscript
+
+# License: CC0 (just be nice and point others to where you got this)
+# Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
+#
+# This is a post-commit hook that after a successful commit subsequently 
+# increments the package version in DESCRIPTION and commits that. Analogous to 
+# the pre-commit at https://gist.github.com/rmflight/8863882, but useful if you 
+# only have good reasons for not doing it on the pre-commit.
+#
+# To install it, simply copy this into the ".git/hooks/post-commit" file of your 
+# git repo, change /path/2/Rscript, and make it executable. Note that 
+# /path/2/Rscript is the same as your /path/2/R/bin/R, or may be in /usr/bin/Rscript 
+# depending on your installation. This has been tested on both Linux and Windows 
+# installations.
+#
+# In instances where you do NOT want the version incremented, add the environment 
+# variable inc=FALSE to your git call e.g. "inc=FALSE git commit -m "commit message"".
+# This is useful when you change the major version number for example.
+
+inc <- TRUE # default
+
+# get the environment variable and modify if necessary
+tmpEnv <- as.logical(Sys.getenv("inc"))
+if (!is.na(tmpEnv)){
+  inc <- tmpEnv
+}
+
+if (inc){
+
+  currDir <- getwd() # this should be the top level directory of the git repo
+  currDCF <- read.dcf("DESCRIPTION")
+  currVersion <- currDCF[1,"Version"]
+  splitVersion <- strsplit(currVersion, ".", fixed=TRUE)[[1]]
+  nVer <- length(splitVersion)
+  currEndVersion <- as.integer(splitVersion[nVer])
+  newEndVersion <- as.character(currEndVersion + 1)
+  splitVersion[nVer] <- newEndVersion
+  newVersion <- paste(splitVersion, collapse=".")
+  currDCF[1,"Version"] <- newVersion
+  currDCF[1, "Date"] <- strftime(as.POSIXlt(Sys.Date()), "%Y-%m-%d")
+  write.dcf(currDCF, "DESCRIPTION")
+  system("git add DESCRIPTION")
+  system('inc=FALSE git commit -m "increment package version"') # inc=FALSE is 
+  #required, otherwise we end up in an infinite loop
+  cat("Incremented package version and committed!\n")
+}
+```
 
 ***
 
