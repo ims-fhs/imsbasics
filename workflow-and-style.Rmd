@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "27 Januar 2016"
 output:
-  html_document:
-    number_sections: yes
-    theme: united
-    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: united
     toc: yes
 ---
 
@@ -266,10 +266,12 @@ in the list
     is needed. Excample for a complex command (working on windows!):
     `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' 
     --graph --date=short".
-    - `config - -global - - unset alias.myshortname`: Delete global shortcut. 
-    Does not work, if several shortcuts with the same name exist.
-    - `config - -global - - unset-all alias.myshortname`: Delete all global
-    shortcuts
+    - `config - -global - -unset varname`: Delete global `varname`, e.g. 
+    `alias.myshortname` shortcut. Does not work, if several `varname` with the 
+    same name exist.
+    - `config - -global - -unset-all varname`: Delete all global 
+    `varname`, e.g. `alias.myshortname` shortcuts
+    - `git config - -get-regexp alias`: List all defined alias names.
 * `init`: Initialize git repository. This command creates basically a .git 
 directory with subdirectories for objects, refs/heads, refs/tags, and template 
 files. An initial HEAD file that references the HEAD of the master branch is 
@@ -340,11 +342,14 @@ committed to the branch.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
     - `checkout shorthash`: checkout old version. See `git log` for possible hash
-    keys. As result you end up with a *detached HEAD**. This is on purpose, as 
+    keys. As result you end up with a **detached HEAD**. This is on purpose, as 
     you can play around without consequences. Read the note after command is executed!
-    With a subsequent `git checkout lastbranch`you go back as if nothing had happend.
+    With a subsequent `git checkout lastbranch` you go back as if nothing had happend.
     **This is even true, when you modified and commit the old version. All changes 
-    are lost!** 
+    are lost!** In case you meesed things up (checkout notlastbranch?) and you don't 
+    want to keep changes see `reset --hard HEAD`.
+    - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
+    refer to the last branch you were on. 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
 others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
 the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
@@ -366,7 +371,7 @@ will be called `master`)
     then your snapshot will look exactly the same, and all you’ll change is your 
     commit message. The same commit-message editor fires up, but it already 
     contains the message of your previous commit.
-    Do **not use - -ammend option after you pushed the last commit**. In this 
+    Do **not use - -amend option after you pushed the last commit**. In this 
     case you have to merge the two.
 * `log`: Show the whole commit history.
     - `log -2`: Show last two commits.
@@ -444,7 +449,13 @@ work on them, and then you rewrite those commits with git rebase and push them
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
 [here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
-
+* `revert` is a “safe” way to undo changes. It undoes a single commit — it does 
+not “revert” back to the previous state of a project by removing all subsequent 
+commits. In Git, this is actually called a reset, not a revert. 
+* `reset` as the dangerous method.
+    - `reset --hard HEAD` Permanently undo uncommitted changes.
+* `clean -f`: Remove untracked files.
+    
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 

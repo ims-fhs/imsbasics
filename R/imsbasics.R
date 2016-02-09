@@ -21,7 +21,7 @@ load_rdata <- function(filename, path) {
     # Needs "data" folder in testthat folder. Normally this is the expected place
     # to find data
     path <- paste0(getwd(), "/data/")
-    warning(paste0("In save_rdata: Path is set to ", path))
+    warning(paste0("in load_rdata: path is set to ", path))
     file <- paste0(path, "/", filename)
 
     # Use path and load file:
@@ -44,7 +44,7 @@ load_rdata <- function(filename, path) {
       warning("in fileToVar: Double entries in data.")
     }
   } else {
-    stop("Error in fileToVar: No such file")
+    stop("Error in fileToVar: no such file")
     data <- NULL
   }
   return(data)
@@ -54,17 +54,28 @@ load_rdata <- function(filename, path) {
 #' Save a specific variable in environmet to file in specific folder
 #' Call as cacheR::varToFile(data, filename, path)
 #'
-#' @param data: An object in the environment
-#' @param filename, can be without ".RData"
+#' @param data: An object in the environment. Required input.
+#' @param filename, can be without ".RData". Required input.
 #' @param path in "../.." style. Default: getwd()
 #'
 #' @return path to file ot NULL in case file already exists.
 #'
-save_rdata <- function(data, filename, path) { # "inverse" of load_rdata
-  # Default file name:
-  if (missing(path)) {
+save_rdata <- function(data, filename, path, force) { # "inverse" of load_rdata
+  input <- c(missing(data), missing(filename), missing(path), missing(force))
+  # data and filename needed. Otherwise: error...
+  if (sum(input) > 2) {
+    stop("in save_radata: data and name argument required")
+    return(NULL)
+  # If two arguments are given, it is assumed that default path and force = F is used!
+  } else if ((sum(input) == 2)) {
     path <- paste0(getwd(), "/")
+    force <- F
+    warning(paste0("in save_rdata: path is set to ", path, ", force = F"))
+  } else if ((sum(input) == 1)) {
+    force <- F
+    warning(paste0("in save_rdata: force = F"))
   }
+
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
@@ -72,8 +83,12 @@ save_rdata <- function(data, filename, path) { # "inverse" of load_rdata
 
   # Check that you don't overwrite a file:
   if (file.exists(paste0(path, filename))) {
-    warning("In save_rdata: File not saved: File already exists")
-    return(NULL)
+    if (force == F) {
+      warning("in save_rdata: file not saved. File already exists")
+    } else {
+      warning("in save_rdata: old file overwritten")
+      save(data, file = paste0(path, filename))
+    }
   } else {
     save(data, file = paste0(path, filename))
     return(path)
