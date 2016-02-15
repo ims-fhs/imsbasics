@@ -34,14 +34,15 @@ Files end with '.R': `meaningful-file.R`
 Variables: `meaningful_variable`  
 Functions: `meaningful_function`
 
-Versionning. Given a version number MAJOR.MINOR.PATCH, increment the:
+## Versioning 
+Adapted from <http://semver.org/> and <http://yihui.name/en/2013/06/r-package-versioning/>.
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
 
 * MAJOR version when you make incompatible API changes,
-* MINOR version when you add functionality in a backwards-compatible manner, and
-* PATCH version when you make backwards-compatible bug fixes.
+* MINOR version when you add functionality in a backwards-compatible manner that is worth writing a few lines (in the description file) and creating a GitHub Tag, and
+* PATCH version when you make a commit to your development branch. (bugfix, feature or minor change)
 
-Additional labels for pre-release and build metadata are available as extensions 
-to the MAJOR.MINOR.PATCH format. For further details see <http://semver.org/>
 
 ## Indentation  
 When indenting your code, use two spaces.  Never use tabs or mix tabs and spaces.
