@@ -185,9 +185,7 @@ The following commands are possible
     - `q` = Quit!
 * [Manipulating files](http://linuxcommand.org/lc3_lts0050.php) `cp, mv, rm, mkdir`
     - `rm name`: Remove file `name`.
-    - `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
-    `git add newname` + `git rm oldname`. For religion see
-    [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
+    - `mv oldname newname`: Rename a file.
     - Wildcards * and ?, e.g. cp *.txt existingdirectory
 * [Commands](http://linuxcommand.org/lc3_lts0060.php) `type, which, help, man`, 
 e.g. `help cd`
@@ -469,6 +467,9 @@ commits. In Git, this is actually called a reset, not a revert.
 * `reset` as the dangerous method.
     - `reset --hard HEAD` Permanently undo uncommitted changes.
 * `clean -f`: Remove untracked files.
+* `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
+`git add newname` + `git rm oldname`. For religion see
+[here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
     
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
