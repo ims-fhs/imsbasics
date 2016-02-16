@@ -31,8 +31,9 @@ If hadley and google contradict each other:
 
 ## Naming Conventions
 Files end with '.R': `meaningful-file.R`  
-Variables: `meaningful_variable`  
+Objects (Variables and Classes): `meaningful_variable` 
 Functions: `meaningful_function`
+Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, short etc. [link](http://r-pkgs.had.co.nz/package.html#package-structure)
 
 ## Versioning 
 Adapted from <http://semver.org/> and <http://yihui.name/en/2013/06/r-package-versioning/>.
