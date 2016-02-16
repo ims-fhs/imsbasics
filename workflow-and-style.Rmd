@@ -65,6 +65,13 @@ Install packages with `install.packages("package")`
 
 Include non-standard packages using `libraray(package)`
 
+## Documentation
+1. R packages are documented with vignette(s). <http://r-pkgs.had.co.nz/vignettes.html#vignette-workflow>
+2. Every project has a starUML document describing the software architecture of the project according to the [4+1 view model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model).
+
+## Backlog and User Stories
+1. Work-In-Progress is documented on the Symphonical wall of the project in form of a User Story.
+
 ***
 
 
