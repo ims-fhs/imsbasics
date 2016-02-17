@@ -1,4 +1,4 @@
-#!C:/R/R-3.2.2/bin/x64/Rscript
+#!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript
 
 # License: CC0 (just be nice and point others to where you got this)
 # Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
