@@ -510,7 +510,7 @@ For further reading see [here](https://www.ralfebert.de/tutorials/git/) and
 [here](https://git-scm.com/docs/).
 
 ## Advanced Git: Hooks - the pre-commit hook
-On mac do blablabla.
+On mac do blablabla.blablabla.
 
 For example files see appendix. The process is as follows:
 
