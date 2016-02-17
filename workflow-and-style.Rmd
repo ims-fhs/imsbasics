@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "27 Januar 2016"
 output:
-  html_document:
-    number_sections: yes
-    theme: united
-    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: united
     toc: yes
 ---
 
@@ -30,7 +30,7 @@ If hadley and google contradict each other:
 2. prio: google
 
 ## Naming Conventions
-Folders: `meaningful name` or `meaningfulname` for packages????? **SCN: Shortcuts????** 
+Folders: `meaningful name` or `meaningfulname`
 Files end with '.R': `meaningful-file.R`  
 Objects (Variables and Classes): `meaningful_variable` 
 Functions: `meaningful_function`
@@ -310,7 +310,7 @@ The default name for the starting branch is **master**.
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
 and checks out an initial branch that is forked from the cloned repository’s 
-currently active branch. E.g. git clone https://github.com/ims-fhs/workflow-and-style.  
+currently active branch. E.g. git clone https://github.com/ims-fhs/myfolder.  
 The default shortname for the remote server is then **origin**.
 * `branch newbranch`: Create new branch "newbranch". Note: A branch in Git is simply a 
 lightweight movable pointer to one of these commits. The default branch name 
@@ -367,8 +367,8 @@ committed to the branch.
     you can play around without consequences. Read the note after command is executed!
     With a subsequent `git checkout lastbranch` you go back as if nothing had happend.
     **This is even true, when you modified and commit the old version. All changes 
-    are lost!** In case you meesed things up (checkout notlastbranch?) and you don't 
-    want to keep changes see `reset --hard HEAD`.
+    are lost!** In case you meesed things up (e.g. `git checkout notlastbranch`) 
+    and you don't want to keep changes see `git reset --hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
@@ -419,8 +419,10 @@ to share work. Be careful with fork (Github).
     E.g. `git remote add origin https://github.com/ims-fhs/myfolder`.
     Only visible after a push!
     - `git remote set-url`: Change your remote's URL from SSH to HTTPS with the 
-    it remote set-url command. E.g. `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
-    And change it back: `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
+    it remote set-url command. E.g.  
+    `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
+    And change it back:  
+    `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
     - `remote rename shortname newname`: Rename shortname to newname.
     - `remote rm shortname`: Remove shortname.
     - `remote show shortname`: Show details from shortname. Good to check wether
@@ -484,7 +486,7 @@ commits. In Git, this is actually called a reset, not a revert.
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
 nothing is copied to your PC. It’s not quite the same as a Git clone. See 
-the manual for git-clone(1) if wonder “what’s copied when I clone a project?”.
+the manual for git-clone(1) if you wonder “what’s copied when I clone a project?”.
 You cannot always make a branch or pull an existing branch and push back to it, 
 because you are not registered as a collaborator for that specific project.
 Forking is nothing more than a clone on the GitHub server side:
@@ -510,16 +512,20 @@ For further reading see [here](https://www.ralfebert.de/tutorials/git/) and
 [here](https://git-scm.com/docs/).
 
 ## Advanced Git: Hooks - the pre-commit hook
-On Mac OSX use path:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript
-
 For example files see appendix. The process is as follows:
 
-* Save the hook as `pre-commit` in /.git/hooks/ without any ending.
+* Copy the text in the appendix into a file and save it as `pre-commit` 
+in /.git/hooks/ **without any ending**.
+* Depending on the operating system and your path to Rscript. As first line use
+  - Windows: #!C:/R/R-3.2.2/bin/x64/Rscript or
+  - Mac OSX:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript
 * As described in the R-file, the version increases automatically.
 * If you don't want to increase the version run
 
-    SET inc=FALSE
-    git commit -a -m "Your message"
+    `SET inc=FALSE`  
+    `git commit -a -m "Your message"`
+
+**If you increase the minor or major version, the patch is set to 0.**
 
 For a complete list see [here](http://ss64.com/nt/).
 
@@ -719,7 +725,7 @@ Create a folder in Github. Then open a shell and add the remote repo
 > git remote add origin https://github.com/account/remotefolder/
 ```
 
-**Think about what to add to gitignore before you push. Do you want /data 
+**Think about what to add to gitignore before you push. Do you want /data to be 
 tracked on the server?**
 
 Push your master branch to the remote repo:
@@ -749,16 +755,12 @@ your repository - you shouldn't do this if anyone else is working with your
 repository, or you're using it from multiple computers. If you still want to 
 do that, you can use git filter-branch to rewrite the history - 
 [there is a helpful guide to that here](https://help.github.com/articles/remove-sensitive-data/).
-ToDo SCN?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/data not visible anymore? What happened the first time?
-
-Added /data to .gitognore and commited => That solved the problem...
 
 ## Case 12: You face a staging area with too many files which you never expect to be part of your project
 This means that `git status` shows untracked file on a higher level. It could 
 happen as follows: You had a repo and you cloned it. You ran `git clone url/to/repo.git` 
 from your directory say /home/repos/my. Now after the clone, you try `git status` 
-and shows untracked files from /home/repos.
+and it shows untracked files from /home/repos.
 
 So how is this possible?
 
@@ -781,7 +783,7 @@ make sure you turn on Show hidden files, folders and disks option.
 
 From there, you can run git init to create a fresh repository.
 
-## Case 14: You complete messed up git for unknown reasons but a working older version is on github.
+## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
 Rename your messed up folder. Then you create a completely(!) new folder with 
 subfolders - renamaing the old folder won't help...  
 Then copy the necessary bare files, e.g. .png, .R, ... to the new folders.
