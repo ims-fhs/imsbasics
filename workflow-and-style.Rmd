@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "27 Januar 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
