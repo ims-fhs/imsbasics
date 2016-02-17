@@ -2,7 +2,7 @@
 # Independent functions:
 
 #' Load data from specific folder to a variable in current environment.
-#' Call as routes <- imsbasics::load_rdata(filename, path)
+#' Call as data <- imsbasics::load_rdata(filename, path)
 #'
 #' @param filename, can be without ".RData"
 #' @param path in "../.." style. Default: getwd()
@@ -21,7 +21,7 @@ load_rdata <- function(filename, path) {
     # Needs "data" folder in testthat folder. Normally this is the expected place
     # to find data
     path <- paste0(getwd(), "/data/")
-    warning(paste0("In save_rdata: Path is set to ", path))
+    warning(paste0("in load_rdata: path is set to ", path))
     file <- paste0(path, "/", filename)
 
     # Use path and load file:
@@ -33,38 +33,49 @@ load_rdata <- function(filename, path) {
     temp_space <- new.env()
     # load file in temp.space as name.of.object:
     name_of_object <- load(file, temp_space)
-    # Assign data in name.f.objects to routes:
-    routes <- get(name_of_object, temp_space)
+    # Assign data in name.f.objects to data:
+    data <- get(name_of_object, temp_space)
     # Remove local variables to clean up environment:
     rm(temp_space, name_of_object)
 
     # Check that there are now entries twice:
     # Previously done in "removedoublicates.
-    if (length(routes) != length(unique(routes))) {
+    if (length(data) != length(unique(data))) {
       warning("in fileToVar: Double entries in data.")
     }
   } else {
-    stop("Error in fileToVar: No such file")
-    routes <- NULL
+    stop("Error in fileToVar: no such file")
+    data <- NULL
   }
-  return(routes)
+  return(data)
 }
 
 
 #' Save a specific variable in environmet to file in specific folder
-#' Call as cacheR::varToFile(routes, filename, path)
+#' Call as cacheR::varToFile(data, filename, path)
 #'
-#' @param routes: An object in the environment
-#' @param filename, can be without ".RData"
+#' @param data: An object in the environment. Required input.
+#' @param filename, can be without ".RData". Required input.
 #' @param path in "../.." style. Default: getwd()
 #'
 #' @return path to file ot NULL in case file already exists.
 #'
-save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
-  # Default file name:
-  if (missing(path)) {
+save_rdata <- function(data, filename, path, force) { # "inverse" of load_rdata
+  input <- c(missing(data), missing(filename), missing(path), missing(force))
+  # data and filename needed. Otherwise: error...
+  if (sum(input) > 2) {
+    stop("in save_radata: data and name argument required")
+    return(NULL)
+  # If two arguments are given, it is assumed that default path and force = F is used!
+  } else if ((sum(input) == 2)) {
     path <- paste0(getwd(), "/")
+    force <- F
+    warning(paste0("in save_rdata: path is set to ", path, ", force = F"))
+  } else if ((sum(input) == 1)) {
+    force <- F
+    warning(paste0("in save_rdata: force = F"))
   }
+
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
@@ -72,10 +83,14 @@ save_rdata <- function(routes, filename, path) { # "inverse" of load_rdata
 
   # Check that you don't overwrite a file:
   if (file.exists(paste0(path, filename))) {
-    warning("In save_rdata: File not saved: File already exists")
-    return(NULL)
+    if (force == F) {
+      warning("in save_rdata: file not saved. File already exists")
+    } else {
+      warning("in save_rdata: old file overwritten")
+      save(data, file = paste0(path, filename))
+    }
   } else {
-    save(routes, file = paste0(path, filename))
+    save(data, file = paste0(path, filename))
     return(path)
   }
 }
