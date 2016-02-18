@@ -212,6 +212,7 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
     - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
     - `set`: Display all existing variables.
     - `set prefix`: Display all existing variables ending with `prefix`.
+    - `set variable=`: Delete `variable`.
 * `ECHO %variable%`: Display value of existing variable.
 
 ## Git: First steps
