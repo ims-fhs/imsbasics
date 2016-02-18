@@ -313,6 +313,8 @@ remote-tracking branches for each branch in the cloned repository, and creates
 and checks out an initial branch that is forked from the cloned repository’s 
 currently active branch. E.g. git clone https://github.com/ims-fhs/myfolder.  
 The default shortname for the remote server is then **origin**.
+    - `clone - -depth n - -branch branchname repo directory`: Clone history up 
+    to nth commit, only `branchname` from `repo` and `folder`.
 * `branch newbranch`: Create new branch "newbranch". Note: A branch in Git is simply a 
 lightweight movable pointer to one of these commits. The default branch name 
 in Git is master. The only reason nearly every repository has one is that the 
@@ -355,8 +357,8 @@ committed to the branch.
     copy of `remoteserver/remotebranch`. Furthermore, the branch is being set up 
     to track the remote branch, which usually means the remoteserver/remotebranch 
     branch. This is of interest if you you want to join a project. Thus, 
-    checkout also works remotely.
-    In case of a "**fatal**: git checkout: updating paths is incompatible with 
+    checkout also works remotely.  
+    In case of a "**fatal** git checkout: updating paths is incompatible with 
     switching branches...": This occurs when you are trying to checkout a remote 
     branch that your local git repo is not aware of yet See `git remote show origin`.
     If the remote branch is under "New remote branches" and not "Tracked remote 
@@ -404,8 +406,9 @@ will be called `master`)
     beyond renames (works only for a single file).
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
-    - `tag -a Vxxx -m text`: Create an annotated tag with tagging maessage 
-    text = "my text" or text = commit checksum (something like 67a465f).
+    - `tag -a version -m text`: Create an annotated tag with tagging version of 
+    type v0.1.0 and message text = "my text" or the commit checksum 
+    (something like "67a465f").
     - `tag -l "xy"`: Search for tags starting with xy.
 * `remote`: Needed when using and managing remote repoitories. Remote repositories 
 are versions of your project that are hosted on the Internet or network somewhere. 
@@ -414,9 +417,9 @@ remote repositories and pushing and pulling data to and from them when you need
 to share work. Be careful with fork (Github).
     - `remote -v`: Use argument verbose (-v), which shows you the URLs that Git 
     has stored for the shortname to be used when reading and writing to that remote 
-    - `remote show shortname`: Show information about remote serverincluding
+    - `remote show remoteserver`: Show information about remoteserver including
     upstream settings (if set).
-    -  `remote add shortname server`: Add shortname of server to tracking. 
+    -  `remote add remoteserver server`: Add remoteserver of server to tracking. 
     E.g. `git remote add origin https://github.com/ims-fhs/myfolder`.
     Only visible after a push!
     - `git remote set-url`: Change your remote's URL from SSH to HTTPS with the 
@@ -424,16 +427,17 @@ to share work. Be careful with fork (Github).
     `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
     And change it back:  
     `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
-    - `remote rename shortname newname`: Rename shortname to newname.
-    - `remote rm shortname`: Remove shortname.
-    - `remote show shortname`: Show details from shortname. Good to check wether
-    shortname exists.
+    - `remote rename oldremoteserver newremoteserver`: Rename oldremoteserver to 
+    newremoteserver.
+    - `remote rm remoteserver`: Remove remoteserver.
+    - `remote show remoteserver`: Show details from remoteserver. Good to check wether
+    remoteserver exists.
 * `push remoteserver localbranch:remotebranch`: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
-**Attention**: "push remote-name :remotebranch" **deletes** the remotebranch. 
-Use `push -u remoteserver remotebranch` instead (See below).
-E.g. `git push origin newbranch:remotebranch`.
+    - `push remote-name :remotebranch`: Pay **attention: **deletes** the remotebranch. 
+    Use `push -u remoteserver remotebranch` instead (See below).
+    E.g. `git push -u origin remotebranch`.
     - `push -u remoteserver remotebranch`: Necessary if you want git pull to know 
     what to do. "Upstream" refers to the main repo that other people will be 
     pulling from, e.g. your GitHub repo. The -u option automatically sets that 
@@ -447,11 +451,12 @@ E.g. `git push origin newbranch:remotebranch`.
     that have the same name on the remote. To limit this behavior to just the 
     current branch, set this configuration option: 
     git config - -global push.default tracking
-    - `push - -all shortname`: Push (and pull!) all the branches to the 
+    - `push - -all remoteserver`: Push (and pull!) all the branches to the 
     remoteserver by default, including the newly created ones. Combination 
     -u - -all possible.
-    - `push - -tags shortname`: Push (and pull!) all tags.
-    - `push - -mirror`: Create identical copy of current folder?????????????????
+    - `push - -tags remoteserver`: Push (and pull!) all tags to remoteserver.
+    - `push - -mirror`: Create identical copy of current folder. **Not tested**
+    "push - -mirror = push - -all + push - -tags".
 * `pull remoteserver remotebranch`: Begin tracking file by doing this from 
 the master branch. "pull = fetch + merge"
     - `pull remoteserver remotebranch:localbranch`: **Pay Attention** because 
@@ -464,7 +469,7 @@ the master branch. "pull = fetch + merge"
     use for git pull to communicate with git fetch, and unless you are 
     implementing your own Porcelain you are not supposed to use it.
 * `rebase branch`: Similar to merge - kind of rewrites history, which can be 
-summed up in a single line: **Do not rebase commits that exist outside your repository.**
+summed up in a single line: **Do not rebase commits that exist in other peoples' repository.**
 If you follow that guideline, you’ll be fine. If you don’t, people will hate 
 you, and you’ll be scorned by friends and family. When you rebase stuff, 
 you’re abandoning existing commits and creating new ones that are similar but 
@@ -472,7 +477,7 @@ different. If you push commits somewhere and others pull them down and base
 work on them, and then you rewrite those commits with git rebase and push them 
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
-[here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+[here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
 * `revert` is a “safe” way to undo changes. It undoes a single commit — it does 
 not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
