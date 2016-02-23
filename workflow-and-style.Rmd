@@ -409,6 +409,8 @@ publication of the code (Release V1.0).
     - `tag -a version -m text`: Create an annotated tag with tagging version of 
     type v0.1.0 and message text = "my text" or the commit checksum 
     (something like "67a465f").
+    - `tag -a version HASH -m text`: Create an annotated tag as above for old 
+    commit HASH.
     - `tag -l "xy"`: Search for tags starting with xy.
 * `remote`: Needed when using and managing remote repoitories. Remote repositories 
 are versions of your project that are hosted on the Internet or network somewhere. 

@@ -41,10 +41,10 @@ load_rdata <- function(filename, path) {
     # Check that there are now entries twice:
     # Previously done in "removedoublicates.
     if (length(data) != length(unique(data))) {
-      warning("in fileToVar: Double entries in data.")
+      warning("in load_rdata: Double entries in data.")
     }
   } else {
-    stop("Error in fileToVar: no such file")
+    stop("Error in load_rdata: no such file")
     data <- NULL
   }
   return(data)
