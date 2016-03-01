@@ -300,7 +300,7 @@ files - it is not just a list of the changed files.
 If you want to list all the files **currently being tracked** under the branch 
 master, you could use this command:
 ```
-> git ls-tree -r master --name-only
+> git ls-tree -r master - -name-only
 ```
 Use `git status` to see untracked files.
 
@@ -322,8 +322,7 @@ in the list
     for "Real git command", e.g. `config - -global alias.ci "commit -v"`.
     Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
     is needed. Excample for a complex command (working on windows!):
-    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' 
-    --graph --date=short".
+    `git config - -global alias.hist "log - -pretty=format:'%h %ad | %s%d [%an]' - -graph - -date=short"`.
     - `config - -global - -unset varname`: Delete global `varname`, e.g. 
     `alias.myshortname` shortcut. Does not work, if several `varname` with the 
     same name exist.
@@ -338,7 +337,7 @@ after `git branch -av`. This only happens, after the first commit. Before, you'r
 said to be "on an unborn branch", at this point.  
 If the repo already exists, the history will not be deleted. The primary reason 
 for rerunning git init is to pick up newly added templates (or to move the 
-repository to another place if --separate-git-dir is given).  
+repository to another place if - -separate-git-dir is given).  
 The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
@@ -408,7 +407,7 @@ committed to the branch.
     With a subsequent `git checkout lastbranch` you go back as if nothing had happend.
     **This is even true, when you modified and commit the old version. All changes 
     are lost!** In case you meesed things up (e.g. `git checkout notlastbranch`) 
-    and you don't want to keep changes see `git reset --hard HEAD`.
+    and you don't want to keep changes see `git reset - -hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
@@ -439,7 +438,7 @@ will be called `master`)
     - `log - -pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
     - `log - -oneline - -decorate`: Show branches including pointers.
-    - `log --follow name`: Continue listing the history of a file `name`. 
+    - `log - -follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
@@ -523,7 +522,7 @@ commits. In Git, this is actually called a reset, not a revert.
 * `reset` **is an exteremly dangerous method**. It can be used if you messed 
 things up and it is ok when you loose **all uncommited changes**. Therefore, you 
 shoud check your last commit before you reset as this commit is where you end up with 
-    - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
+    - `reset - -hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
 * `clean -f`: Remove untracked files.
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
@@ -755,7 +754,7 @@ incomplete, or you misspelled your commit message1, or both.
 Leaves working 
 tree as it was before git commit.
 ```
-> git reset --soft HEAD~
+> git reset - -soft HEAD~
 ```
 Make corrections to working tree files.
 ```
@@ -804,10 +803,10 @@ make sure you turn on Show hidden files, folders and disks option.
 `path2DIR/DIR/`  
 In case DIR is subfolder of your root directory, you only need to add `DIR/`
 * Step 2. Remove the folder from your local git tracking, but keep it on your disk.  
-`git rm -r --cached path2DIR/DIR/`
+`git rm -r - -cached path2DIR/DIR/`
 * Step 3. Commit and push your changes to your git repo.
 ```
-> git rm -r --cached path2DIR/DIR/  
+> git rm -r - -cached path2DIR/DIR/  
 > git commit -m "Message"  
 > git push origin master  
 ```
@@ -856,14 +855,14 @@ newbranch later on when you fee save.
 
 ## Case 15: You want run "git add -A ." in each submodule.
 ```
-git submodule foreach --recursive git add -A .
+git submodule foreach - -recursive git add -A .
 ```
 And then you could create a commit in every submodule with:
 ```
-git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
+git submodule foreach - -recursive "git commit -m 'Committing in a submodule'"
 ```
 (If you don't have other submodules nested inside those submodules, the 
---recursive option is unnecessary.)  
+- -recursive option is unnecessary.)  
 This is not recommended: You should carefully change into each 
 submodule in turn, and consider how you want to update them, treating each as 
 a standalone repository. Then only commit these new submodule versions in the 
@@ -927,7 +926,7 @@ if (!is.na(tmpEnv)) {
 
 # check that there are files that will be committed, don't want to increment 
 # version if there won't be a commit
-fileDiff <- system("git diff HEAD --name-only", intern = TRUE)
+fileDiff <- system("git diff HEAD - -name-only", intern = TRUE)
 
 if ((length(fileDiff) > 0) && inc) {
 
