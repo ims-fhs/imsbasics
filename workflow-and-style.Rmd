@@ -535,10 +535,17 @@ in /.git/hooks/ **without any ending**.
 
 **If you increase the minor or major version, the patch is set to 0.**
 
+* SET does not work for MAC OSX. Workaround to be found.
+
 For a complete list see [here](http://ss64.com/nt/).
 
 ## GitHub: Create new branch from master
 Do it on GitHub
+
+## GitHub: Set your credentials
+You can set your credentials to prevent to insert your username and password all the time on the git shell.
+
+For MAC OSX follow [these](https://help.github.com/articles/caching-your-github-password-in-git/) instructions.
 
 
 ***
