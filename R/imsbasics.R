@@ -1,6 +1,23 @@
 # =============================================================================
 # Independent functions:
 
+#' decimalplaces returns the number of decimal places of x......................Check SCN
+#'
+#' @param x A numeric
+#'
+#' @return result An integer, the number of decimalplaces of x
+#'
+decimalplaces <- function(x) {
+  if ((x %% 1) != 0) {
+    result <- nchar(strsplit(sub('0+$','', as.character(x)), ".",
+      fixed = TRUE)[[1]][[2]])
+    return(as.integer(result))
+  } else {
+    return(0L)
+  }
+}
+
+
 #' Load data from specific folder to a variable in current environment.
 #' Call as data <- imsbasics::load_rdata(filename, path)
 #'
