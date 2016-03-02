@@ -17,10 +17,7 @@ test_that("decimalplaces...", {
   expect_equal(is.integer(decimalplaces(1.345)), T)
   expect_equal(is.integer(decimalplaces(-12)), T)
   expect_equal(is.integer(decimalplaces(-1.345)), T)
-  options(warn = 0) # turn warnings off
-
-  expect_warning(decimalplaces(0), )
-  expect_warning(decimalplaces(1.4), )
+  options(warn = 0) # turn warnings on
 
   expect_error(decimalplaces("test"), )
 })

@@ -1,7 +1,7 @@
 # =============================================================================
 # Independent functions:
 
-#' decimalplaces returns the number of decimal places of x......................Check SCN
+#' decimalplaces returns the number of decimal places of x
 #'
 #' @param x A numeric
 #'

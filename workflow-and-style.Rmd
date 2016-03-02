@@ -386,7 +386,7 @@ checkout will also update HEAD to set the specified branch as the current branch
 To prepare for working on branch, switch to it by updating the index and the 
 files in the working tree, and by pointing HEAD at the branch. Local 
 modifications to the files in the working tree are kept, so that they can be 
-committed to the branch.
+committed to the branch. This command doesn't make any changes to the history.
     - `checkout -b localbranch`: create localbranch and switch to it at the same 
     time (= `git branch name` + `git checkout name`).
     - `checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
@@ -516,19 +516,36 @@ work on them, and then you rewrite those commits with git rebase and push them
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
 [here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
-* `revert` is a “safe” way to undo commited changes. It undoes a single commit — it does 
-not “revert” back to the previous state of a project by removing all subsequent 
+* `revert`: This command creates a new commit that undoes the changes from a 
+previous commit. This command adds new history to the project (it doesn't 
+modify existing history). Therefore, it is a “safe” way to undo a single commit— it
+does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
 * `reset` **is an exteremly dangerous method**. It can be used if you messed 
 things up and it is ok when you loose **all uncommited changes**. Therefore, you 
 shoud check your last commit before you reset as this commit is where you end up with 
     - `reset - -hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
-* `clean -f`: Remove untracked files.
+* `clean -f`: Remove (= **delete**) untracked files.
+    - `clean -f -n`: Don’t actually remove anything, just show what would be done.
+    - `clean -fd`: Force removing Remove untracked directories in addition to 
+    untracked files. 
+    - `clean -x`: **WARNING** also removes all ignored files!
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
 [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
 * `rm -r - -cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (- -cached).
+* `stash`: Use `git stash` when you want to record the current state of the 
+working directory and the index, but want to go back to a clean working directory. 
+The command saves your local modifications away and reverts the working directory 
+to match the HEAD commit. The latest stash you created is stored in refs/stash; 
+older stashes are found in the reflog of this reference and can be named using 
+the usual reflog syntax (e.g. stash@{0} is the most recently created stash, 
+stash@{1} is the one before it).
+    - `stash list`: List the modifications stashed away 
+    - `stash show`: Inspected modification.
+    - `stash apply`: Restore modifications (potentially on top of a different commit) 
+
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
@@ -836,8 +853,18 @@ So see if 2) is your case. Try changing directory to the folder that git has
 created. Usually you should do a clone as git clone url/to/repo.git. (. at end) 
 if you are already in the folder where you want the repo to be.
 
-## Case 13: You want to remove git from a folder - obsolete, see case 11
+## Case 13: When do I use revert, reset, checkout
+If a commit has been made somewhere in the project's history, and you later 
+decide that the commit is wrong and should not have been done, then git revert 
+is the tool for the job. It will undo the changes introduced by the bad commit, 
+recording the "undo" in the history.
 
+If you have modified a file in your working tree, but haven't committed the change, 
+then you can use git checkout to checkout a fresh-from-repository copy of the file.
+
+If you have made a commit, but haven't shared it with anyone else and you decide 
+you don't want it, then you can use git reset to rewrite the history so that it 
+looks as though you never made that commit.
 
 ## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
 Rename your messed up folder. Then you create a completely(!) new folder with 
