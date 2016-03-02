@@ -30,6 +30,7 @@ If hadley and google contradict each other:
 2. prio: google
 
 ## Naming Conventions
+
 Folders: `meaningful name` or `meaningfulname`
 Files end with '.R': `meaningful-file.R`  
 Objects (Variables and Classes): `meaningful_variable` 
@@ -37,6 +38,7 @@ Functions: `meaningful_function`
 Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, short etc. [link](http://r-pkgs.had.co.nz/package.html#package-structure)
 
 ## Versioning 
+
 Adapted from <http://semver.org/> and <http://yihui.name/en/2013/06/r-package-versioning/>.
 
 Given a version number MAJOR.MINOR.PATCH, increment the:
@@ -47,6 +49,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 
 
 ## Indentation  
+
 When indenting your code, use two spaces.  Never use tabs or mix tabs and spaces.
 Spacing
 Place spaces around all binary operators (=, +, -, <-, etc.).
@@ -54,6 +57,7 @@ Do not place a space before a comma, but always place one after a comma.
 Place a space before left parenthesis, except in a function call.
 
 ## General Layout and Ordering
+
 1. Copyright statement comment
 2. Author comment
 3. File description comment, including purpose of program, inputs, and outputs
@@ -73,6 +77,39 @@ Include non-standard packages using `libraray(package)`
 
 ## Backlog and User Stories
 1. Work-In-Progress is documented on the Symphonical wall of the project in form of a User Story.
+
+## Documentation and project management
+
+Use the following structure for packages
+
+* /package/data/: RData (Output).
+* /package/inst/extdata/: Data which have to be accessible by the user of the package.
+* /package/tests/testthat/: All relevant rawdata for tests - keep the size small!
+[source](http://r-pkgs.had.co.nz/data.html)
+
+For customer projekts we have
+
+* /project/data/rawdata/yyyy/: subfolder for rawdata for year yyyy.
+* /project/data/yyyy/: working directory includes all analysis for year yyyy.
+
+### Count Story Points - Script
+
+Export Symphonical as JSON file.
+run the following script:
+```
+imsbasics::clc()
+symphonical <- rjson::fromJSON(file = "swBn2e.json")
+cards <- symphonical$board_cards
+description <- c()
+aufwand <- c()
+for (i in 1:length(cards)) { 
+  description[i] <- cards[[i]]$description
+  aufwand[i] <- strsplit(description[i], split = "Aufwand: ")[[1]][2]
+  aufwand[i] <- strsplit(aufwand[i], split = " SP")[[1]][1]
+  }
+aufwand <- as.numeric(aufwand)
+sum(aufwand, na.rm = TRUE)
+```
 
 ***
 
@@ -263,7 +300,7 @@ files - it is not just a list of the changed files.
 If you want to list all the files **currently being tracked** under the branch 
 master, you could use this command:
 ```
-> git ls-tree -r master --name-only
+> git ls-tree -r master - -name-only
 ```
 Use `git status` to see untracked files.
 
@@ -285,8 +322,7 @@ in the list
     for "Real git command", e.g. `config - -global alias.ci "commit -v"`.
     Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
     is needed. Excample for a complex command (working on windows!):
-    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' 
-    --graph --date=short".
+    `git config - -global alias.hist "log - -pretty=format:'%h %ad | %s%d [%an]' - -graph - -date=short"`.
     - `config - -global - -unset varname`: Delete global `varname`, e.g. 
     `alias.myshortname` shortcut. Does not work, if several `varname` with the 
     same name exist.
@@ -301,7 +337,7 @@ after `git branch -av`. This only happens, after the first commit. Before, you'r
 said to be "on an unborn branch", at this point.  
 If the repo already exists, the history will not be deleted. The primary reason 
 for rerunning git init is to pick up newly added templates (or to move the 
-repository to another place if --separate-git-dir is given).  
+repository to another place if - -separate-git-dir is given).  
 The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
@@ -311,7 +347,7 @@ The default name for the starting branch is **master**.
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
 and checks out an initial branch that is forked from the cloned repository’s 
-currently active branch. E.g. git clone https://github.com/ims-fhs/myfolder.  
+currently active branch. E.g. `git clone https://github.com/ims-fhs/myfolder`.  
 The default shortname for the remote server is then **origin**.
     - `clone - -depth n - -branch branchname repo directory`: Clone history up 
     to nth commit, only `branchname` from `repo` and `folder`.
@@ -350,7 +386,7 @@ checkout will also update HEAD to set the specified branch as the current branch
 To prepare for working on branch, switch to it by updating the index and the 
 files in the working tree, and by pointing HEAD at the branch. Local 
 modifications to the files in the working tree are kept, so that they can be 
-committed to the branch.
+committed to the branch. This command doesn't make any changes to the history.
     - `checkout -b localbranch`: create localbranch and switch to it at the same 
     time (= `git branch name` + `git checkout name`).
     - `checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
@@ -371,7 +407,7 @@ committed to the branch.
     With a subsequent `git checkout lastbranch` you go back as if nothing had happend.
     **This is even true, when you modified and commit the old version. All changes 
     are lost!** In case you meesed things up (e.g. `git checkout notlastbranch`) 
-    and you don't want to keep changes see `git reset --hard HEAD`.
+    and you don't want to keep changes see `git reset - -hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
@@ -402,7 +438,7 @@ will be called `master`)
     - `log - -pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
     - `log - -oneline - -decorate`: Show branches including pointers.
-    - `log --follow name`: Continue listing the history of a file `name`. 
+    - `log - -follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
@@ -480,16 +516,36 @@ work on them, and then you rewrite those commits with git rebase and push them
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
 [here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
-* `revert` is a “safe” way to undo changes. It undoes a single commit — it does 
-not “revert” back to the previous state of a project by removing all subsequent 
+* `revert`: This command creates a new commit that undoes the changes from a 
+previous commit. This command adds new history to the project (it doesn't 
+modify existing history). Therefore, it is a “safe” way to undo a single commit— it
+does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
-* `reset` as the dangerous method.
-    - `reset --hard HEAD` Permanently undo uncommitted changes.
-* `clean -f`: Remove untracked files.
+* `reset` **is an exteremly dangerous method**. It can be used if you messed 
+things up and it is ok when you loose **all uncommited changes**. Therefore, you 
+shoud check your last commit before you reset as this commit is where you end up with 
+    - `reset - -hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
+* `clean -f`: Remove (= **delete**) untracked files.
+    - `clean -f -n`: Don’t actually remove anything, just show what would be done.
+    - `clean -fd`: Force removing Remove untracked directories in addition to 
+    untracked files. 
+    - `clean -x`: **WARNING** also removes all ignored files!
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
 [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
-    
+* `rm -r - -cached folder`: remove `folder` from tracking including subfolders
+(-r = recursive) but keep the files in the folder (- -cached).
+* `stash`: Use `git stash` when you want to record the current state of the 
+working directory and the index, but want to go back to a clean working directory. 
+The command saves your local modifications away and reverts the working directory 
+to match the HEAD commit. The latest stash you created is stored in refs/stash; 
+older stashes are found in the reflog of this reference and can be named using 
+the usual reflog syntax (e.g. stash@{0} is the most recently created stash, 
+stash@{1} is the one before it).
+    - `stash list`: List the modifications stashed away 
+    - `stash show`: Inspected modification.
+    - `stash apply`: Restore modifications (potentially on top of a different commit) 
+
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
@@ -525,8 +581,13 @@ For example files see appendix. The process is as follows:
 * Copy the text in the appendix into a file and save it as `pre-commit` 
 in /.git/hooks/ **without any ending**.
 * Depending on the operating system and your path to Rscript. As first line use
-  - Windows: #!C:/R/R-3.2.2/bin/x64/Rscript or
-  - Mac OSX:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript
+    - Windows: #!C:/R/R-3.2.2/bin/x64/Rscript or
+    - Mac OSX:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript  
+    and make the file executable:
+    ```
+    chmod +x filename.sh
+    ```
+    including prefix if existing.
 * As described in the R-file, the version increases automatically.
 * If you don't want to increase the version run
 
@@ -717,7 +778,7 @@ incomplete, or you misspelled your commit message1, or both.
 Leaves working 
 tree as it was before git commit.
 ```
-> git reset --soft HEAD~
+> git reset - -soft HEAD~
 ```
 Make corrections to working tree files.
 ```
@@ -755,16 +816,25 @@ Check what you have done, if you like:
 
 [Reference](http://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore)
 
-## Case 11: Remove directory from remote repository after adding them to .gitignore
+## Case 11: Remove directory DIR from remote repository after adding them to .gitignore
 
-The rules in your .gitignore file only apply to untracked files. Since the 
-files under that directory were already committed in your repository, you have 
-to unstage them, create a commit, and push that to GitHub:
+All the data git uses info is stored in .git/ , so removing it is fine. Of 
+course, make sure that your working copy is in the exact state that 
+you want it, because everything else will be lost. /.git folder is hidden so 
+make sure you turn on Show hidden files, folders and disks option.
 
-> git rm -r --cached some-directory
-> git commit -m 'Remove the now ignored directory "some-directory"'
-> git push origin master
-
+* Step 1. Add the folder path to your directories's root /.gitignore file.  
+`path2DIR/DIR/`  
+In case DIR is subfolder of your root directory, you only need to add `DIR/`
+* Step 2. Remove the folder from your local git tracking, but keep it on your disk.  
+`git rm -r - -cached path2DIR/DIR/`
+* Step 3. Commit and push your changes to your git repo.
+```
+> git rm -r - -cached path2DIR/DIR/  
+> git commit -m "Message"  
+> git push origin master  
+```
+  
 You can't delete the file from your history without rewriting the history of 
 your repository - you shouldn't do this if anyone else is working with your 
 repository, or you're using it from multiple computers. If you still want to 
@@ -790,13 +860,18 @@ So see if 2) is your case. Try changing directory to the folder that git has
 created. Usually you should do a clone as git clone url/to/repo.git. (. at end) 
 if you are already in the folder where you want the repo to be.
 
-## Case 13: You want to remove git from a folder
-All the data git uses info is stored in .git/ , so removing it should work just 
-fine. Of course, make sure that your working copy is in the exact state that 
-you want it, because everything else will be lost. .git folder is hidden so 
-make sure you turn on Show hidden files, folders and disks option.
+## Case 13: When do I use revert, reset, checkout
+If a commit has been made somewhere in the project's history, and you later 
+decide that the commit is wrong and should not have been done, then git revert 
+is the tool for the job. It will undo the changes introduced by the bad commit, 
+recording the "undo" in the history.
 
-From there, you can run git init to create a fresh repository.
+If you have modified a file in your working tree, but haven't committed the change, 
+then you can use git checkout to checkout a fresh-from-repository copy of the file.
+
+If you have made a commit, but haven't shared it with anyone else and you decide 
+you don't want it, then you can use git reset to rewrite the history so that it 
+looks as though you never made that commit.
 
 ## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
 Rename your messed up folder. Then you create a completely(!) new folder with 
@@ -814,14 +889,14 @@ newbranch later on when you fee save.
 
 ## Case 15: You want run "git add -A ." in each submodule.
 ```
-git submodule foreach --recursive git add -A .
+git submodule foreach - -recursive git add -A .
 ```
 And then you could create a commit in every submodule with:
 ```
-git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
+git submodule foreach - -recursive "git commit -m 'Committing in a submodule'"
 ```
 (If you don't have other submodules nested inside those submodules, the 
---recursive option is unnecessary.)  
+- -recursive option is unnecessary.)  
 This is not recommended: You should carefully change into each 
 submodule in turn, and consider how you want to update them, treating each as 
 a standalone repository. Then only commit these new submodule versions in the 
@@ -885,7 +960,7 @@ if (!is.na(tmpEnv)) {
 
 # check that there are files that will be committed, don't want to increment 
 # version if there won't be a commit
-fileDiff <- system("git diff HEAD --name-only", intern = TRUE)
+fileDiff <- system("git diff HEAD - -name-only", intern = TRUE)
 
 if ((length(fileDiff) > 0) && inc) {
 
