@@ -656,10 +656,17 @@ in /.git/hooks/ **without any ending**.
 
 **If you increase the minor or major version, the patch is set to 0.**
 
+* SET does not work for MAC OSX. Workaround to be found.
+
 For a complete list see [here](http://ss64.com/nt/).
 
 ## GitHub: Create new branch from master
 Do it on GitHub
+
+## GitHub: Set your credentials
+You can set your credentials to prevent to insert your username and password all the time on the git shell.
+
+For MAC OSX follow [these](https://help.github.com/articles/caching-your-github-password-in-git/) instructions.
 
 
 ***
@@ -967,6 +974,15 @@ new versions of each submodule.
 
 Use git status to see untracked files. Empty folders are only visible, when you
 start to commit files in these new folders.
+
+## Case 16: You want to review work your colleague did
+Therefore you need to pull the work your colleague did to a new branch. How does this work??
+
+## Case 17: You want to update your devXXX branch with newer work somebody else did in another branch
+This might be the case after you merged and reviewed some branches together and you now want to get the most actual version of (for example) the master branch.
+
+1. Delete your local copy of your devXXX branch
+2. 
 
 # Debugging
 
