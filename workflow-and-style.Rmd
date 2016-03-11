@@ -387,16 +387,21 @@ The default name for the starting branch is **master**.
 between the index and a tree, changes between two trees, changes between two 
 blob objects, or changes between two files on disk.
     - `diff remotename/branchname:remote/path/file1.txt local/path/file1.txt`:
-    View the differences going from the remote file to the local file.
+    View the differences going from the remote file to the local file. Only
+    commited changes are visible.
     - `diff HEAD:local/path/file1.txt remotename/branchname:remote/path/file1.txt`:
-    View the differences in the other direction
+    View the differences in the other direction. Only commited changes are visible.
     - `diff ref1:path/to/file1 ref2:path/to/file2`: Diff any two files anywhere 
     using this notation. As usual, ref1 and ref2 could be branch names, 
     remotename/branchname, commit SHAs, etc.
+    - `diff A..B` or `diff A...B`: See
+    [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
 * `difftool` is a frontend to git diff and accepts the same options and arguments.
     - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
     See appendix for further explanations concerning **interference with RStudio**.
     - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
+    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
+    Use any of those combinations to access a specific file.
 * `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
