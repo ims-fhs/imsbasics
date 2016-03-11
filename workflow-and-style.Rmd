@@ -30,23 +30,29 @@ If hadley and google contradict each other:
 2. prio: google
 
 ## Naming Conventions
+
 Folders: `meaningful name` or `meaningfulname`
 Files end with '.R': `meaningful-file.R`  
 Objects (Variables and Classes): `meaningful_variable` 
 Functions: `meaningful_function`
-Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, short etc. [link](http://r-pkgs.had.co.nz/package.html#package-structure)
+Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, 
+short etc. [link](http://r-pkgs.had.co.nz/package.html#package-structure)
 
 ## Versioning 
+
 Adapted from <http://semver.org/> and <http://yihui.name/en/2013/06/r-package-versioning/>.
 
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
 * MAJOR version when you make incompatible API changes,
-* MINOR version when you add functionality in a backwards-compatible manner that is worth writing a few lines (in the description file) and creating a GitHub Tag, and
-* PATCH version when you make a commit to your development branch. (bugfix, feature or minor change)
+* MINOR version when you add functionality in a backwards-compatible manner that 
+is worth writing a few lines (in the description file) and creating a GitHub Tag, and 
+* PATCH version when you make a commit to your development branch. (bugfix, 
+feature or minor change)
 
 
 ## Indentation  
+
 When indenting your code, use two spaces.  Never use tabs or mix tabs and spaces.
 Spacing
 Place spaces around all binary operators (=, +, -, <-, etc.).
@@ -54,6 +60,7 @@ Do not place a space before a comma, but always place one after a comma.
 Place a space before left parenthesis, except in a function call.
 
 ## General Layout and Ordering
+
 1. Copyright statement comment
 2. Author comment
 3. File description comment, including purpose of program, inputs, and outputs
@@ -68,11 +75,47 @@ Install packages with `install.packages("package")`
 Include non-standard packages using `libraray(package)`
 
 ## Documentation
-1. R packages are documented with vignette(s). <http://r-pkgs.had.co.nz/vignettes.html#vignette-workflow>
-2. Every project has a starUML document describing the software architecture of the project according to the [4+1 view model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model).
+1. R packages are documented with vignette(s). For examples see 
+[here](http://r-pkgs.had.co.nz/vignettes.html#vignette-workflow)
+2. Every project has a starUML document describing the software architecture of 
+the project according to the [4+1 view model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model).
 
 ## Backlog and User Stories
-1. Work-In-Progress is documented on the Symphonical wall of the project in form of a User Story.
+1. Work-In-Progress is documented on the Symphonical wall of the project in form 
+of a User Story.
+
+## Documentation and project management
+
+Use the following structure for packages
+
+* /package/data/: RData (Output).
+* /package/inst/extdata/: Data which have to be accessible by the user of the package.
+* /package/tests/testthat/: All relevant rawdata for tests - keep the size small!
+[source](http://r-pkgs.had.co.nz/data.html)
+
+For customer projekts we have
+
+* /project/data/rawdata/yyyy/: subfolder for rawdata for year yyyy.
+* /project/data/yyyy/: working directory includes all analysis for year yyyy.
+
+### Count Story Points - Script
+
+Export Symphonical as JSON file.
+run the following script:
+```
+imsbasics::clc()
+symphonical <- rjson::fromJSON(file = "swBn2e.json")
+cards <- symphonical$board_cards
+description <- c()
+aufwand <- c()
+for (i in 1:length(cards)) { 
+  description[i] <- cards[[i]]$description
+  aufwand[i] <- strsplit(description[i], split = "Aufwand: ")[[1]][2]
+  aufwand[i] <- strsplit(aufwand[i], split = " SP")[[1]][1]
+  }
+aufwand <- as.numeric(aufwand)
+sum(aufwand, na.rm = TRUE)
+```
 
 ***
 
@@ -119,8 +162,8 @@ Finally, make sure, you installed the packages
 * devtools used for downloading and installing code from github and 
 * testthat 
 
-When you want to automate testing open or create a project (including package) and type the 
-following command in the R console:
+When you want to automate testing open or create a project (including package) 
+and type the following command in the R console:
 ```
 > devtools::use_testthat()
 ```
@@ -181,8 +224,8 @@ refers to the working directory's parent directory.
 Sometimes you can also find
 
   * `ls -r` or
-  * `ls - -reverse`
-These to commands are identical and the arguments just read `- -longargument = -abbreviatedarg`.
+  * `ls --reverse`
+These to commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
 The first variant is fast to write, the second one is easy (fast) to read and understand.
 
 The following commands are possible
@@ -212,6 +255,7 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
     - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
     - `set`: Display all existing variables.
     - `set prefix`: Display all existing variables ending with `prefix`.
+    - `set variable=`: Delete `variable`.
 * `ECHO %variable%`: Display value of existing variable.
 
 ## Git: First steps
@@ -232,7 +276,9 @@ Download the latest package starting with "Git-", not a "msysgit-..." package
 comes with a UNIX environment as far as needed by git and also ships with a 
 Bash shell for using the git command line tools.
 ```
-> git version 
+> where git # Shows, where git.exe is located
+> git version # Shows the version
+> git config --global --edit # Here, you can see, which config file is used.
 ```
 
 ### Git: First steps - The staging index
@@ -266,6 +312,34 @@ master, you could use this command:
 ```
 Use `git status` to see untracked files.
 
+### Git: Set up the editor of your choice
+
+The git executable will be called with a fixed set of 7 arguments:
+`path old-file old-hex old-mode new-file new-hex new-mode`
+As most diff tools will require a different order (and only some) of the arguments, 
+you will have to specify a wrapper script, which in turn calls the real diff tool. 
+Additionally, you have to configure the external diff tool via "git config":
+
+1. Create a wrapper script "git-diff-wrapper.sh" which contains something like.
+See appendix. As you can see, only the second ("old-file") and fifth ("new-file") 
+arguments will be passed to the diff tool.
+2. Type 
+```
+> git config --global diff.external <path_to_wrapper_script>
+```
+at the command prompt, replacing with the path to "git-diff-wrapper.sh", so your 
+~/.gitconfig contains `external = <path_to_wrapper_script>`
+
+Be sure to use the correct syntax to specify the paths to the wrapper script and 
+diff tool, i.e. use forward slashed instead of backslashes. 
+
+Mind the trailing "cat"! (I suppose the '| cat' is needed only for some programs 
+which may not return a proper or consistent return status. You might want to try 
+without the trailing cat if your diff tool has explicit return status). 
+
+For further details see 
+[here](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
+
 ### Git: Useful commands
 
 All commands can be prompted to the console. The `> git...` input is ommitted 
@@ -277,21 +351,24 @@ in the list
     "everything" can be done from the git-ribbon in Rstudio!
 
 * `config` : Configure git.
-    - `config - -list`: List all configurations.
-    - `config - -global - -list`: List all global configurations.
+    - `config --list`: List all configurations.
+    - `config --global --list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
-    - `config - -global alias.myshortname Realgitcommand`: Introduce shortcut
-    for "Real git command", e.g. `config - -global alias.ci "commit -v"`.
+    - `config --global alias.myshortname Realgitcommand`: Introduce shortcut
+    for "Real git command", e.g. `config --global alias.ci "commit -v"`.
     Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
     is needed. Excample for a complex command (working on windows!):
-    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' 
-    --graph --date=short".
-    - `config - -global - -unset varname`: Delete global `varname`, e.g. 
+    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
+    - `config --global --unset varname`: Delete global `varname`, e.g. 
     `alias.myshortname` shortcut. Does not work, if several `varname` with the 
     same name exist.
-    - `config - -global - -unset-all varname`: Delete all global 
+    - `config --global --unset-all varname`: Delete all global 
     `varname`, e.g. `alias.myshortname` shortcuts
-    - `git config - -get-regexp alias`: List all defined alias names.
+    - `git config --get-regexp alias`: List all defined alias names.
+    - `config --global --replace-all core.editor "'pathtoexe/exename`: Set 
+    global editor for windows. Be careful with spaces. `--replace-all` only necessary 
+    in case of wrongly set multiple editors.
+    - `config --global --edit`: View your config file
 * `init`: Initialize git repository. This command creates basically a .git 
 directory with subdirectories for objects, refs/heads, refs/tags, and template 
 files. An initial HEAD file that references the HEAD of the master branch is 
@@ -300,18 +377,39 @@ after `git branch -av`. This only happens, after the first commit. Before, you'r
 said to be "on an unborn branch", at this point.  
 If the repo already exists, the history will not be deleted. The primary reason 
 for rerunning git init is to pick up newly added templates (or to move the 
-repository to another place if --separate-git-dir is given).  
+repository to another place if `--separate-git-dir` is given).  
 The default name for the starting branch is **master**.
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
     - Modified files
     - Branches
+* `diff` Show changes between the working tree and the index or a tree, changes 
+between the index and a tree, changes between two trees, changes between two 
+blob objects, or changes between two files on disk.
+    - `diff remotename/branchname:remote/path/file1.txt local/path/file1.txt`:
+    View the differences going from the remote file to the local file. Only
+    commited changes are visible.
+    - `diff HEAD:local/path/file1.txt remotename/branchname:remote/path/file1.txt`:
+    View the differences in the other direction. Only commited changes are visible.
+    - `diff ref1:path/to/file1 ref2:path/to/file2`: Diff any two files anywhere 
+    using this notation. As usual, ref1 and ref2 could be branch names, 
+    remotename/branchname, commit SHAs, etc.
+    - `diff A..B` or `diff A...B`: See
+    [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
+* `difftool` is a frontend to git diff and accepts the same options and arguments.
+    - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
+    See appendix for further explanations concerning **interference with RStudio**.
+    - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
+    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
+    Use any of those combinations to access a specific file.
 * `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
 and checks out an initial branch that is forked from the cloned repository’s 
-currently active branch. E.g. git clone https://github.com/ims-fhs/myfolder.  
+currently active branch. E.g. `git clone https://github.com/ims-fhs/myfolder`.  
 The default shortname for the remote server is then **origin**.
+    - `clone --depth n --branch branchname repo directory`: Clone history up 
+    to nth commit, only `branchname` from `repo` and `folder`.
 * `branch newbranch`: Create new branch "newbranch". Note: A branch in Git is simply a 
 lightweight movable pointer to one of these commits. The default branch name 
 in Git is master. The only reason nearly every repository has one is that the 
@@ -323,8 +421,8 @@ commit you made. Every time you commit, it moves forward automatically.
     - `branch -r`: Display remote branches.
     - `branch -l`: Display local branches.
     - `branch -av`: Display all branches including remotes and description of each.
-    - `branch - -merged`: Display all merged branches.
-    - `branch -u remoteserver/branch localbranch` (-u = - -set-upstream):
+    - `branch --merged`: Display all merged branches.
+    - `branch -u remoteserver/branch localbranch` (`-u` = `--set-upstream`):
     Corresponds to `git config branch.localbranch.remote remoteserver` + 
     `git config branch.localbranch.merge refs/heads/localbranch`
     - `branch -m oldname newname`: Rename a branch while pointed to any branch. 
@@ -347,15 +445,15 @@ checkout will also update HEAD to set the specified branch as the current branch
 To prepare for working on branch, switch to it by updating the index and the 
 files in the working tree, and by pointing HEAD at the branch. Local 
 modifications to the files in the working tree are kept, so that they can be 
-committed to the branch.
+committed to the branch. This command doesn't make any changes to the history.
     - `checkout -b localbranch`: create localbranch and switch to it at the same 
     time (= `git branch name` + `git checkout name`).
     - `checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
     copy of `remoteserver/remotebranch`. Furthermore, the branch is being set up 
     to track the remote branch, which usually means the remoteserver/remotebranch 
     branch. This is of interest if you you want to join a project. Thus, 
-    checkout also works remotely.
-    In case of a "**fatal**: git checkout: updating paths is incompatible with 
+    checkout also works remotely.  
+    In case of a "**fatal** git checkout: updating paths is incompatible with 
     switching branches...": This occurs when you are trying to checkout a remote 
     branch that your local git repo is not aware of yet See `git remote show origin`.
     If the remote branch is under "New remote branches" and not "Tracked remote 
@@ -385,26 +483,29 @@ above the =======)
 will be called `master`)
     - `commit -a -m "text"`: Stage everything (-a, could be also done with a 
     preceding add files) and attach text (Comment) to the commit. See also log.
-    - `commit - -amend`: This command takes your staging area and uses it for the
+    - `commit --amend`: This command takes your staging area and uses it for the
     commit. You can edit the message as always, but it overwrites 
     your previous commit. If you’ve made no changes since your last commit 
     (for instance, you run this command immediately after your previous commit), 
     then your snapshot will look exactly the same, and all you’ll change is your 
     commit message. The same commit-message editor fires up, but it already 
     contains the message of your previous commit.
-    Do **not use - -amend option after you pushed the last commit**. In this 
+    Do **not use `--amend` option after you pushed the last commit**. In this 
     case you have to merge the two.
 * `log`: Show the whole commit history.
     - `log -2`: Show last two commits.
-    - `log - -pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
+    - `log --pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
-    - `log - -oneline - -decorate`: Show branches including pointers.
+    - `log --oneline --decorate`: Show branches including pointers.
     - `log --follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
-    - `tag -a Vxxx -m text`: Create an annotated tag with tagging maessage 
-    text = "my text" or text = commit checksum (something like 67a465f).
+    - `tag -a version -m text`: Create an annotated tag with tagging version of 
+    type v0.1.0 and message text = "my text" or the commit checksum 
+    (something like "67a465f").
+    - `tag -a version HASH -m text`: Create an annotated tag as above for old 
+    commit HASH.
     - `tag -l "xy"`: Search for tags starting with xy.
 * `remote`: Needed when using and managing remote repoitories. Remote repositories 
 are versions of your project that are hosted on the Internet or network somewhere. 
@@ -413,9 +514,9 @@ remote repositories and pushing and pulling data to and from them when you need
 to share work. Be careful with fork (Github).
     - `remote -v`: Use argument verbose (-v), which shows you the URLs that Git 
     has stored for the shortname to be used when reading and writing to that remote 
-    - `remote show shortname`: Show information about remote serverincluding
+    - `remote show remoteserver`: Show information about remoteserver including
     upstream settings (if set).
-    -  `remote add shortname server`: Add shortname of server to tracking. 
+    -  `remote add remoteserver server`: Add remoteserver of server to tracking. 
     E.g. `git remote add origin https://github.com/ims-fhs/myfolder`.
     Only visible after a push!
     - `git remote set-url`: Change your remote's URL from SSH to HTTPS with the 
@@ -423,16 +524,17 @@ to share work. Be careful with fork (Github).
     `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
     And change it back:  
     `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
-    - `remote rename shortname newname`: Rename shortname to newname.
-    - `remote rm shortname`: Remove shortname.
-    - `remote show shortname`: Show details from shortname. Good to check wether
-    shortname exists.
+    - `remote rename oldremoteserver newremoteserver`: Rename oldremoteserver to 
+    newremoteserver.
+    - `remote rm remoteserver`: Remove remoteserver.
+    - `remote show remoteserver`: Show details from remoteserver. Good to check wether
+    remoteserver exists.
 * `push remoteserver localbranch:remotebranch`: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
-**Attention**: "push remote-name :remotebranch" **deletes** the remotebranch. 
-Use `push -u remoteserver remotebranch` instead (See below).
-E.g. `git push origin newbranch:remotebranch`.
+    - `push remote-name :remotebranch`: Pay **attention: **deletes** the remotebranch. 
+    Use `push -u remoteserver remotebranch` instead (See below).
+    E.g. `git push -u origin remotebranch`.
     - `push -u remoteserver remotebranch`: Necessary if you want git pull to know 
     what to do. "Upstream" refers to the main repo that other people will be 
     pulling from, e.g. your GitHub repo. The -u option automatically sets that 
@@ -445,25 +547,26 @@ E.g. `git push origin newbranch:remotebranch`.
     will know what to do. However, git push will by default push all branches 
     that have the same name on the remote. To limit this behavior to just the 
     current branch, set this configuration option: 
-    git config - -global push.default tracking
-    - `push - -all shortname`: Push (and pull!) all the branches to the 
+    `git config --global push.default tracking`
+    - `push --all remoteserver`: Push (and pull!) all the branches to the 
     remoteserver by default, including the newly created ones. Combination 
-    -u - -all possible.
-    - `push - -tags shortname`: Push (and pull!) all tags.
-    - `push - -mirror`: Create identical copy of current folder?????????????????
+    `-u --all` possible.
+    - `push --tags remoteserver`: Push (and pull!) all tags to remoteserver.
+    - `push --mirror`: Create identical copy of current folder. **Not tested**
+    `push --mirror` = `push --all` + `push --tags`.
 * `pull remoteserver remotebranch`: Begin tracking file by doing this from 
 the master branch. "pull = fetch + merge"
     - `pull remoteserver remotebranch:localbranch`: **Pay Attention** because 
     you fetch to localbranch (which is ok) but the merge is to the present branch 
     which might not be ok, if remotebranch does not exist. Then you have to run 
     first git checkout -b remotebranch first.
-    - `pull -u remoteserver`: Equivalent to - -update-head-ok and different from 
-    push -u! By default git fetch refuses to update the head which corresponds to the 
+    - `pull -u remoteserver`: Equivalent to `--update-head-ok` and different from 
+    `push -u`! By default git fetch refuses to update the head which corresponds to the 
     current branch. This flag disables the check. This is purely for the internal 
     use for git pull to communicate with git fetch, and unless you are 
     implementing your own Porcelain you are not supposed to use it.
 * `rebase branch`: Similar to merge - kind of rewrites history, which can be 
-summed up in a single line: **Do not rebase commits that exist outside your repository.**
+summed up in a single line: **Do not rebase commits that exist in other peoples' repository.**
 If you follow that guideline, you’ll be fine. If you don’t, people will hate 
 you, and you’ll be scorned by friends and family. When you rebase stuff, 
 you’re abandoning existing commits and creating new ones that are similar but 
@@ -471,17 +574,37 @@ different. If you push commits somewhere and others pull them down and base
 work on them, and then you rewrite those commits with git rebase and push them 
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
-[here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
-* `revert` is a “safe” way to undo changes. It undoes a single commit — it does 
-not “revert” back to the previous state of a project by removing all subsequent 
+[here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
+* `revert`: This command creates a new commit that undoes the changes from a 
+previous commit. This command adds new history to the project (it doesn't 
+modify existing history). Therefore, it is a “safe” way to undo a single commit— it
+does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
-* `reset` as the dangerous method.
-    - `reset --hard HEAD` Permanently undo uncommitted changes.
-* `clean -f`: Remove untracked files.
+* `reset` **is an exteremly dangerous method**. It can be used if you messed 
+things up and it is ok when you loose **all uncommited changes**. Therefore, you 
+shoud check your last commit before you reset as this commit is where you end up with 
+    - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
+* `clean -f`: Remove (= **delete**) untracked files.
+    - `clean -f -n`: Don’t actually remove anything, just show what would be done.
+    - `clean -fd`: Force removing Remove untracked directories in addition to 
+    untracked files. 
+    - `clean -x`: **WARNING** also removes all ignored files!
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
 [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
-    
+* `rm -r --cached folder`: remove `folder` from tracking including subfolders
+(-r = recursive) but keep the files in the folder (`--cached`).
+* `stash`: Use `git stash` when you want to record the current state of the 
+working directory and the index, but want to go back to a clean working directory. 
+The command saves your local modifications away and reverts the working directory 
+to match the HEAD commit. The latest stash you created is stored in refs/stash; 
+older stashes are found in the reflog of this reference and can be named using 
+the usual reflog syntax (e.g. stash@{0} is the most recently created stash, 
+stash@{1} is the one before it).
+    - `stash list`: List the modifications stashed away 
+    - `stash show`: Inspected modification.
+    - `stash apply`: Restore modifications (potentially on top of a different commit) 
+
 **Concerning fork and branch**: All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
@@ -498,7 +621,8 @@ You keep a fork in sync with the original project by:
 
   * adding the original project as a remote
   * fetching regularly from that original project
-  * rebase your current development on top of the branch of interest you got updated from that fetch.  
+  * rebase your current development on top of the branch of interest you got 
+  updated from that fetch.  
 
 The rebase allows you to make sure your changes are straightforward (no merge 
 conflict to handle), making your pulling request that more easy when you want 
@@ -517,8 +641,13 @@ For example files see appendix. The process is as follows:
 * Copy the text in the appendix into a file and save it as `pre-commit` 
 in /.git/hooks/ **without any ending**.
 * Depending on the operating system and your path to Rscript. As first line use
-  - Windows: #!C:/R/R-3.2.2/bin/x64/Rscript or
-  - Mac OSX:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript
+    - Windows: #!C:/R/R-3.2.2/bin/x64/Rscript or
+    - Mac OSX:  #!/Library/Frameworks/R.framework/Versions/3.2/Resources/bin/Rscript  
+    and make the file executable:
+    ```
+    chmod +x filename.sh
+    ```
+    including prefix if existing.
 * As described in the R-file, the version increases automatically.
 * If you don't want to increase the version run
 
@@ -527,10 +656,17 @@ in /.git/hooks/ **without any ending**.
 
 **If you increase the minor or major version, the patch is set to 0.**
 
+* SET does not work for MAC OSX. Workaround to be found.
+
 For a complete list see [here](http://ss64.com/nt/).
 
 ## GitHub: Create new branch from master
 Do it on GitHub
+
+## GitHub: Set your credentials
+You can set your credentials to prevent to insert your username and password all the time on the git shell.
+
+For MAC OSX follow [these](https://help.github.com/articles/caching-your-github-password-in-git/) instructions.
 
 
 ***
@@ -590,32 +726,40 @@ the branche remotely, which means
 ```
 
 ## Case 4: Commit the work you did on the console
-You work on a project that is not manipulated within R Studio. Therefore you cannot use R Studio's integrated Git Support to commit the work you did. Poor you. You have to get along with the console.
+You work on a project that is not manipulated within R Studio. Therefore you 
+cannot use R Studio's integrated Git Support to commit the work you did. 
+Bad for you: You have to get along with the console.**????????????????**
 
-### You're clever and think to pull the remote repository before you work on the project
-1. Before you start working on your project: Open the console, go to the working directory your project is stored.
+### Case 4: You're clever and think to pull the remote repository before you work on the project
+1. Before you start working on your project: Open the console, go to the working 
+directory your project is stored.
+```
 > cd to-working-directory-of-your-project
 > git init
 > git pull origin master
-
+```
 2. Change the files you want to change.
-
 3. Commit them.
+```
 > git commit -a -m "text"
-
+```
 4. Push your changes back to the remote repository.
+```
 > git push -u origin master
+```
 
-### You forgot to first pull the project, nobody worked on the remote repo
+### Case 4: You forgot to first pull the project, nobody worked on the remote repo
 1. You already made your changes when you read this document
-
 2. Commit them.
+```
 > git commit -a -m "text"
-
+```
 3. Push your changes back to the remote repository.
+```
 > git push -u origin master
+```
 
-### You forgot to first pull the project, somebody worked on the remote repo 
+### Case 4: You forgot to first pull the project, somebody worked on the remote repo 
 1. You already made your changes when you read this document
 
 2. Commit them.
@@ -637,16 +781,17 @@ returns you this unhappy message.
 > git branch -d newbranch
 > git push -u origin master
 
-
-
 ## Case 5: Commit the work you did
-You changed a file and want to commit your work. Within R Studio go to Git => Diff. Select the file you want to commit. The lower part of the editor shows your changes:
+You changed a file and want to commit your work. Within R Studio go to Git 
+=> Diff. Select the file you want to commit. The lower part of the editor shows 
+your changes:
 
 * red: Everything you deleted
 * green: Everything you added
 
 ### You want to commit everything you changed
-Insert a comment to the window topright that explains the changes you made. Press commit.
+Insert a comment to the window topright that explains the changes you made. Press 
+commit.
 
 ### You want to commit only part of what you changed
 * Select the part you don't want to commit, with `shift` held down. Press `unstage selection`.
@@ -654,7 +799,8 @@ Insert a comment to the window topright that explains the changes you made. Pres
 
 ## Case 6: You changed something you didn't want to change
 You made false changes to a file and want to correct them before you commit.  
-Within R Studio go to Git => Diff. Select the file you want to repair. The lower part of the editor shows your changes:
+Within R Studio go to Git => Diff. Select the file you want to repair. The lower 
+part of the editor shows your changes:
 
 * red: Everything you deleted
 * green: Everything you added
@@ -663,7 +809,6 @@ Within R Studio go to Git => Diff. Select the file you want to repair. The lower
 * Repeat until only the changes you want to be preserved are shown in the `staged` window.
 * Change to the `unstaged` window
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
-
 
 ## Case 7: You have an existing remote branch which you don't want to change but you need to work on it
 
@@ -732,7 +877,7 @@ Push your master branch to the remote repo:
 ```
 > git push -u origin master
 ```
-See also git push -u - -all!  
+See also `git push -u --all`!  
 Check what you have done, if you like:
 ```
 > git remote show origin
@@ -740,16 +885,25 @@ Check what you have done, if you like:
 
 [Reference](http://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore)
 
-## Case 11: Remove directory from remote repository after adding them to .gitignore
+## Case 11: Remove directory DIR from remote repository after adding them to .gitignore
 
-The rules in your .gitignore file only apply to untracked files. Since the 
-files under that directory were already committed in your repository, you have 
-to unstage them, create a commit, and push that to GitHub:
+All the data git uses info is stored in .git/ , so removing it is fine. Of 
+course, make sure that your working copy is in the exact state that 
+you want it, because everything else will be lost. /.git folder is hidden so 
+make sure you turn on Show hidden files, folders and disks option.
 
-> git rm -r --cached some-directory
-> git commit -m 'Remove the now ignored directory "some-directory"'
-> git push origin master
-
+* Step 1. Add the folder path to your directories's root /.gitignore file.  
+`path2DIR/DIR/`  
+In case DIR is subfolder of your root directory, you only need to add `DIR/`
+* Step 2. Remove the folder from your local git tracking, but keep it on your disk.  
+`git rm -r --cached path2DIR/DIR/`
+* Step 3. Commit and push your changes to your git repo.
+```
+> git rm -r --cached path2DIR/DIR/  
+> git commit -m "Message"  
+> git push origin master  
+```
+  
 You can't delete the file from your history without rewriting the history of 
 your repository - you shouldn't do this if anyone else is working with your 
 repository, or you're using it from multiple computers. If you still want to 
@@ -775,13 +929,18 @@ So see if 2) is your case. Try changing directory to the folder that git has
 created. Usually you should do a clone as git clone url/to/repo.git. (. at end) 
 if you are already in the folder where you want the repo to be.
 
-## Case 13: You want to remove git from a folder
-All the data git uses info is stored in .git/ , so removing it should work just 
-fine. Of course, make sure that your working copy is in the exact state that 
-you want it, because everything else will be lost. .git folder is hidden so 
-make sure you turn on Show hidden files, folders and disks option.
+## Case 13: When do I use revert, reset, checkout
+If a commit has been made somewhere in the project's history, and you later 
+decide that the commit is wrong and should not have been done, then git revert 
+is the tool for the job. It will undo the changes introduced by the bad commit, 
+recording the "undo" in the history.
 
-From there, you can run git init to create a fresh repository.
+If you have modified a file in your working tree, but haven't committed the change, 
+then you can use git checkout to checkout a fresh-from-repository copy of the file.
+
+If you have made a commit, but haven't shared it with anyone else and you decide 
+you don't want it, then you can use git reset to rewrite the history so that it 
+looks as though you never made that commit.
 
 ## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
 Rename your messed up folder. Then you create a completely(!) new folder with 
@@ -806,7 +965,7 @@ And then you could create a commit in every submodule with:
 git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
 ```
 (If you don't have other submodules nested inside those submodules, the 
---recursive option is unnecessary.)  
+`--recursive` option is unnecessary.)  
 This is not recommended: You should carefully change into each 
 submodule in turn, and consider how you want to update them, treating each as 
 a standalone repository. Then only commit these new submodule versions in the 
@@ -815,6 +974,15 @@ new versions of each submodule.
 
 Use git status to see untracked files. Empty folders are only visible, when you
 start to commit files in these new folders.
+
+## Case 16: You want to review work your colleague did
+Therefore you need to pull the work your colleague did to a new branch. How does this work??
+
+## Case 17: You want to update your devXXX branch with newer work somebody else did in another branch
+This might be the case after you merged and reviewed some branches together and you now want to get the most actual version of (for example) the master branch.
+
+1. Delete your local copy of your devXXX branch
+2. 
 
 # Debugging
 
@@ -943,6 +1111,49 @@ if (inc){
   cat("Incremented package version and committed!\n")
 }
 ```
+
+## git diff wrapper and the .gitconfig file (Windows)
+
+After installing kdiff3, you need the following wrapper to get access to the external 
+gui:
+```
+#!/bin/sh
+# diff is called by git with 7 parameters:
+# path old-file old-hex old-mode new-file new-hex new-mode
+
+"C:/Program Files/KDiff3/kdiff3" "$2" "$5" | cat # Use kdiff3 with 2 arguments
+```
+which you save as `git-diff-wrapper.sh`.
+Afterwards, adapt your git config file (For convenience, I show all of my config 
+file...)
+```
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = Christoph Strauss
+	email = christoph.strauss@fhsg.ch
+[credential]
+	helper = wincred # Use helper to avoid typing pwd all the time
+[alias]
+	hist = log --pretty=format:'%h - %an, %ad: %s' --graph --date=short # Nicly formatted log
+[difftool "kdiff3"]
+	cmd = 'C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE # Use kdiff3
+	keepBackup = false
+	trustExitCode = false
+```
+if you also set
+```
+[core]
+	editor = 'C:/Program Files/KDiff3/kdiff3' # Set core editor to kdiff3
+[diff]
+	tool = kdiff3
+	guitool = kdiff3
+	external = 'C:/Users/sqc/git-diff-wrapper.sh' # Use external wrapper for 7 arguments
+```
+you run into problems with the nice "commit-editor" in RStudio. Therefore, I do 
+not use that any more. 
 
 ***
 

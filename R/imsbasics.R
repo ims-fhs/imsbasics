@@ -1,6 +1,23 @@
 # =============================================================================
 # Independent functions:
 
+#' decimalplaces returns the number of decimal places of x
+#'
+#' @param x A numeric
+#'
+#' @return result An integer, the number of decimalplaces of x
+#'
+decimalplaces <- function(x) {
+  if ((x %% 1) != 0) {
+    result <- nchar(strsplit(sub('0+$','', as.character(x)), ".",
+      fixed = TRUE)[[1]][[2]])
+    return(as.integer(result))
+  } else {
+    return(0L)
+  }
+}
+
+
 #' Load data from specific folder to a variable in current environment.
 #' Call as data <- imsbasics::load_rdata(filename, path)
 #'
@@ -41,10 +58,10 @@ load_rdata <- function(filename, path) {
     # Check that there are now entries twice:
     # Previously done in "removedoublicates.
     if (length(data) != length(unique(data))) {
-      warning("in fileToVar: Double entries in data.")
+      warning("in load_rdata: Double entries in data.")
     }
   } else {
-    stop("Error in fileToVar: no such file")
+    stop("Error in load_rdata: no such file")
     data <- NULL
   }
   return(data)
