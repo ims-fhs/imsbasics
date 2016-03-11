@@ -393,7 +393,10 @@ blob objects, or changes between two files on disk.
     - `diff ref1:path/to/file1 ref2:path/to/file2`: Diff any two files anywhere 
     using this notation. As usual, ref1 and ref2 could be branch names, 
     remotename/branchname, commit SHAs, etc.
-* `difftool` is a frontend to git diff and accepts the same options and arguments. 
+* `difftool` is a frontend to git diff and accepts the same options and arguments.
+    - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
+    See appendix for further explanations concerning **interference with RStudio**.
+    - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
 * `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
@@ -768,13 +771,15 @@ returns you this unhappy message.
 
 ## Case 5: Commit the work you did
 You changed a file and want to commit your work. Within R Studio go to Git 
-=> Diff. Select the file you want to commit. The lower part of the editor shows your changes:
+=> Diff. Select the file you want to commit. The lower part of the editor shows 
+your changes:
 
 * red: Everything you deleted
 * green: Everything you added
 
 ### You want to commit everything you changed
-Insert a comment to the window topright that explains the changes you made. Press commit.
+Insert a comment to the window topright that explains the changes you made. Press 
+commit.
 
 ### You want to commit only part of what you changed
 * Select the part you don't want to commit, with `shift` held down. Press `unstage selection`.
@@ -782,7 +787,8 @@ Insert a comment to the window topright that explains the changes you made. Pres
 
 ## Case 6: You changed something you didn't want to change
 You made false changes to a file and want to correct them before you commit.  
-Within R Studio go to Git => Diff. Select the file you want to repair. The lower part of the editor shows your changes:
+Within R Studio go to Git => Diff. Select the file you want to repair. The lower 
+part of the editor shows your changes:
 
 * red: Everything you deleted
 * green: Everything you added
@@ -1097,9 +1103,8 @@ gui:
 "C:/Program Files/KDiff3/kdiff3" "$2" "$5" | cat # Use kdiff3 with 2 arguments
 ```
 which you save as `git-diff-wrapper.sh`.
-
-Adapt your git config file
-
+Afterwards, adapt your git config file (For convenience, I show all of my config 
+file...)
 ```
 [filter "lfs"]
 	clean = git-lfs clean %f
@@ -1112,17 +1117,22 @@ Adapt your git config file
 	helper = wincred # Use helper to avoid typing pwd all the time
 [alias]
 	hist = log --pretty=format:'%h - %an, %ad: %s' --graph --date=short # Nicly formatted log
+[difftool "kdiff3"]
+	cmd = 'C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE # Use kdiff3
+	keepBackup = false
+	trustExitCode = false
+```
+if you also set
+```
 [core]
 	editor = 'C:/Program Files/KDiff3/kdiff3' # Set core editor to kdiff3
 [diff]
 	tool = kdiff3
 	guitool = kdiff3
 	external = 'C:/Users/sqc/git-diff-wrapper.sh' # Use external wrapper for 7 arguments
-[difftool "kdiff3"]
-	cmd = 'C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE # Use kdiff3
-	keepBackup = false
-	trustExitCode = false
 ```
+you run into problems with the nice "commit-editor" in RStudio. Therefore, I do 
+not use that any more. 
 
 ***
 
