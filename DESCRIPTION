@@ -1,7 +1,7 @@
 Package: imsbasics
 Type: Package
 Title: Provides basic functions
-Version: 1.2.15
+Version: 1.2.16
 Date: 2016-03-11
 Author: Christoph Strauss, Adrian Schmid
 Maintainer: Christoph Strauss <Christoph.Strauss@fhsg.ch>
