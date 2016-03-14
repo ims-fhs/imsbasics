@@ -251,12 +251,26 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
 
 ### Some useful commands for programming
 
+* `COMMAND /?`: Show help for `COMMAND`
+* `VAR=`: Delete `VAR`
 * `set variable=VALUE`: Assign value to new `variable`.
     - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
     - `set`: Display all existing variables.
     - `set prefix`: Display all existing variables ending with `prefix`.
     - `set variable=`: Delete `variable`.
 * `ECHO %variable%`: Display value of existing variable.
+* `assoc`: View file associations. 
+    - `assoc [.ext[=[FileType]]]`Use `.ext` to specify the file name extension 
+    whose association you want to view or change and `FileType` to specify the 
+    file type with which you want Windows to associate the specified file name extension.
+* `FTYPE`: Run as administrator! Displays file types used in file name extension associations.
+    - `Ftype [FileType[=[OpenCommandString]]]`: Specifies the open command to 
+    use when opening files of this type. Add
+    _ `%0` or `%1` are replaced with the file name that you want to open.
+    - `%*` is replaced with all of the parameters.
+    - `%~ n` is replaced with all of the remaining parameters, starting with the 
+    nth parameter, where n can be any number from 2 to 9.
+    - `%2` is replaced with the first parameter, %3 with the second, and so on.
 
 ## Git: First steps
 
@@ -267,6 +281,53 @@ picture will become clear. You will learn about
 * and what it all means...
 
 ![Git Data Transport](GitDataTransport.png)
+
+### Work in progress: Make R executable...
+See <http://www.r-bloggers.com/making-r-files-executable-under-windows/>
+Choosing a new file extension name (.Rexec)
+
+First, we have to think about a new file extension name. While double-click to 
+run is a nice-to-have, the default behaviour should not be overwritten. In the 
+Windows universe one cannot simply attach two different behaviours to the same 
+file extension but we can register new extensions and associate custom defaults 
+to those. Therefore we need another, new file extension.
+
+To make the file extension as self-explanatory as possible, I suggest using 
+.Rexec for R scripts that should be executable while leaving the default system 
+behaviour for .R files as is. Associating a new file type with the .Rexec extension
+
+In the next step, we tell Windows that the .Rexec file extension is associated 
+with the RScriptExecutable file type. Furthermore, we inform Windows how these 
+kind of files should be opened by default.
+
+To do so, we need access to the command line interface, e.g., via cmd. Click 
+Start and type cmd into the search bar. Instead of hitting enter right away, 
+right click on the 'cmd.exe' search result, choose Run as administrator from 
+the context menu, and click Yes on the following pop up window. The windows 
+command line should pop up thereafter.
+
+Within the command line, type first:
+
+ASSOC .Rexec=RScriptExecutable
+
+… then …
+
+FTYPE RScriptExecutable=C:Program FilesRR-3.1.2binx64Rscript.exe %1 %*
+
+… while making sure that the path used above really leads to your most recent/preferred RScript.exe.
+Testing
+
+To test if everything works as expected, create an R script and write the following lines:
+```
+message(getwd())
+for(i in 1:100) {
+  cat(".")
+  Sys.sleep(0.01)
+}
+message("nBye.")
+Sys.sleep(3)
+```
+Save it as, e.g., 'test.Rexec' and double click on the file. Now a black box should pop up, informing you about the current working directory, and printing 100 dots on the screen and terminate itself after saying 'Bye'. 
 
 ### Git: Installation on Windows
 
@@ -396,12 +457,15 @@ blob objects, or changes between two files on disk.
     remotename/branchname, commit SHAs, etc.
     - `diff A..B` or `diff A...B`: See
     [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
+    - `diff --cached file`: Used, if changes are not staged or commited yet.
+    - `diff -c file`: Combine old and new version of a file.
 * `difftool` is a frontend to git diff and accepts the same options and arguments.
     - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
     See appendix for further explanations concerning **interference with RStudio**.
     - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
     - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
     Use any of those combinations to access a specific file.
+    - `difftool -t=kdiff3 HASH1 HASH2`: Show differences between two HASHes 
 * `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
