@@ -403,8 +403,9 @@ blob objects, or changes between two files on disk.
     - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
     See appendix for further explanations concerning **interference with RStudio**.
     - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
-    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
-    Use any of those combinations to access a specific file.
+    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`
+    or `difftool -t=kdiff3 branch1 branch2 file1.txt`: Use any of those 
+    combinations to access a specific file.
 * `mv oldname newname`: Rename file `oldname`. 
 * `clone`: Clones a repository into a newly created directory, creates 
 remote-tracking branches for each branch in the cloned repository, and creates 
@@ -442,8 +443,8 @@ If `git add`is not successful, **look at your .gitignore file**.
     not add any new files, it only stages changes to already tracked files.
     - `add -A` is equivalent to `git add .` + `git add -u`.
     - `add folder/*`: Add folder to git.
-* `checkout branch`: Switching to specific branche. Update files in the working tree to
-match the version in the index or the specified tree. If no paths are given, git 
+* `checkout branch`: Switching to a specific **LOCAL** branch. Update files in the working 
+tree to match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
 To prepare for working on branch, switch to it by updating the index and the 
 files in the working tree, and by pointing HEAD at the branch. Local 
@@ -452,15 +453,14 @@ committed to the branch. This command doesn't make any changes to the history.
     - `checkout -b localbranch`: create localbranch and switch to it at the same 
     time (= `git branch name` + `git checkout name`).
     - `checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
-    copy of `remoteserver/remotebranch`. Furthermore, the branch is being set up 
+    copy of the LOCAL `remoteserver/remotebranch`. Furthermore, the branch is being set up 
     to track the remote branch, which usually means the remoteserver/remotebranch 
-    branch. This is of interest if you you want to join a project. Thus, 
-    checkout also works remotely.  
+    branch. This is of interest if you you want to join a project.
     In case of a "**fatal** git checkout: updating paths is incompatible with 
     switching branches...": This occurs when you are trying to checkout a remote 
     branch that your local git repo is not aware of yet See `git remote show origin`.
     If the remote branch is under "New remote branches" and not "Tracked remote 
-    branches" then you need to `fetch` them first.
+    branches" then you need to `fetch` them first - see `fetch`.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
     - `checkout shorthash`: checkout old version. See `git log` for possible hash
@@ -472,7 +472,7 @@ committed to the branch. This command doesn't make any changes to the history.
     and you don't want to keep changes see `git reset --hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
-* `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
+* `fetch remoteserver remotebranch`: Update **REMOTE** branch, that is refresh "what 
 others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
 the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
 * `merge branch`: Merge branche into the one which is actice (HEAD points 
