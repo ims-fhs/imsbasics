@@ -1,7 +1,7 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "27 Januar 2016"
+date: "14 März 2016"
 output:
   pdf_document:
     fig_caption: yes
@@ -194,7 +194,10 @@ anything up!
 > git status
 > git branch -av
 > git remote show origin
+> git hist
 ```
+`git hist` needs to be set first since it is not a standard command. run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git.
+
 
 ## Existing Github accounts
 
