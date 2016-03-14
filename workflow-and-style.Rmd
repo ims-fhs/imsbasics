@@ -1117,17 +1117,7 @@ if (inc){
 
 ## git diff wrapper and the .gitconfig file (Windows)
 
-After installing kdiff3, you need the following wrapper to get access to the external 
-gui:
-```
-#!/bin/sh
-# diff is called by git with 7 parameters:
-# path old-file old-hex old-mode new-file new-hex new-mode
-
-"C:/Program Files/KDiff3/kdiff3" "$2" "$5" | cat # Use kdiff3 with 2 arguments
-```
-which you save as `git-diff-wrapper.sh`.
-Afterwards, adapt your git config file (For convenience, I show all of my config 
+After installing kdiff3, you need to adapt your git config file (For convenience, I show all of my config 
 file...)
 ```
 [filter "lfs"]
@@ -1157,6 +1147,27 @@ if you also set
 ```
 you run into problems with the nice "commit-editor" in RStudio. Therefore, I do 
 not use that any more. 
+
+## git diff wrapper and the .gitconfig file (Mac)
+After installing kdiff3, you need to adapt your git config file (For convenience, I show all of my config 
+file...)
+```
+[user]
+	name = Adrian Schmid
+	email = trompetenschmid@gmail.com
+[merge]
+	conflictstyle = diff3
+[credential]
+	helper = osxkeychain
+[alias]
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[difftool "kdiff3"]
+    tool = kdiff3
+    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+    trustExitCode = false
+```
+
+Alternatively you can also use the MAC OSX integrated diff and merge tool called "File Merge". Therefore you don't need to change anything in your .gitconfig file. If you want to diff two branches just type: `git diff branch1 branch2` into the terminal.
 
 ***
 
