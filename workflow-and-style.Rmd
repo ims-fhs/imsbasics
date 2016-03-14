@@ -31,12 +31,12 @@ If hadley and google contradict each other:
 
 ## Naming Conventions
 
-Folders: `meaningful name` or `meaningfulname`
-Files end with '.R': `meaningful-file.R`  
-Objects (Variables and Classes): `meaningful_variable` 
-Functions: `meaningful_function`
-Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, 
-short etc. [link](http://r-pkgs.had.co.nz/package.html#package-structure)
+* Folders: `meaningful name` or `meaningfulname`
+* Files end with '.R': `meaningful-file.R`  
+* Objects (Variables and Classes): `meaningful_variable` 
+* Functions: `meaningful_function`
+* Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, 
+short etc. [see also](http://r-pkgs.had.co.nz/package.html#package-structure)
 
 ## Versioning 
 
@@ -178,6 +178,8 @@ In RStudio use the following command in the R console
 devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c153e20e36d45094ed")
 ```
 
+***
+
 # Git and GitHub
 
 ## External Sources and quick tour for impatient guys
@@ -196,7 +198,7 @@ anything up!
 > git remote show origin
 > git hist
 ```
-`git hist` needs to be set first since it is not a standard command. run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git.
+`git hist` needs to be set first, since it is not a standard command. Run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git installation.
 
 
 ## Existing Github accounts
@@ -221,19 +223,19 @@ Notation for the cd-command.
 You can find the help for any command via help command, e.g. `help cd`  
 There you will find  
 `cd [-L|-P] [dir]`.  
-Here, [] means an optional argument and | means "either or".  
+Here, `[]` means an optional argument and `|` means "either or".  
 The "." notation refers to the working directory itself and the ".." notation 
 refers to the working directory's parent directory.
 Sometimes you can also find
 
   * `ls -r` or
   * `ls --reverse`
-These to commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
+These two commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
 The first variant is fast to write, the second one is easy (fast) to read and understand.
 
-The following commands are possible
 
 ### Overview: Shell commands
+The following commands are possible:
 
 * [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`
 * [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
@@ -271,6 +273,13 @@ picture will become clear. You will learn about
 
 ![Git Data Transport](GitDataTransport.png)
 
+Remark:
+
+    Only if the file is part of a package or project in Rstudio, 
+    "everything" can be done from the git-ribbon in Rstudio!
+
+Therefore getting fluent with git on the console is very useful.. (eventhough it might look like wasting your time in the first place. I (Adrian) didn't believe Christoph in the first place and had to learn it on the hard tour..)
+
 ### Git: Installation on Windows
 
 Git for Windows is provided as installer package by the msysgit project. 
@@ -289,18 +298,18 @@ Bash shell for using the git command line tools.
 Git internally holds a thing called the index, which is a snapshot of your 
 project files. After you have just created an empty repository, the index will 
 be empty. You must manually stage the files from your working tree to the index 
-using git add:  
+using `git add`:  
 ```
 > git add somefile.txt
 ```
 
-git add works recursively, so you can also add whole folders:  
+`git add` works recursively, so you can also add whole folders:  
 ```
 > git add somefolder
 ```
 
 The same applies if you change a file in your working tree - you have to add 
-this change to the index with git add:  
+this change to the index with `git add`:  
 ```
 > git add somefile.txt
 ```
@@ -309,13 +318,14 @@ It's important to realize that the index is a full snapshot of your project
 files - it is not just a list of the changed files.
 
 If you want to list all the files **currently being tracked** under the branch 
-master, you could use this command:
+"master", you could use this command:
 ```
 > git ls-tree -r master --name-only
 ```
 Use `git status` to see untracked files.
 
-### Git: Set up the editor of your choice
+### Git: Set up the editor of your choice ...SCN: Delete?
+
 
 The git executable will be called with a fixed set of 7 arguments:
 `path old-file old-hex old-mode new-file new-hex new-mode`
@@ -343,76 +353,27 @@ without the trailing cat if your diff tool has explicit return status).
 For further details see 
 [here](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
 
-### Git: Useful commands
+## Git: Useful commands
 
 All commands can be prompted to the console. The `> git...` input is ommitted 
 in the list
 
-**Remark**:
+### A
 
-    Only if the file is part of a package or project in Rstudio, 
-    "everything" can be done from the git-ribbon in Rstudio!
+* `add file`: Add file to tracking, e.g. `git add myfile.txt` (Only useful after 
+you start with commitments.)  
+If `git add`is not successful, **look at your .gitignore file**.
+    - `add .`: Looks at the working tree and adds all those paths to the staged 
+    changes if they are either changed or are new and not ignored, it does not 
+    stage any 'rm' actions.
+    - `add -u`: Looks at all the already tracked files and stages the changes 
+    to those files if they are different or if they have been removed. It does 
+    not add any new files, it only stages changes to already tracked files.
+    - `add -A` is equivalent to `git add .` + `git add -u`.
+    - `add folder/*`: Add folder to git.
 
-* `config` : Configure git.
-    - `config --list`: List all configurations.
-    - `config --global --list`: List all global configurations.
-    - `config varname`: Display the value of git variable varname. 
-    - `config --global alias.myshortname Realgitcommand`: Introduce shortcut
-    for "Real git command", e.g. `config --global alias.ci "commit -v"`.
-    Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
-    is needed. Excample for a complex command (working on windows!):
-    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
-    - `config --global --unset varname`: Delete global `varname`, e.g. 
-    `alias.myshortname` shortcut. Does not work, if several `varname` with the 
-    same name exist.
-    - `config --global --unset-all varname`: Delete all global 
-    `varname`, e.g. `alias.myshortname` shortcuts
-    - `git config --get-regexp alias`: List all defined alias names.
-    - `config --global --replace-all core.editor "'pathtoexe/exename`: Set 
-    global editor for windows. Be careful with spaces. `--replace-all` only necessary 
-    in case of wrongly set multiple editors.
-    - `config --global --edit`: View your config file
-* `init`: Initialize git repository. This command creates basically a .git 
-directory with subdirectories for objects, refs/heads, refs/tags, and template 
-files. An initial HEAD file that references the HEAD of the master branch is 
-also created. Therefore, right after `git init`, the master branch is not visible
-after `git branch -av`. This only happens, after the first commit. Before, you're 
-said to be "on an unborn branch", at this point.  
-If the repo already exists, the history will not be deleted. The primary reason 
-for rerunning git init is to pick up newly added templates (or to move the 
-repository to another place if `--separate-git-dir` is given).  
-The default name for the starting branch is **master**.
-* `status`: Get the status, displays
-    - Tracked **AND** Untracked (=new!) files
-    - Modified files
-    - Branches
-* `diff` Show changes between the working tree and the index or a tree, changes 
-between the index and a tree, changes between two trees, changes between two 
-blob objects, or changes between two files on disk.
-    - `diff remotename/branchname:remote/path/file1.txt local/path/file1.txt`:
-    View the differences going from the remote file to the local file. Only
-    commited changes are visible.
-    - `diff HEAD:local/path/file1.txt remotename/branchname:remote/path/file1.txt`:
-    View the differences in the other direction. Only commited changes are visible.
-    - `diff ref1:path/to/file1 ref2:path/to/file2`: Diff any two files anywhere 
-    using this notation. As usual, ref1 and ref2 could be branch names, 
-    remotename/branchname, commit SHAs, etc.
-    - `diff A..B` or `diff A...B`: See
-    [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
-* `difftool` is a frontend to git diff and accepts the same options and arguments.
-    - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
-    See appendix for further explanations concerning **interference with RStudio**.
-    - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
-    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
-    Use any of those combinations to access a specific file.
-* `mv oldname newname`: Rename file `oldname`. 
-* `clone`: Clones a repository into a newly created directory, creates 
-remote-tracking branches for each branch in the cloned repository, and creates 
-and checks out an initial branch that is forked from the cloned repository’s 
-currently active branch. E.g. `git clone https://github.com/ims-fhs/myfolder`.  
-The default shortname for the remote server is then **origin**.
-    - `clone --depth n --branch branchname repo directory`: Clone history up 
-    to nth commit, only `branchname` from `repo` and `folder`.
+### B
+
 * `branch newbranch`: Create new branch "newbranch". Note: A branch in Git is simply a 
 lightweight movable pointer to one of these commits. The default branch name 
 in Git is master. The only reason nearly every repository has one is that the 
@@ -431,17 +392,9 @@ commit you made. Every time you commit, it moves forward automatically.
     - `branch -m oldname newname`: Rename a branch while pointed to any branch. 
     If you want to rename the current branch, you can simply do 
     `git branch -m newname`
-* `add file`: Add file to tracking, e.g. `git add myfile.txt` (Only useful after 
-you start with commitments.)  
-If `git add`is not successful, **look at your .gitignore file**.
-    - `add .`: Looks at the working tree and adds all those paths to the staged 
-    changes if they are either changed or are new and not ignored, it does not 
-    stage any 'rm' actions.
-    - `add -u`: Looks at all the already tracked files and stages the changes 
-    to those files if they are different or if they have been removed. It does 
-    not add any new files, it only stages changes to already tracked files.
-    - `add -A` is equivalent to `git add .` + `git add -u`.
-    - `add folder/*`: Add folder to git.
+
+### C
+
 * `checkout branch`: Switching to specific branche. Update files in the working tree to
 match the version in the index or the specified tree. If no paths are given, git 
 checkout will also update HEAD to set the specified branch as the current branch.  
@@ -472,16 +425,20 @@ committed to the branch. This command doesn't make any changes to the history.
     and you don't want to keep changes see `git reset --hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
-* `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
-others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
-the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
-* `merge branch`: Merge branche into the one which is actice (HEAD points 
-onto it. See `git branch -av`): If you changed the same part of the same file 
-differently in two branches you’re merging together, Git won’t be able to merge 
-them cleanly and an error results. Use "status" to get the unmerged files. In 
-this case the version in HEAD (your master branch, if you have checked out that 
-when you ran your merge command) is the top part of that block (everything 
-above the =======)
+
+* `clean -f`: Remove (= delete) untracked files.
+    - `clean -f -n`: Don’t actually remove anything, just show what would be done.
+    - `clean -fd`: Force removing Remove untracked directories in addition to 
+    untracked files. 
+    - `clean -x`: **WARNING** also removes all ignored files!
+* `clone`: Clones a repository into a newly created directory, creates 
+remote-tracking branches for each branch in the cloned repository, and creates 
+and checks out an initial branch that is forked from the cloned repository’s 
+currently active branch. E.g. `git clone https://github.com/ims-fhs/myfolder`.  
+The default shortname for the remote server is then **origin**.
+    - `clone --depth n --branch branchname repo directory`: Clone history up 
+    to nth commit, only `branchname` from `repo` and `folder`.
+
 * `commit`: Commit changes to current branch (If you just started to work, it 
 will be called `master`)
     - `commit -a -m "text"`: Stage everything (-a, could be also done with a 
@@ -495,6 +452,71 @@ will be called `master`)
     contains the message of your previous commit.
     Do **not use `--amend` option after you pushed the last commit**. In this 
     case you have to merge the two.
+
+* `config` : Configure git.
+    - `config --list`: List all configurations.
+    - `config --global --list`: List all global configurations.
+    - `config varname`: Display the value of git variable varname. 
+    - `config --global alias.myshortname Realgitcommand`: Introduce shortcut
+    for "Real git command", e.g. `config --global alias.ci "commit -v"`.
+    Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
+    is needed. Excample for a complex command (working on windows!):
+    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
+    - `config --global --unset varname`: Delete global `varname`, e.g. 
+    `alias.myshortname` shortcut. Does not work, if several `varname` with the 
+    same name exist.
+    - `config --global --unset-all varname`: Delete all global 
+    `varname`, e.g. `alias.myshortname` shortcuts
+    - `git config --get-regexp alias`: List all defined alias names.
+    - `config --global --replace-all core.editor "'pathtoexe/exename`: Set 
+    global editor for windows. Be careful with spaces. `--replace-all` only necessary 
+    in case of wrongly set multiple editors.
+    - `config --global --edit`: View your config file
+
+### D
+
+* `diff` Show changes between the working tree and the index or a tree, changes 
+between the index and a tree, changes between two trees, changes between two 
+blob objects, or changes between two files on disk.
+    - `diff remotename/branchname:remote/path/file1.txt local/path/file1.txt`:
+    View the differences going from the remote file to the local file. Only
+    commited changes are visible.
+    - `diff HEAD:local/path/file1.txt remotename/branchname:remote/path/file1.txt`:
+    View the differences in the other direction. Only commited changes are visible.
+    - `diff ref1:path/to/file1 ref2:path/to/file2`: Diff any two files anywhere 
+    using this notation. As usual, ref1 and ref2 could be branch names, 
+    remotename/branchname, commit SHAs, etc.
+    - `diff A..B` or `diff A...B`: See
+    [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
+
+* `difftool` is a frontend to git diff and accepts the same options and arguments.
+    - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
+    See appendix for further explanations concerning **interference with RStudio**.
+    - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
+    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
+    Use any of those combinations to access a specific file.
+
+### F
+
+* `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
+others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
+the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
+
+### I
+
+* `init`: Initialize git repository. This command creates basically a .git 
+directory with subdirectories for objects, refs/heads, refs/tags, and template 
+files. An initial HEAD file that references the HEAD of the master branch is 
+also created. Therefore, right after `git init`, the master branch is not visible
+after `git branch -av`. This only happens, after the first commit. Before, you're 
+said to be "on an unborn branch", at this point.  
+If the repo already exists, the history will not be deleted. The primary reason 
+for rerunning `git init` is to pick up newly added templates (or to move the 
+repository to another place if `--separate-git-dir` is given).  
+The default name for the starting branch is **master**.
+
+### L
+
 * `log`: Show the whole commit history.
     - `log -2`: Show last two commits.
     - `log --pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
@@ -502,36 +524,36 @@ will be called `master`)
     - `log --oneline --decorate`: Show branches including pointers.
     - `log --follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
-* `tag`: list all tags. A Tag is a specific point in history, e.g. the 
-publication of the code (Release V1.0).
-    - `tag -a version -m text`: Create an annotated tag with tagging version of 
-    type v0.1.0 and message text = "my text" or the commit checksum 
-    (something like "67a465f").
-    - `tag -a version HASH -m text`: Create an annotated tag as above for old 
-    commit HASH.
-    - `tag -l "xy"`: Search for tags starting with xy.
-* `remote`: Needed when using and managing remote repoitories. Remote repositories 
-are versions of your project that are hosted on the Internet or network somewhere. 
-You can have several of them. Collaborating with others involves managing these 
-remote repositories and pushing and pulling data to and from them when you need 
-to share work. Be careful with fork (Github).
-    - `remote -v`: Use argument verbose (-v), which shows you the URLs that Git 
-    has stored for the shortname to be used when reading and writing to that remote 
-    - `remote show remoteserver`: Show information about remoteserver including
-    upstream settings (if set).
-    -  `remote add remoteserver server`: Add remoteserver of server to tracking. 
-    E.g. `git remote add origin https://github.com/ims-fhs/myfolder`.
-    Only visible after a push!
-    - `git remote set-url`: Change your remote's URL from SSH to HTTPS with the 
-    it remote set-url command. E.g.  
-    `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
-    And change it back:  
-    `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
-    - `remote rename oldremoteserver newremoteserver`: Rename oldremoteserver to 
-    newremoteserver.
-    - `remote rm remoteserver`: Remove remoteserver.
-    - `remote show remoteserver`: Show details from remoteserver. Good to check wether
-    remoteserver exists.
+
+### M
+
+* `merge branch`: Merge branche into the one which is actice (HEAD points 
+onto it. See `git branch -av`): If you changed the same part of the same file 
+differently in two branches you’re merging together, Git won’t be able to merge 
+them cleanly and an error results. Use "status" to get the unmerged files. In 
+this case the version in HEAD (your master branch, if you have checked out that 
+when you ran your merge command) is the top part of that block (everything 
+above the =======)
+
+* `mv oldname newname`: Rename file `oldname`. 
+* `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
+`git add newname` + `git rm oldname`. For religion see
+[here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
+
+### P
+
+* `pull remoteserver remotebranch`: Begin tracking file by doing this from 
+the master branch. "pull = fetch + merge"
+    - `pull remoteserver remotebranch:localbranch`: **Pay Attention** because 
+    you fetch to localbranch (which is ok) but the merge is to the present branch 
+    which might not be ok, if remotebranch does not exist. Then you have to run 
+    first git checkout -b remotebranch first.
+    - `pull -u remoteserver`: Equivalent to `--update-head-ok` and different from 
+    `push -u`! By default git fetch refuses to update the head which corresponds to the 
+    current branch. This flag disables the check. This is purely for the internal 
+    use for git pull to communicate with git fetch, and unless you are 
+    implementing your own Porcelain you are not supposed to use it.
+
 * `push remoteserver localbranch:remotebranch`: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
@@ -557,17 +579,8 @@ branch is specified, it is assumed that localbranch = remotebranch.
     - `push --tags remoteserver`: Push (and pull!) all tags to remoteserver.
     - `push --mirror`: Create identical copy of current folder. **Not tested**
     `push --mirror` = `push --all` + `push --tags`.
-* `pull remoteserver remotebranch`: Begin tracking file by doing this from 
-the master branch. "pull = fetch + merge"
-    - `pull remoteserver remotebranch:localbranch`: **Pay Attention** because 
-    you fetch to localbranch (which is ok) but the merge is to the present branch 
-    which might not be ok, if remotebranch does not exist. Then you have to run 
-    first git checkout -b remotebranch first.
-    - `pull -u remoteserver`: Equivalent to `--update-head-ok` and different from 
-    `push -u`! By default git fetch refuses to update the head which corresponds to the 
-    current branch. This flag disables the check. This is purely for the internal 
-    use for git pull to communicate with git fetch, and unless you are 
-    implementing your own Porcelain you are not supposed to use it.
+
+### R
 * `rebase branch`: Similar to merge - kind of rewrites history, which can be 
 summed up in a single line: **Do not rebase commits that exist in other peoples' repository.**
 If you follow that guideline, you’ll be fine. If you don’t, people will hate 
@@ -578,25 +591,44 @@ work on them, and then you rewrite those commits with git rebase and push them
 up again, your collaborators will have to re-merge their work and things will 
 get messy when you try to pull their work back into yours. Again, read 
 [here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
+* `remote`: Needed when using and managing remote repoitories. Remote repositories 
+are versions of your project that are hosted on the Internet or network somewhere. 
+You can have several of them. Collaborating with others involves managing these 
+remote repositories and pushing and pulling data to and from them when you need 
+to share work. Be careful with fork (Github).
+    - `remote -v`: Use argument verbose (-v), which shows you the URLs that Git 
+    has stored for the shortname to be used when reading and writing to that remote 
+    - `remote show remoteserver`: Show information about remoteserver including
+    upstream settings (if set).
+    -  `remote add remoteserver server`: Add remoteserver of server to tracking. 
+    E.g. `git remote add origin https://github.com/ims-fhs/myfolder`.
+    Only visible after a push!
+    - `git remote set-url`: Change your remote's URL from SSH to HTTPS with the 
+    it remote set-url command. E.g.  
+    `git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git`
+    And change it back:  
+    `git remote set-url origin git@github.com:USERNAME/OTHERREPOSITORY.git`
+    - `remote rename oldremoteserver newremoteserver`: Rename oldremoteserver to 
+    newremoteserver.
+    - `remote rm remoteserver`: Remove remoteserver.
+    - `remote show remoteserver`: Show details from remoteserver. Good to check wether
+    remoteserver exists.
+* `reset` **is an exteremly dangerous method**. It can be used if you messed 
+things up and it is ok when you loose **all uncommited changes**. Therefore, you 
+shoud check your last commit before you reset as this commit is where you end up with 
+    - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
+
 * `revert`: This command creates a new commit that undoes the changes from a 
 previous commit. This command adds new history to the project (it doesn't 
 modify existing history). Therefore, it is a “safe” way to undo a single commit— it
 does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
-* `reset` **is an exteremly dangerous method**. It can be used if you messed 
-things up and it is ok when you loose **all uncommited changes**. Therefore, you 
-shoud check your last commit before you reset as this commit is where you end up with 
-    - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
-* `clean -f`: Remove (= **delete**) untracked files.
-    - `clean -f -n`: Don’t actually remove anything, just show what would be done.
-    - `clean -fd`: Force removing Remove untracked directories in addition to 
-    untracked files. 
-    - `clean -x`: **WARNING** also removes all ignored files!
-* `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
-`git add newname` + `git rm oldname`. For religion see
-[here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
+
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
+
+### S
+
 * `stash`: Use `git stash` when you want to record the current state of the 
 working directory and the index, but want to go back to a clean working directory. 
 The command saves your local modifications away and reverts the working directory 
@@ -608,7 +640,26 @@ stash@{1} is the one before it).
     - `stash show`: Inspected modification.
     - `stash apply`: Restore modifications (potentially on top of a different commit) 
 
-**Concerning fork and branch**: All branches on GitHub will be copied 
+* `status`: Get the status, displays
+    - Tracked **AND** Untracked (=new!) files
+    - Modified files
+    - Branches
+
+### T
+   
+* `tag`: list all tags. A Tag is a specific point in history, e.g. the 
+publication of the code (Release V1.0).
+    - `tag -a version -m text`: Create an annotated tag with tagging version of 
+    type v0.1.0 and message text = "my text" or the commit checksum 
+    (something like "67a465f").
+    - `tag -a version HASH -m text`: Create an annotated tag as above for old 
+    commit HASH.
+    - `tag -l "xy"`: Search for tags starting with xy.
+
+
+###Concerning fork and branch
+
+All branches on GitHub will be copied 
 in a fork. (Obviously, this doesn’t include branches that were never pushed 
 to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
 nothing is copied to your PC. It’s not quite the same as a Git clone. See 
