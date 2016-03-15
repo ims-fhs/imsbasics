@@ -558,9 +558,7 @@ the master branch. `pull = fetch + merge`
 * `push remoteserver localbranch:remotebranch`: Pushing localbranche to the 
 repository remotename (Normally called origin) in remotebranch. If only one 
 branch is specified, it is assumed that localbranch = remotebranch.  
-    - `push remote-name :remotebranch`: Pay **attention: **deletes** the remotebranch. 
-    Use `push -u remoteserver remotebranch` instead (See below).
-    E.g. `git push -u origin remotebranch`.
+    - `push remoteserver :remotebranch`: Pay **attention: **deletes** the remotebranch. 
     - `push -u remoteserver remotebranch`: Necessary if you want git pull to know 
     what to do. "Upstream" refers to the main repo that other people will be 
     pulling from, e.g. your GitHub repo. The -u option automatically sets that 
@@ -865,11 +863,11 @@ part of the editor shows your changes:
 ## Case 7: You want to work on different remote branches. But you don't want to change the names of the remote branches and you don't want to introduce new remote branches.
 
 ```
-> git checkout -b newbranch remoteserver/remotebranch
+> git checkout -b remotebranch remoteserver/remotebranch
 ```
-...Work on it and commit changes...
+Work on it and commit changes...
 ```
-> git push -u origin newbranch
+> git push -u origin remotebranch
 ```
 Afterwards, you can push from Rstudio again...
 
