@@ -324,34 +324,6 @@ If you want to list all the files **currently being tracked** under the branch
 ```
 Use `git status` to see untracked files.
 
-### Git: Set up the editor of your choice ...SCN: Delete?
-
-
-The git executable will be called with a fixed set of 7 arguments:
-`path old-file old-hex old-mode new-file new-hex new-mode`
-As most diff tools will require a different order (and only some) of the arguments, 
-you will have to specify a wrapper script, which in turn calls the real diff tool. 
-Additionally, you have to configure the external diff tool via "git config":
-
-1. Create a wrapper script "git-diff-wrapper.sh" which contains something like.
-See appendix. As you can see, only the second ("old-file") and fifth ("new-file") 
-arguments will be passed to the diff tool.
-2. Type 
-```
-> git config --global diff.external <path_to_wrapper_script>
-```
-at the command prompt, replacing with the path to "git-diff-wrapper.sh", so your 
-~/.gitconfig contains `external = <path_to_wrapper_script>`
-
-Be sure to use the correct syntax to specify the paths to the wrapper script and 
-diff tool, i.e. use forward slashed instead of backslashes. 
-
-Mind the trailing "cat"! (I suppose the '| cat' is needed only for some programs 
-which may not return a proper or consistent return status. You might want to try 
-without the trailing cat if your diff tool has explicit return status). 
-
-For further details see 
-[here](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
 
 ## Git: Useful commands
 
@@ -871,48 +843,6 @@ Work on it and commit changes...
 ```
 Afterwards, you can push from Rstudio again...
 
-## Case 8: You want to start work on a package based on your own "work in progress (wip)" branch => SCN: Delete? Case 1 deckt Case 8 ab.
-We assume you start with master (HEAD points on master). To create an identical 
-copy of master run
-```
-> git checkout -b wip 
-```
-...Start to work on the branch...  
-```
-> git commit  
-> git push -u origin wip  
-```
-At some point deleting the local branch makes perhaps sence: 
-```
-> git branch -d wip  
-```
-
-## Case 9: Undo a commit and redo => SCN: Delete?
-
-This is most often done when you remembered what you just committed is 
-incomplete, or you misspelled your commit message1, or both.
-```
-> git commit -m "Something terribly misguided"
-```
-Leaves working 
-tree as it was before git commit.
-```
-> git reset --soft HEAD~
-```
-Make corrections to working tree files.
-```
-> git add ...
-```
-git add whatever changes you want to include in your new commit.
-```
-> git commit -c ORIG_HEAD
-```
-Commit the changes, reusing the old commit message. reset copied the old head 
-to .git/ORIG_HEAD; commit with -c ORIG_HEAD will open an editor, which 
-initially contains the log message from the old commit and allows you to edit 
-it. If you do not need to edit the message, you could use the -C option instead.
-
-
 ## Case 10: You worked on something and want to pass it to github
 
 Create a folder in Github. Then open a shell and add the remote repo
@@ -994,6 +924,9 @@ you don't want it, then you can use git reset to rewrite the history so that it
 looks as though you never made that commit.
 
 ## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
+First: Delete your local folder, try `git clone`.
+
+If for some unhappy reason this doesn't work, try the following:
 Rename your messed up folder. Then you create a completely(!) new folder with 
 subfolders - renamaing the old folder won't help...  
 Then copy the necessary bare files, e.g. .png, .R, ... to the new folders.
@@ -1007,7 +940,6 @@ Think about what happend and merge master (your last changes) into newbranch.
 In the end you need `git push -u origin newbranch. You can merge master and 
 newbranch later on when you feel save.
 
-SCN: Why not just `git clone`?
 
 ## Case 15: You want run "git add -A ." in each submodule.
 ```
