@@ -71,12 +71,6 @@ save_rdata <- function(data, filename, path, force = F) { # "inverse" of load_rd
   if (missing(data) | missing(filename) | missing(path)) {
     stop("Data, filename and path arguments are required")
   }
-  if (force == T) {
-    old <- getOption("warn")
-    options(warn = 0)
-    warning(paste0("force = T"))
-    options(warn = old)
-  }
 
   # Default file type:
   if (!grepl(".RData", filename)) {
