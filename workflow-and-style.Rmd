@@ -274,7 +274,8 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
     - `%~ n` is replaced with all of the remaining parameters, starting with the 
     nth parameter, where n can be any number from 2 to 9.
     - `%2` is replaced with the first parameter, %3 with the second, and so on.
-
+* `pathto\Rscript.exe pathto\file.R`: Execute file via command line
+    
 ## Git: First steps
 
 When you read the [git tutorial](https://git-scm.com/book/en/v2/), the following 
