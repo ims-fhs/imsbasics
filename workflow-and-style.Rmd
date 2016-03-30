@@ -275,6 +275,8 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
     nth parameter, where n can be any number from 2 to 9.
     - `%2` is replaced with the first parameter, %3 with the second, and so on.
 * `pathto\Rscript.exe pathto\file.R`: Execute file via command line
+* `robocopy "source" "destination" /e /mir /np /z /tee /mt /log:my_backup_log.txt"`: 
+Useful backup tool.
     
 ## Git: First steps
 
