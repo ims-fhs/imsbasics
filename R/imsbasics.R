@@ -1,6 +1,20 @@
 # =============================================================================
 # Independent functions:
 
+# force_warning <- function(mytext) { #.........................................Use???
+#   old <- getOption("warn")
+#   options(warn = 0)
+#   warning(mytext) # This message is useful! Keep it. See warn handling...
+#   options(warn = old)
+# }
+
+# set_custom_rstudio <- function(recordTraceback = T, warn = 2) {
+#   options(.rs.recordTraceback = T) # ? 
+#   options(warn = 2) # 0 on / -1 off / 2 warn2err
+#   options(stringsAsFactors = F)
+# }
+
+
 #' decimalplaces returns the number of decimal places of x
 #'
 #' @param x A numeric
@@ -26,25 +40,14 @@ decimalplaces <- function(x) {
 #'
 #' @return Obects(s) in filename
 #'
-load_rdata <- function(filename, path) {
+load_rdata <- function(filename,
+  path = stop("Filename and path arguments are required")) {
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
   }
 
-  # Set default path (If possible):
-  if (missing(path)) {
-    # When function us used without path, data is expected to lie in folder ../data/
-    # Needs "data" folder in testthat folder. Normally this is the expected place
-    # to find data
-    path <- paste0(getwd(), "/data/")
-    warning(paste0("in load_rdata: path is set to ", path))
-    file <- paste0(path, "/", filename)
-
-    # Use path and load file:
-  } else {
-    file <- paste0(path, filename)
-  }
+  file <- paste0(path, filename)
   if (file.exists(file)) {
     # create new clear environment which can be deleted after loading
     temp_space <- new.env()
@@ -54,15 +57,8 @@ load_rdata <- function(filename, path) {
     data <- get(name_of_object, temp_space)
     # Remove local variables to clean up environment:
     rm(temp_space, name_of_object)
-
-    # Check that there are now entries twice:
-    # Previously done in "removedoublicates.
-    if (length(data) != length(unique(data))) {
-      warning("in load_rdata: Double entries in data.")
-    }
   } else {
-    stop("Error in load_rdata: no such file")
-    data <- NULL
+    stop(paste0("Error in load_rdata: no file: ", filename))
   }
   return(data)
 }
@@ -77,39 +73,35 @@ load_rdata <- function(filename, path) {
 #'
 #' @return path to file ot NULL in case file already exists.
 #'
-save_rdata <- function(data, filename, path, force) { # "inverse" of load_rdata
-  input <- c(missing(data), missing(filename), missing(path), missing(force))
-  # data and filename needed. Otherwise: error...
-  if (sum(input) > 2) {
-    stop("in save_radata: data and name argument required")
-    return(NULL)
-  # If two arguments are given, it is assumed that default path and force = F is used!
-  } else if ((sum(input) == 2)) {
-    path <- paste0(getwd(), "/")
-    force <- F
-    warning(paste0("in save_rdata: path is set to ", path, ", force = F"))
-  } else if ((sum(input) == 1)) {
-    force <- F
-    warning(paste0("in save_rdata: force = F"))
+save_rdata <- function(data, filename, path, force = F) { # "inverse" of load_rdata
+  # data, filename and path needed. Otherwise: error...
+  if (missing(data) | missing(filename) | missing(path)) {
+    stop("Data, filename and path arguments are required")
   }
 
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
   }
-
-  # Check that you don't overwrite a file:
+  # Check that you don't overwrite a file. If file already exists:
   if (file.exists(paste0(path, filename))) {
     if (force == F) {
-      warning("in save_rdata: file not saved. File already exists")
+      old <- getOption("warn")
+      options(warn = 0)
+      warning("File not saved. File already exists")
+      options(warn = old)
     } else {
-      warning("in save_rdata: old file overwritten")
+      old <- getOption("warn")
+      options(warn = 0)
+      warning("Old file overwritten")
+      options(warn = old)
       save(data, file = paste0(path, filename))
     }
   } else {
+    # File does not exist:
     save(data, file = paste0(path, filename))
-    return(path)
   }
+  return(NULL)
 }
 
 

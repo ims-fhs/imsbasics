@@ -1,7 +1,7 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "14 März 2016"
+date: "01 April 2016"
 output:
   pdf_document:
     fig_caption: yes
@@ -28,6 +28,44 @@ If hadley and google contradict each other:
 
 1. prio: hadley
 2. prio: google
+
+
+* Write programs for people, not computers.
+    - a program should not require its readers to hold more than a handful of facts in memory at once
+    - names should be consistent, distinctive and meaningful
+    - code style and formatting should be consistent
+    - all aspects of software development should be broken down into tasks roughly an hour long
+* Automate repetitive tasks.
+    - rely on the computer to repeat tasks
+    - save recent commands in a file for re-use
+    - use a build tool to automate scientific workflows
+* Use the computer to record history.
+    - software tools should be  used to track computational work automatically
+* Make incremental changes.
+    - work in small steps with frequent feedback and course correction
+* Use version control.
+    - use a version control system
+    - everything that has been created manually should be put in version control
+* Don’t repeat yourself (or others).
+    - every piece of data must have a single authoritative representation in the system
+    - code should be modularized rather than copied and pasted
+    - re-use code instead of rewriting it
+* Plan for mistakes.
+    - add assertions to programs to check their operation
+    - use an off-the-shelf unit testing library
+    - use all available oracles when testing programs
+    - turn bugs into test cases
+    - use a symbolic debugger
+* Optimize software only after it works correctly.
+    - use a profiler to identify bottlenecks
+    - write code in the highest-level language possible
+* Document design and purpose, not mechanics.
+    - document interfaces and reasons, not implementations
+    - refactor code instead of explaining how it works
+    - embed the documentation for a piece of software in that software
+* Collaborate.
+    - use pre-merge code reviews
+    - use pair programming when bringing someone new up to speed and when tackling particularly tricky problems
 
 ## Naming Conventions
 
@@ -182,12 +220,51 @@ devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c15
 
 # Git and GitHub
 
+## Introduction to version control: Git (or SVN?)
+
+Short version of a good answer 
+[here](http://stackoverflow.com/questions/871/why-is-git-better-than-subversion)
+The key difference is that it is decentralized. Imagine you are a developer on 
+the road, you develop on your laptop and you want to have source control so that 
+you can go back 3 hours.
+
+With Subversion, you have a Problem: The SVN Repository may be in a location 
+you can't reach (in your company, and you don't have internet at the moment), 
+you cannot commit. If you want to make a copy of your code, you have to 
+literally copy/paste it.
+
+With Git, you do not have this problem. Your local copy is a repository, and 
+you can commit to it and get all benefits of source control. When you regain 
+connectivity to the main repository, you can commit against it.
+This looks good at first, but just keep in mind the added complexity to this approach.
+
+... First of all, Git can be really confusing at first when working 
+decentralized. What is a remote? and How to properly set up the initial 
+repository? are two questions that come up at the beginning ... The documentation 
+of the "checkout" command is very confusing to people changing over - the "proper" 
+way seems to be "git clone", while "git checkout" seems to switch branches.
+
+Git REALLY shines when you are decentralized. It's an extra command though 
+(`git commit` commits locally, whereas `git push origin master` pushes the 
+master branch to the remote named "origin"). As said above: Git adds complexity. 
+Two modes of creating repositories, checkout vs. clone, commit vs. push... 
+You have to know which commands work locally and which work with "the server"...
+
+... Git is perfectly suited for Open Source projects: Just Fork it, commit your 
+changes to your own Fork, and then ask the original project maintainer to pull 
+your changes. With Git, this just works. Really, try it on Github, it's magic.
+
+But even with this lengthy addition, I still stand by my core message: Git is 
+not better or worse, it's just different. If you have the need for "Offline 
+Source Control" and the willingness to spend some extra time learning it, it's 
+fantastic.
+
 ## External Sources and quick tour for impatient guys
 
-* Hadley: How to set up Rstudio, git/SVN and github <http://r-pkgs.had.co.nz/git.html>
-* Github help on git's clone, fetch, pull, merge <https://help.github.com/articles/fetching-a-remote/>
 * Excellent [git tutorial](https://git-scm.com/book/en/v2/). **Read at least the
 the first three chapters**.
+* Hadley: How to set up Rstudio, git/SVN and github <http://r-pkgs.had.co.nz/git.html>
+* Github help on git's clone, fetch, pull, merge <https://help.github.com/articles/fetching-a-remote/>
 
 Use the following commands to track and understand what is going on. For 
 explanations see below. However, these commands are save and you can't screw 
@@ -196,9 +273,8 @@ anything up!
 > git status
 > git branch -av
 > git remote show origin
-> git hist
+> git log # for an elegant way see `git hist` 
 ```
-`git hist` needs to be set first, since it is not a standard command. Run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git installation.
 
 
 ## Existing Github accounts
@@ -256,13 +332,30 @@ Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
 
 ### Some useful commands for programming
 
+* `COMMAND /?`: Show help for `COMMAND`
+* `VAR=`: Delete `VAR`
 * `set variable=VALUE`: Assign value to new `variable`.
     - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
     - `set`: Display all existing variables.
     - `set prefix`: Display all existing variables ending with `prefix`.
     - `set variable=`: Delete `variable`.
 * `ECHO %variable%`: Display value of existing variable.
-
+* `assoc`: View file associations. 
+    - `assoc [.ext[=[FileType]]]`Use `.ext` to specify the file name extension 
+    whose association you want to view or change and `FileType` to specify the 
+    file type with which you want Windows to associate the specified file name extension.
+* `FTYPE`: Run as administrator! Displays file types used in file name extension associations.
+    - `Ftype [FileType[=[OpenCommandString]]]`: Specifies the open command to 
+    use when opening files of this type. Add
+    _ `%0` or `%1` are replaced with the file name that you want to open.
+    - `%*` is replaced with all of the parameters.
+    - `%~ n` is replaced with all of the remaining parameters, starting with the 
+    nth parameter, where n can be any number from 2 to 9.
+    - `%2` is replaced with the first parameter, %3 with the second, and so on.
+* `pathto\Rscript.exe pathto\file.R`: Execute file via command line
+* `robocopy "source" "destination" /e /mir /np /z /tee /mt /log:my_backup_log.txt"`: 
+Useful backup tool.
+    
 ## Git: First steps
 
 When you read the [git tutorial](https://git-scm.com/book/en/v2/), the following 
@@ -278,7 +371,57 @@ Remark:
     Only if the file is part of a package or project in Rstudio, 
     "everything" can be done from the git-ribbon in Rstudio!
 
-Therefore getting fluent with git on the console is very useful.. (eventhough it might look like wasting your time in the first place. I (Adrian) didn't believe Christoph in the first place and had to learn it on the hard tour..)
+Therefore getting fluent with git on the console is very useful.. (eventhough it 
+might look like wasting your time in the first place. I (Adrian) didn't believe 
+Christoph in the first place and had to learn it on the hard tour..)
+
+### Work in progress: Make R executable...
+
+See <http://www.r-bloggers.com/making-r-files-executable-under-windows/>
+Choosing a new file extension name (.Rexec)
+
+First, we have to think about a new file extension name. While double-click to 
+run is a nice-to-have, the default behaviour should not be overwritten. In the 
+Windows universe one cannot simply attach two different behaviours to the same 
+file extension but we can register new extensions and associate custom defaults 
+to those. Therefore we need another, new file extension.
+
+To make the file extension as self-explanatory as possible, I suggest using 
+.Rexec for R scripts that should be executable while leaving the default system 
+behaviour for .R files as is. Associating a new file type with the .Rexec extension
+
+In the next step, we tell Windows that the .Rexec file extension is associated 
+with the RScriptExecutable file type. Furthermore, we inform Windows how these 
+kind of files should be opened by default.
+
+To do so, we need access to the command line interface, e.g., via cmd. Click 
+Start and type cmd into the search bar. Instead of hitting enter right away, 
+right click on the 'cmd.exe' search result, choose Run as administrator from 
+the context menu, and click Yes on the following pop up window. The windows 
+command line should pop up thereafter.
+
+Within the command line, type first:
+
+ASSOC .Rexec=RScriptExecutable
+
+… then …
+
+FTYPE RScriptExecutable=C:Program FilesRR-3.1.2binx64Rscript.exe %1 %*
+
+… while making sure that the path used above really leads to your most recent/preferred RScript.exe.
+Testing
+
+To test if everything works as expected, create an R script and write the following lines:
+```
+message(getwd())
+for(i in 1:100) {
+  cat(".")
+  Sys.sleep(0.01)
+}
+message("nBye.")
+Sys.sleep(3)
+```
+Save it as, e.g., 'test.Rexec' and double click on the file. Now a black box should pop up, informing you about the current working directory, and printing 100 dots on the screen and terminate itself after saying 'Bye'. 
 
 ### Git: Installation on Windows
 
@@ -346,12 +489,12 @@ If `git add`is not successful, **look at your .gitignore file**.
 
 ### B
 
-* `branch` Note: A branch in Git is simply a 
-lightweight movable pointer to one of these commits. The default branch name 
-in Git is master. The only reason nearly every repository has one is that the 
-git init command creates it by default and most people don’t bother to change it. 
-As you start making commits, you’re given a master branch that points to the last 
-commit you made. Every time you commit, it moves forward automatically.
+* `branch` Note: A branch in Git is simply a lightweight movable pointer to one 
+of these commits. The default branch name in Git is master. The only reason nearly 
+every repository has one is that the git init command creates it by default and 
+most people don’t bother to change it. As you start making commits, you’re given 
+a master branch that points to the last commit you made. Every time you commit, 
+it moves forward automatically.
     - `branch newbranch`: Create new branch "newbranch". 
     - `branch -d branch`: Delete branch.
     - `branch -v`: Display branches including description.
@@ -361,32 +504,34 @@ commit you made. Every time you commit, it moves forward automatically.
     - `branch --merged`: Display all merged branches.
     - `branch -u remoteserver/branch localbranch` (`-u` = `--set-upstream`):
     Corresponds to `git config branch.localbranch.remote remoteserver` + 
-    `git config branch.localbranch.merge refs/heads/localbranch` This is very useful to be sure the upstream references are right before you push or pull! Because `git branch -u remoteserver/branch localbranch` doesn't mess up nothing..
+    `git config branch.localbranch.merge refs/heads/localbranch` This is very 
+    useful to be sure the upstream references are right before you push or pull! 
+    Because `git branch -u remoteserver/branch localbranch` doesn't mess up nothing..
     - `branch -m oldname newname`: Rename a branch while pointed to any branch. 
     If you want to rename the current branch, you can simply do 
     `git branch -m newname`
 
 ### C
 
-* `checkout branch`: Switching to specific branche. Update files in the working tree to
-match the version in the index or the specified tree. If no paths are given, git 
-checkout will also update HEAD to set the specified branch as the current branch.  
-To prepare for working on branch, switch to it by updating the index and the 
-files in the working tree, and by pointing HEAD at the branch. Local 
+* `checkout branch`: Switching to a specific, existing **LOCAL** branch. Update files in the 
+working tree to match the version in the index or the specified tree. If no paths 
+are given, git checkout will also update HEAD to set the specified branch as the 
+current branch. To prepare for working on a branch, switch to it by updating the 
+index and the files in the working tree, and by pointing HEAD at the branch. Local 
 modifications to the files in the working tree are kept, so that they can be 
-committed to the branch. This command doesn't make any changes to the history.
+committed to the branch. This command doesn't make any changes to the history nor 
+any repository.
     - `checkout -b localbranch`: create localbranch and switch to it at the same 
     time (= `git branch name` + `git checkout name`).
     - `checkout -b newbranch remoteserver/remotebranch`: Checkout and create a 
-    copy of `remoteserver/remotebranch`. Furthermore, the branch is being set up 
+    copy of the LOCAL `remoteserver/remotebranch`. Furthermore, the branch is being set up 
     to track the remote branch, which usually means the remoteserver/remotebranch 
-    branch. This is of interest if you you want to join a project. Thus, 
-    checkout also works remotely.  
+    branch. This is of interest if you you want to join a project.
     In case of a "**fatal** git checkout: updating paths is incompatible with 
     switching branches...": This occurs when you are trying to checkout a remote 
     branch that your local git repo is not aware of yet See `git remote show origin`.
     If the remote branch is under "New remote branches" and not "Tracked remote 
-    branches" then you need to `fetch` them first.
+    branches" then you need to `fetch` them first - see `fetch`.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
     - `checkout shorthash`: checkout old version. See `git log` for possible hash
@@ -398,7 +543,6 @@ committed to the branch. This command doesn't make any changes to the history.
     and you don't want to keep changes see `git reset --hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
-
 * `clean -f`: Remove (= delete) untracked files.
     - `clean -f -n`: Don’t actually remove anything, just show what would be done.
     - `clean -fd`: Force removing Remove untracked directories in addition to 
@@ -411,7 +555,6 @@ currently active branch. E.g. `git clone https://github.com/ims-fhs/myfolder`.
 The default shortname for the remote server is then **origin**.
     - `clone --depth n --branch branchname repo directory`: Clone history up 
     to nth commit, only `branchname` from `repo` and `folder`.
-
 * `commit`: Commit changes to current branch (If you just started to work, it 
 will be called `master`)
     - `commit -a -m "text"`: Stage everything (-a, could be also done with a 
@@ -425,7 +568,6 @@ will be called `master`)
     contains the message of your previous commit.
     Do **not use `--amend` option after you pushed the last commit**. In this 
     case you have to merge the two.
-
 * `config` : Configure git.
     - `config --list`: List all configurations.
     - `config --global --list`: List all global configurations.
@@ -461,19 +603,25 @@ blob objects, or changes between two files on disk.
     remotename/branchname, commit SHAs, etc.
     - `diff A..B` or `diff A...B`: See
     [stackoverflow](http://stackoverflow.com/questions/5256249/git-diff-doesnt-show-enough/5257065#5257065)
-
+    - `diff --cached file`: Used, if changes are not staged or commited yet.
+    - `diff -c file`: Combine old and new version of a file.
 * `difftool` is a frontend to git diff and accepts the same options and arguments.
     - `difftool -t=kdiff3 branch1 branch2` to specify external editor kdiff3. 
     See appendix for further explanations concerning **interference with RStudio**.
     - `difftool -y -t=kdiff3 branch1 branch2`: Use `-y` option to suppress confirmation.
-    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`: 
-    Use any of those combinations to access a specific file.
+    - `difftool -t=kdiff3 HASH1 HASH2`: Show differences between two HASHes 
+    - `difftool -t=kdiff3 remotename/branchname:remote/path/file1.txt local/path/file1.txt`
+    or `difftool -t=kdiff3 branch1 branch2 file.txt`: Use any of those 
+    combinations to compare a specific `file.txt` in two branches.
 
 ### F
 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
 others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
 the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
+
+### H
+`git hist` needs to be set first, since it is not a standard command. Run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git installation.
 
 ### I
 
@@ -507,7 +655,6 @@ them cleanly and an error results. Use "status" to get the unmerged files. In
 this case the version in HEAD (your master branch, if you have checked out that 
 when you ran your merge command) is the top part of that block (everything 
 above the =======)
-
 * `mv oldname newname`: Rename file `oldname`. 
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
@@ -588,13 +735,11 @@ to share work. Be careful with fork (Github).
 things up and it is ok when you loose **all uncommited changes**. Therefore, you 
 shoud check your last commit before you reset as this commit is where you end up with 
     - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
-
 * `revert`: This command creates a new commit that undoes the changes from a 
 previous commit. This command adds new history to the project (it doesn't 
 modify existing history). Therefore, it is a “safe” way to undo a single commit— it
 does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert. 
-
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
 
@@ -610,7 +755,6 @@ stash@{1} is the one before it).
     - `stash list`: List the modifications stashed away 
     - `stash show`: Inspected modification.
     - `stash apply`: Restore modifications (potentially on top of a different commit) 
-
 * `status`: Get the status, displays
     - Tracked **AND** Untracked (=new!) files
     - Modified files
@@ -922,6 +1066,12 @@ then you can use git checkout to checkout a fresh-from-repository copy of the fi
 If you have made a commit, but haven't shared it with anyone else and you decide 
 you don't want it, then you can use git reset to rewrite the history so that it 
 looks as though you never made that commit.
+
+
+Given one or more existing commits, revert the changes that the related patches introduce, and record some new commits that record them. This requires your working tree to be clean (no modifications from the HEAD commit).
+
+Note: git revert is used to record some new commits to reverse the effect of some earlier commits (often only a faulty one). If you want to throw away all uncommitted changes in your working directory, you should see git-reset[1], particularly the --hard option. If you want to extract specific files as they were in another commit, you should see git-checkout[1], specifically the git checkout <commit> -- <filename> syntax. Take care with these alternatives as both will discard uncommitted changes in your working directory.
+
 
 ## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
 First: Delete your local folder, try `git clone`.
