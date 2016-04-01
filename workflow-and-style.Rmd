@@ -17,24 +17,27 @@ output:
 ***
 
 
-# IMS R style guide
+# IMS (R-) style guide
 
-## External Sources
+External Sources are
 
-* [Hadley style guide](http://stat405.had.co.nz/r-style.html)
-* [Google style guide](https://google.github.io/styleguide/Rguide.xml)
+* Prio 1 [Hadley style guide](http://stat405.had.co.nz/r-style.html)
+* Prio 2 [Google style guide](https://google.github.io/styleguide/Rguide.xml)
 
-If hadley and google contradict each other:
+Thus, if Hadley and Google contradict each other, use Hadley
 
-1. prio: hadley
-2. prio: google
+## Mindset
 
+See article (at the moment on arXiv) "Best Practices for Scientific Computing" 
+by Wilson et. al. 
 
 * Write programs for people, not computers.
-    - a program should not require its readers to hold more than a handful of facts in memory at once
+    - a program should not require its readers to hold more than a handful of 
+    facts in memory at once
     - names should be consistent, distinctive and meaningful
     - code style and formatting should be consistent
-    - all aspects of software development should be broken down into tasks roughly an hour long
+    - all aspects of software development should be broken down into tasks 
+    roughly an hour long
 * Automate repetitive tasks.
     - rely on the computer to repeat tasks
     - save recent commands in a file for re-use
@@ -46,6 +49,8 @@ If hadley and google contradict each other:
 * Use version control.
     - use a version control system
     - everything that has been created manually should be put in version control
+    - keep the size of the files small!
+* Use a backup for all data. version control does not make sense for data
 * Don’t repeat yourself (or others).
     - every piece of data must have a single authoritative representation in the system
     - code should be modularized rather than copied and pasted
@@ -65,16 +70,18 @@ If hadley and google contradict each other:
     - embed the documentation for a piece of software in that software
 * Collaborate.
     - use pre-merge code reviews
-    - use pair programming when bringing someone new up to speed and when tackling particularly tricky problems
+    - use pair programming when bringing someone new up to speed and when 
+    tackling particularly tricky problems
 
 ## Naming Conventions
 
 * Folders: `meaningful name` or `meaningfulname`
-* Files end with '.R': `meaningful-file.R`  
-* Objects (Variables and Classes): `meaningful_variable` 
+* Files end with '.R': `meaningful-file.R`
+* Objects (Variables and Classes): `meaningful_variable`
 * Functions: `meaningful_function`
 * Packages: `mngflabrr` Trade of between: googleable, remindable, selfexplainable, 
-short etc. [see also](http://r-pkgs.had.co.nz/package.html#package-structure)
+short etc. see also [Hadley](http://r-pkgs.had.co.nz/package.html#package-structure)
+again.
 
 ## Versioning 
 
@@ -106,23 +113,9 @@ Place a space before left parenthesis, except in a function call.
 5. Function definitions
 6. Executed statements, if applicable (e.g., print, plot)
 
-Unit tests should go in a separate file named `test_originalfunction(s).R`.  
-
-Install packages with `install.packages("package")`  
-
+Unit tests should go in a separate file named `test-originalfunction(s).R`. See 
+testthat package for documentation.  
 Include non-standard packages using `libraray(package)`
-
-## Documentation
-1. R packages are documented with vignette(s). For examples see 
-[here](http://r-pkgs.had.co.nz/vignettes.html#vignette-workflow)
-2. Every project has a starUML document describing the software architecture of 
-the project according to the [4+1 view model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model).
-
-## Backlog and User Stories
-1. Work-In-Progress is documented on the Symphonical wall of the project in form 
-of a User Story.
-
-## Documentation and project management
 
 Use the following structure for packages
 
@@ -131,29 +124,28 @@ Use the following structure for packages
 * /package/tests/testthat/: All relevant rawdata for tests - keep the size small!
 [source](http://r-pkgs.had.co.nz/data.html)
 
-For customer projekts we have
+For customer projekts we need
 
 * /project/data/rawdata/yyyy/: subfolder for rawdata for year yyyy.
 * /project/data/yyyy/: working directory includes all analysis for year yyyy.
 
-### Count Story Points - Script
+## Project management and documentation
 
-Export Symphonical as JSON file.
-run the following script:
-```
-imsbasics::clc()
-symphonical <- rjson::fromJSON(file = "swBn2e.json")
-cards <- symphonical$board_cards
-description <- c()
-aufwand <- c()
-for (i in 1:length(cards)) { 
-  description[i] <- cards[[i]]$description
-  aufwand[i] <- strsplit(description[i], split = "Aufwand: ")[[1]][2]
-  aufwand[i] <- strsplit(aufwand[i], split = " SP")[[1]][1]
-  }
-aufwand <- as.numeric(aufwand)
-sum(aufwand, na.rm = TRUE)
-```
+### Documentation
+
+Work-In-Progress is documented on the Symphonical wall of the project in form 
+of a User Story.
+
+1. R packages are documented with vignette(s). For examples see 
+[here](http://r-pkgs.had.co.nz/vignettes.html#vignette-workflow)
+2. Every project has a starUML document describing the software architecture of 
+the project according to the 
+[4+1 view model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model).
+
+### Count Story Points - R-script
+
+Export Symphonical as JSON file and run the R script in the appendix.  
+Goal is a monthly evaluation.
 
 ***
 
@@ -176,7 +168,7 @@ Be careful: Here, you have to add the system path "C:/R/R-x.x.x/bin;"
 To reach the path see `Systemsteuerung\System und Sicherheit\System`
 => Umgebungsvariablen...
 
-For further help see <http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html>
+For further help see [Fox](http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html).
 
 ## Install RStudio
 
@@ -198,7 +190,7 @@ able to Rmarkdown.
 Finally, make sure, you installed the packages
 
 * devtools used for downloading and installing code from github and 
-* testthat 
+* testthat for standardized unit tests.
 
 When you want to automate testing open or create a project (including package) 
 and type the following command in the R console:
@@ -215,16 +207,121 @@ In RStudio use the following command in the R console
 ```
 devtools::install_github("ims-fhs/repo", auth_token = "35b77ed8d745a9572409e6c153e20e36d45094ed")
 ```
+Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
 
 ***
 
-# Git and GitHub
+# The Shell, Git and GitHub
 
-## Introduction to version control: Git (or SVN?)
+## The shell
 
-Short version of a good answer 
-[here](http://stackoverflow.com/questions/871/why-is-git-better-than-subversion)
-The key difference is that it is decentralized. Imagine you are a developer on 
+### The shell: first steps
+
+A (Linux) shell can be opened in Rstudio via Rstudio => Tools => Shell...
+Notation for the cd-command.  
+You can find the help for any command via help command, e.g. `help cd`  
+There you will find  
+`cd [-L|-P] [dir]`.  
+Here, `[]` means an optional argument and `|` means "either or".  
+The "." notation refers to the working directory itself and the ".." notation 
+refers to the working directory's parent directory.
+Sometimes you can also find
+
+  * `ls -r` or
+  * `ls --reverse`
+These two commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
+The first variant is fast to write, the second one is easy to read and understand.
+
+### The shell: overview over commands
+
+The following commands are possible:
+
+* [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`
+* [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
+    - `q` = Quit!
+* [Manipulating files](http://linuxcommand.org/lc3_lts0050.php) `cp, mv, rm, mkdir`
+    - `rm name`: Remove file `name`.
+    - `mv oldname newname`: Rename a file.
+    - Wildcards * and ?, e.g. cp *.txt existingdirectory
+* [Commands](http://linuxcommand.org/lc3_lts0060.php) `type, which, help, man`, 
+e.g. `help cd`
+* [I/O redirection](http://linuxcommand.org/lc3_lts0070.php)
+* [Expansions](http://linuxcommand.org/lc3_lts0080.php)
+* [Permissions](http://linuxcommand.org/lc3_lts0090.php)
+* [Jobcontrol](http://linuxcommand.org/lc3_lts0100.php)
+* [Writing shell scripts](http://linuxcommand.org/lc3_writing_shell_scripts.php)
+
+Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
+
+### The shell: some useful commands for programming
+
+* `assoc`: View file associations. 
+    - `assoc [.ext[=[FileType]]]`Use `.ext` to specify the file name extension 
+    whose association you want to view or change and `FileType` to specify the 
+    file type with which you want Windows to associate the specified file name extension.
+* `COMMAND /?`: Show help for `COMMAND`
+* `ECHO %variable%`: Display value of existing variable.
+* `FTYPE`: Run as administrator! Displays file types used in file name extension associations.
+    - `Ftype [FileType[=[OpenCommandString]]]`: Specifies the open command to 
+    use when opening files of this type. Add
+    _ `%0` or `%1` are replaced with the file name that you want to open.
+    - `%*` is replaced with all of the parameters.
+    - `%~ n` is replaced with all of the remaining parameters, starting with the 
+    nth parameter, where n can be any number from 2 to 9.
+    - `%2` is replaced with the first parameter, %3 with the second, and so on.
+* `pathto\Rscript.exe pathto\file.R`: Execute file via command line
+* `robocopy "source" "destination" /e /mir /np /z /tee /mt /log:my_backup_log.txt"`: 
+Useful backup tool.
+* `set variable=VALUE`: Assign value to new `variable`.
+    - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
+    - `set`: Display all existing variables.
+    - `set prefix`: Display all existing variables ending with `prefix`.
+    - `set variable=`: Delete `variable`.
+* `VAR=`: Delete `VAR`
+
+### Assign programs to files, e.g. make R executable (not working yet?)
+
+See <http://www.r-bloggers.com/making-r-files-executable-under-windows/>
+Choosing a new file extension name (.Rexec) so that the default behaviour is not 
+overwritten. I suggest using .Rexec for R scripts that should be executable while 
+leaving the default system behaviour for .R files as is. 
+
+In the next step, we tell Windows that the .Rexec file extension is associated 
+with the RScriptExecutable file type. Furthermore, we inform Windows how these 
+kind of files should be opened by default.
+
+Within the command line, type:
+```
+> ASSOC .Rexec=RScriptExecutable
+```
+then
+```
+> FTYPE RScriptExecutable=C:Program FilesRR-3.1.2binx64Rscript.exe %1 %*
+```
+while making sure that the path used above really leads to your most 
+recent/preferred `RScript.exe`. 
+
+To test if everything works as expected, create an R script with the following lines:
+```
+message(getwd())
+for(i in 1:100) {
+  cat(".")
+  Sys.sleep(0.01)
+}
+message("nBye.")
+Sys.sleep(3)
+```
+Save it as, e.g., 'test.Rexec' and double click on the file. Now a black box 
+should pop up, informing you about the current working directory, and printing 
+100 dots on the screen and terminate itself after saying 'Bye'. 
+
+## Git
+
+### Introduction to version control: Git (or SVN?)
+
+Short version of a good answer from 
+[here](http://stackoverflow.com/questions/871/why-is-git-better-than-subversion):
+The key feature of git is that it is decentralized. Imagine you are a developer on 
 the road, you develop on your laptop and you want to have source control so that 
 you can go back 3 hours.
 
@@ -259,169 +356,22 @@ not better or worse, it's just different. If you have the need for "Offline
 Source Control" and the willingness to spend some extra time learning it, it's 
 fantastic.
 
-## External Sources and quick tour for impatient guys
-
-* Excellent [git tutorial](https://git-scm.com/book/en/v2/). **Read at least the
-the first three chapters**.
-* Hadley: How to set up Rstudio, git/SVN and github <http://r-pkgs.had.co.nz/git.html>
-* Github help on git's clone, fetch, pull, merge <https://help.github.com/articles/fetching-a-remote/>
-
-Use the following commands to track and understand what is going on. For 
-explanations see below. However, these commands are save and you can't screw 
-anything up!
-```
-> git status
-> git branch -av
-> git remote show origin
-> git log # for an elegant way see `git hist` 
-```
-
-
-## Existing Github accounts
-
-* symbolrush (User)
-* Christoph999 (User)
-* ims-fhs (Organisation with rights to set folders as private)
-
-Furthermore, we assume for the following that we have an existing github repository 
-"https://github.com/ims-fhs/myfolder".  
-
-**Note about fork and branch**: When talking about version control, we have to 
-distinguish "fork a branch" and "Create a new branch": In contrast to "branch",
-"fork" is a pure github to github operation where everything gets copied to another 
-user. 
-
-
-## Shell: First steps
-
-A (Linux) shell can be opened in Rstudio via Rstudio => Tools => Shell...
-Notation for the cd-command.  
-You can find the help for any command via help command, e.g. `help cd`  
-There you will find  
-`cd [-L|-P] [dir]`.  
-Here, `[]` means an optional argument and `|` means "either or".  
-The "." notation refers to the working directory itself and the ".." notation 
-refers to the working directory's parent directory.
-Sometimes you can also find
-
-  * `ls -r` or
-  * `ls --reverse`
-These two commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
-The first variant is fast to write, the second one is easy (fast) to read and understand.
-
-
-### Overview: Shell commands
-The following commands are possible:
-
-* [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`
-* [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
-    - `q` = Quit!
-* [Manipulating files](http://linuxcommand.org/lc3_lts0050.php) `cp, mv, rm, mkdir`
-    - `rm name`: Remove file `name`.
-    - `mv oldname newname`: Rename a file.
-    - Wildcards * and ?, e.g. cp *.txt existingdirectory
-* [Commands](http://linuxcommand.org/lc3_lts0060.php) `type, which, help, man`, 
-e.g. `help cd`
-* [I/O redirection](http://linuxcommand.org/lc3_lts0070.php)
-* [Expansions](http://linuxcommand.org/lc3_lts0080.php)
-* [Permissions](http://linuxcommand.org/lc3_lts0090.php)
-* [Jobcontrol](http://linuxcommand.org/lc3_lts0100.php)
-* [Writing shell scripts](http://linuxcommand.org/lc3_writing_shell_scripts.php)
-
-Link for [further reading](http://linuxcommand.org/lc3_learning_the_shell.php)
-
-### Some useful commands for programming
-
-* `COMMAND /?`: Show help for `COMMAND`
-* `VAR=`: Delete `VAR`
-* `set variable=VALUE`: Assign value to new `variable`.
-    - `set _oldvariable=VALUE`: Assign value to existing `oldvariable`.
-    - `set`: Display all existing variables.
-    - `set prefix`: Display all existing variables ending with `prefix`.
-    - `set variable=`: Delete `variable`.
-* `ECHO %variable%`: Display value of existing variable.
-* `assoc`: View file associations. 
-    - `assoc [.ext[=[FileType]]]`Use `.ext` to specify the file name extension 
-    whose association you want to view or change and `FileType` to specify the 
-    file type with which you want Windows to associate the specified file name extension.
-* `FTYPE`: Run as administrator! Displays file types used in file name extension associations.
-    - `Ftype [FileType[=[OpenCommandString]]]`: Specifies the open command to 
-    use when opening files of this type. Add
-    _ `%0` or `%1` are replaced with the file name that you want to open.
-    - `%*` is replaced with all of the parameters.
-    - `%~ n` is replaced with all of the remaining parameters, starting with the 
-    nth parameter, where n can be any number from 2 to 9.
-    - `%2` is replaced with the first parameter, %3 with the second, and so on.
-* `pathto\Rscript.exe pathto\file.R`: Execute file via command line
-* `robocopy "source" "destination" /e /mir /np /z /tee /mt /log:my_backup_log.txt"`: 
-Useful backup tool.
-    
-## Git: First steps
-
-When you read the [git tutorial](https://git-scm.com/book/en/v2/), the following 
-picture will become clear. You will learn about
-* staging
-* commiting
+Looking back, I strongly recommend to **read at least the first three chapters**
+of the [git tutorial](https://git-scm.com/book/en/v2/). Here, you will learn about
+* staging,
+* commiting,
 * and what it all means...
-
-![Git Data Transport](GitDataTransport.png)
-
-Remark:
-
-    Only if the file is part of a package or project in Rstudio, 
-    "everything" can be done from the git-ribbon in Rstudio!
-
-Therefore getting fluent with git on the console is very useful.. (eventhough it 
+Therefore, getting fluent with git on the console is very useful.. (eventhough it 
 might look like wasting your time in the first place. I (Adrian) didn't believe 
 Christoph in the first place and had to learn it on the hard tour..)
 
-### Work in progress: Make R executable...
+![Git Data Transport](GitDataTransport.png)
 
-See <http://www.r-bloggers.com/making-r-files-executable-under-windows/>
-Choosing a new file extension name (.Rexec)
+Remark concerning RStudio:
 
-First, we have to think about a new file extension name. While double-click to 
-run is a nice-to-have, the default behaviour should not be overwritten. In the 
-Windows universe one cannot simply attach two different behaviours to the same 
-file extension but we can register new extensions and associate custom defaults 
-to those. Therefore we need another, new file extension.
-
-To make the file extension as self-explanatory as possible, I suggest using 
-.Rexec for R scripts that should be executable while leaving the default system 
-behaviour for .R files as is. Associating a new file type with the .Rexec extension
-
-In the next step, we tell Windows that the .Rexec file extension is associated 
-with the RScriptExecutable file type. Furthermore, we inform Windows how these 
-kind of files should be opened by default.
-
-To do so, we need access to the command line interface, e.g., via cmd. Click 
-Start and type cmd into the search bar. Instead of hitting enter right away, 
-right click on the 'cmd.exe' search result, choose Run as administrator from 
-the context menu, and click Yes on the following pop up window. The windows 
-command line should pop up thereafter.
-
-Within the command line, type first:
-
-ASSOC .Rexec=RScriptExecutable
-
-… then …
-
-FTYPE RScriptExecutable=C:Program FilesRR-3.1.2binx64Rscript.exe %1 %*
-
-… while making sure that the path used above really leads to your most recent/preferred RScript.exe.
-Testing
-
-To test if everything works as expected, create an R script and write the following lines:
-```
-message(getwd())
-for(i in 1:100) {
-  cat(".")
-  Sys.sleep(0.01)
-}
-message("nBye.")
-Sys.sleep(3)
-```
-Save it as, e.g., 'test.Rexec' and double click on the file. Now a black box should pop up, informing you about the current working directory, and printing 100 dots on the screen and terminate itself after saying 'Bye'. 
+    Only if the file is part of a package or project in Rstudio, 
+    "everything" can be done from the git-ribbon in Rstudio! (But some things have
+    to be done via shell!)
 
 ### Git: Installation on Windows
 
@@ -430,25 +380,48 @@ Download the latest package starting with "Git-", not a "msysgit-..." package
 (the latter are supposed to be used to build git yourself). Git for Windows 
 comes with a UNIX environment as far as needed by git and also ships with a 
 Bash shell for using the git command line tools.
+
+Further useful literature:
+
+* [Hadley](http://r-pkgs.had.co.nz/git.html): How to set up Rstudio, git/SVN and github.
+* [Github](https://help.github.com/articles/fetching-a-remote/) help on git's 
+clone, fetch, pull, merge.
+
+### Git: first steps and quick tour for impatient guys (RTFM!!!)
+
+Open a shell (e.g. from RStudio) and test some basic commands:
 ```
 > where git # Shows, where git.exe is located
 > git version # Shows the version
 > git config --global --edit # Here, you can see, which config file is used.
 ```
 
-### Git: First steps - The staging index
+Now we are ready to start. You can use the following commands to track and 
+understand what is going on. For explanations see below. 
+**All these commands are save** and you can't screw anything up!
+```
+> git status
+> git branch -av
+> git remote show origin
+> git log # for an elegant way see below `git git config --global alias.hist` 
+```
 
-Git internally holds a thing called the index, which is a snapshot of your 
-project files. After you have just created an empty repository, the index will 
-be empty. You must manually stage the files from your working tree to the index 
-using `git add`:  
+Git internally holds a thing called the index, which is a **full snapshot** of your 
+project content (more than files!). After you have just created an empty repository, 
+the index will be empty. You must manually stage the files from your working tree
+to the index using `git add`:  
 ```
 > git add somefile.txt
 ```
-
 `git add` works recursively, so you can also add whole folders:  
 ```
 > git add somefolder
+```
+
+If you have changes which you want to track in the feature, you have to commit them 
+afterwards using a commit message (the `-m`)
+```
+> git commit -m "My first commit"
 ```
 
 The same applies if you change a file in your working tree - you have to add 
@@ -456,24 +429,33 @@ this change to the index with `git add`:
 ```
 > git add somefile.txt
 ```
-
-It's important to realize that the index is a full snapshot of your project 
-files - it is not just a list of the changed files.
+Only then you can commit again. The following should be clear: The first time, 
+you say "here is a new file I want to commit" - then you commit. The second time, 
+git realises that "there is a new file you should commit"!
 
 If you want to list all the files **currently being tracked** under the branch 
 "master", you could use this command:
 ```
 > git ls-tree -r master --name-only
 ```
-Use `git status` to see untracked files.
+As already said: the use the following commands frequently and understand what 
+git tells you:
+```
+> git status
+> git branch -av
+> git remote show origin
+> git log # for an elegant way see `git hist` 
+```
 
-
-## Git: Useful commands
+### Git: useful commands
 
 All commands can be prompted to the console. The `> git...` input is ommitted 
-in the list
+in the list. Some commands concern github topics. For further information 
+concerning github read the next chapter.  
+In the following, we assume that we have an existing github repository 
+"https://github.com/ims-fhs/myfolder". 
 
-### A
+#### A
 
 * `add file`: Add file to tracking, e.g. `git add myfile.txt` (Only useful after 
 you start with commitments.)  
@@ -487,7 +469,7 @@ If `git add`is not successful, **look at your .gitignore file**.
     - `add -A` is equivalent to `git add .` + `git add -u`.
     - `add folder/*`: Add folder to git.
 
-### B
+#### B
 
 * `branch` Note: A branch in Git is simply a lightweight movable pointer to one 
 of these commits. The default branch name in Git is master. The only reason nearly 
@@ -511,7 +493,7 @@ it moves forward automatically.
     If you want to rename the current branch, you can simply do 
     `git branch -m newname`
 
-### C
+#### C
 
 * `checkout branch`: Switching to a specific, existing **LOCAL** branch. Update files in the 
 working tree to match the version in the index or the specified tree. If no paths 
@@ -588,7 +570,7 @@ will be called `master`)
     in case of wrongly set multiple editors.
     - `config --global --edit`: View your config file
 
-### D
+#### D
 
 * `diff` Show changes between the working tree and the index or a tree, changes 
 between the index and a tree, changes between two trees, changes between two 
@@ -614,16 +596,13 @@ blob objects, or changes between two files on disk.
     or `difftool -t=kdiff3 branch1 branch2 file.txt`: Use any of those 
     combinations to compare a specific `file.txt` in two branches.
 
-### F
+#### F
 
 * `fetch remoteserver remotebranch`: Update remote branch, that is refresh "what 
 others do". Usual case `fetch origin remotebranch`; Get all data from branch on 
 the origin (Normally the remoteserver has shortname origin, see clone!). No merging!
 
-### H
-`git hist` needs to be set first, since it is not a standard command. Run `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"` to set up this very useful command on your local git installation.
-
-### I
+#### I
 
 * `init`: Initialize git repository. This command creates basically a .git 
 directory with subdirectories for objects, refs/heads, refs/tags, and template 
@@ -636,7 +615,7 @@ for rerunning `git init` is to pick up newly added templates (or to move the
 repository to another place if `--separate-git-dir` is given).  
 The default name for the starting branch is **master**.
 
-### L
+#### L
 
 * `log`: Show the whole commit history.
     - `log -2`: Show last two commits.
@@ -646,7 +625,7 @@ The default name for the starting branch is **master**.
     - `log --follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
 
-### M
+#### M
 
 * `merge branch`: Merge branche into the one which is actice (HEAD points 
 onto it. See `git branch -av`): If you changed the same part of the same file 
@@ -660,7 +639,7 @@ above the =======)
 `git add newname` + `git rm oldname`. For religion see
 [here](http://permalink.gmane.org/gmane.comp.version-control.git/217).
 
-### P
+#### P
 
 * `pull remoteserver remotebranch`: Begin tracking file by doing this from 
 the master branch. `pull = fetch + merge`
@@ -698,7 +677,7 @@ branch is specified, it is assumed that localbranch = remotebranch.
     - `push --mirror`: Create identical copy of current folder. **Not tested**
     `push --mirror` = `push --all` + `push --tags`.
 
-### R
+#### R
 * `rebase branch`: Similar to merge - kind of rewrites history, which can be 
 summed up in a single line: **Do not rebase commits that exist in other peoples' repository.**
 If you follow that guideline, you’ll be fine. If you don’t, people will hate 
@@ -739,11 +718,12 @@ shoud check your last commit before you reset as this commit is where you end up
 previous commit. This command adds new history to the project (it doesn't 
 modify existing history). Therefore, it is a “safe” way to undo a single commit— it
 does not “revert” back to the previous state of a project by removing all subsequent 
-commits. In Git, this is actually called a reset, not a revert. 
+commits. In Git, this is actually called a reset, not a revert.
+** Not yet 100% understood. See RStudio revert button**
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
 
-### S
+#### S
 
 * `stash`: Use `git stash` when you want to record the current state of the 
 working directory and the index, but want to go back to a clean working directory. 
@@ -760,7 +740,7 @@ stash@{1} is the one before it).
     - Modified files
     - Branches
 
-### T
+#### T
    
 * `tag`: list all tags. A Tag is a specific point in history, e.g. the 
 publication of the code (Release V1.0).
@@ -771,40 +751,7 @@ publication of the code (Release V1.0).
     commit HASH.
     - `tag -l "xy"`: Search for tags starting with xy.
 
-
-###Concerning fork and branch
-
-All branches on GitHub will be copied 
-in a fork. (Obviously, this doesn’t include branches that were never pushed 
-to GitHub in the first place.) But a **fork is a GitHub-to-GitHub operation**; 
-nothing is copied to your PC. It’s not quite the same as a Git clone. See 
-the manual for git-clone(1) if you wonder “what’s copied when I clone a project?”.
-You cannot always make a branch or pull an existing branch and push back to it, 
-because you are not registered as a collaborator for that specific project.
-Forking is nothing more than a clone on the GitHub server side:
-
-  * without the possibility to directly push back
-  * with fork queue feature added to manage the merge request 
-  
-You keep a fork in sync with the original project by:
-
-  * adding the original project as a remote
-  * fetching regularly from that original project
-  * rebase your current development on top of the branch of interest you got 
-  updated from that fetch.  
-
-The rebase allows you to make sure your changes are straightforward (no merge 
-conflict to handle), making your pulling request that more easy when you want 
-the maintainer of the original project to include your patches in his project.  
-The goal is really to allow collaboration even though direct participation is 
-not always possible. See [here](http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github)
-for more information, escpessially for the difference between **upstream** and 
-**origin**
-
-For further reading see [here](https://www.ralfebert.de/tutorials/git/) and
-[here](https://git-scm.com/docs/).
-
-## Advanced Git: Hooks - the pre-commit hook
+### Advanced Git: hooks - the pre-commit hook
 For example files see appendix. The process is as follows:
 
 * Copy the text in the appendix into a file and save it as `pre-commit` 
@@ -829,48 +776,105 @@ in /.git/hooks/ **without any ending**.
 
 For a complete list see [here](http://ss64.com/nt/).
 
-## GitHub: Create new branch from master
-Do it on GitHub
 
-## GitHub: Set your credentials
+## Github
+
+We have the following existing accounts
+
+* symbolrush (User)
+* Christoph999 (User)
+* ims-fhs (Organisation with rights to set folders as private)
+
+The following tools at the github page are really useful, especially, if you try 
+to understand what is going on with git:
+
+* Graphs => Network
+
+Keep in mind: You can do a lot of stuff in github, but only using the shell you 
+create a consitent history where ou can go back if something unexpected happend!
+
+## GitHub: set your credentials
 You can set your credentials to prevent to insert your username and password all the time on the git shell.
 
 For MAC OSX follow [these](https://help.github.com/articles/caching-your-github-password-in-git/) instructions.
 
+## Github: concerning fork and branch
+
+When talking about version control, we have to distinguish "fork a branch" and 
+"Create a new branch": In contrast to "branch", **"fork" is a pure github to github 
+operation** where all branches on GitHub will be copied (Obviously, this doesn’t include 
+branches that were never pushed to GitHub in the first place.). Nothing is copied 
+to your PC. It’s notquite the same as a Git clone. See the manual for git-clone(1) 
+if you wonder “what’s copied when I clone a project?”. You cannot always make a 
+branch or pull an existing branch and push back to it, because you are not 
+registered as a collaborator for that specific project. Forking is nothing more 
+than a clone on the GitHub server side:
+
+  * without the possibility to directly push back
+  * with fork queue feature added to manage the merge request 
+  
+You keep a fork in sync with the original project by:
+
+  * adding the original project as a remote
+  * fetching regularly from that original project
+  * rebase your current development on top of the branch of interest you got 
+  updated from that fetch.  
+
+The rebase allows you to make sure your changes are straightforward (no merge 
+conflict to handle), making your pulling request that more easy when you want 
+the maintainer of the original project to include your patches in his project.  
+The goal is really to allow collaboration even though direct participation is 
+not always possible. See [here](http://stackoverflow.com/questions/3611256/forking-vs-branching-in-github)
+for more information, escpessially for the difference between **upstream** and 
+**origin**
+
+For further reading see [here](https://www.ralfebert.de/tutorials/git/) and
+[here](https://git-scm.com/docs/).
 
 ***
 
-# Getting started with git and github - Useful cases
 
-**Order of cases?**
+# Getting started with git and github - Useful cases
 
 ## Case 1: You want to join a project
 
 Assume you have an existing github repo 
 <https://github.com/ims-fhs/myfolder>.
 and you want to join working on it. Do the following steps:
+```
+> cd working directory           # Go the place for the new folder
+> git clone https://github.com/ims-fhs/myfolder # clone repo
+> git push -u origin master      # Eventually: Restart RStudio if the Arrows 
+    in the Git Section of RStudio are greyed out.
+```
+Create a new branch `devXXX`, where `XXX` stands for your name. This ensures you don't work on the master branch directly, but on a development branch of your own.
+```
+> git checkout -b devXXX
+```
+... Work on the project...  
+and set the upstream for your development branch and pushes it back to origin:
+```
+> git push -u origin devXXX 
+```
+After this step the tag of your branch on github (network graph) should be 
+aligned with the master tag.
 
-* `shell > cd working directory` (Go the place for the new folder)
-* `shell > git clone https://github.com/ims-fhs/myfolder` (clone repo)
-* `shell > git push -u origin master` Eventually: Restart RStudio if the Arrows 
-in the Git Section of RStudio are greyed out.
-* `shell > git checkout -b devXXX` Create a new branch `devXXX`, where `XXX` stands for your name. This ensures you don't work on the master branch directly, but on a development branch of your own.
-* `shell > git push -u origin devXXX` This sets the upstream for your development branch and pushes it back to origin. After this step the tag of your branch on github (network graph) should be aligned with the master tag.
-* If you have already existing files, just copy them in the new folder by hand.
+If you have already existing files, just copy them in the new folder by hand.
 Otherwise create a new file... All changes will then be visible in git! 
-* If you have reached a certain status you want to share, do the following two 
+
+If you have reached a certain status you want to share, do the following two 
 steps:
     - Rstudio => Git -> Commit
     - Rstudio => Git -> Push (Only works, if you are a collaborator and when 
-    previous `push -u` was successful)
+    previous `push -u` was successful.)
 
-## Case 2: You want somebody else to join a project
+## Case 2: You want somebody else to join your project
 
 Assume you worked on "myproject" project or package or folder and you 
-want others to join the project
+want others to join your project.
 
-* Rstudio => Create new project or package or file. If you create a new project 
-or package, you can set up the default to create a **git repository**. If the 
+* If it is not a project yet: Rstudio => Create new project or package. 
+You can set up the default to create a **git repository**. If the 
 default "create git repo" was not set, do
     - shell `> cd working directory` (The place for the new folder)
     - shell `> git init`
@@ -880,74 +884,39 @@ and
 * Create github repo <https://github.com/ims-fhs/myproject>.
 and add your partner as collaborator (Github repo => Settings => Collaborators 
 and teams.
-* shell `> git remote add origin https://github.com/ims-fhs/myproject`
-* shell `> git pull origin master` (pull files from origin (defined above!) to master)
-* shell `> git push -u origin master`
+
+Your partner must do the following:
+```
+> git remote add origin https://github.com/ims-fhs/myproject # See github!
+> git pull origin master # pull files from origin (defined above!) to master
+> git push -u origin master # set upstream reference
+```
 
 version control in Rstudio can be only accessed within an project. If you have a folder 
 which is not specified as project or package use the Rstudio project dialog...
-File => New project => Existing directory => specify parent folder of file
+File => New project => Existing directory => specify parent folder of file.
 
-## Case 3: Rename remote branch (Just a better name...)
-If you want to rename a branch "both locally and remote" you only have to rename 
-the branche remotely, which means 
-```
-> git push remoteserver remotesrever/oldbranch:refs/heads/newbranch  
-> git push origin :oldbranch.
-```
+## Case 3: You forgot to first pull the project, somebody worked on the remote repo 
 
-### Case 4: You're clever and think to pull the remote repository before you work on the project
-1. Before you start working on your project: Open the console, go to the working 
-directory your project is stored.
-```
-> cd to-working-directory-of-your-project
-> git init
-> git pull origin master
-```
-2. Change the files you want to change.
-3. Commit them.
+You already made your changes when you read this document. Then commit:
 ```
 > git commit -a -m "text"
-```
-4. Push your changes back to the remote repository.
-```
-> git push -u origin master
-```
-
-### Case 4: You forgot to first pull the project, nobody worked on the remote repo
-1. You already made your changes when you read this document
-2. Commit them.
-```
-> git commit -a -m "text"
-```
-3. Push your changes back to the remote repository.
-```
-> git push -u origin master
-```
-
-### Case 4: You forgot to first pull the project, somebody worked on the remote repo 
-1. You already made your changes when you read this document
-
-2. Commit them.
-> git commit -a -m "text"
-
-3. You cannot push them back because you're in `detachedHEAD` status
 > git status
-
-returns you this unhappy message.
-
-4. You have to checkout the remote repository into a new branch
-> git checkout -b newbranch
-
-5. Now you can merge the newbranch from step 3. with your local master
+```
+The status should be `detachedHEAD`. Therefore, you cannot push you changes 
+because you're in `detachedHEAD` status. Procede as follows:
+```
+> git checkout -b newbranch # You have to checkout the remote repository into a new branch
 > git checkout master
-> git merge newbranch
-
-6. Now you can delete the branch from step 4 and push them back to the remote repo
+> git merge newbranch # Now you can merge the newbranch from above with your local master
+```
+Now you can delete the newbranch and push the changes back to the remote repository
+```
 > git branch -d newbranch
 > git push -u origin master
+```
 
-## Case 5: Commit the work you did
+## Case 4: Commit the work you did in RStudio GUI
 You changed a file and want to commit your work. Within R Studio go to Git 
 => Diff. Select the file you want to commit. The lower part of the editor shows 
 your changes:
@@ -962,9 +931,10 @@ commit.
 ### You want to commit only part of what you changed
 * Select the part you don't want to commit, with `shift` held down. Press `unstage selection`.
 * Repeat until only the parts you want to commit are shown in the `staged` window.
+* Rest as above...
 
-## Case 6: You changed something you didn't want to change
-You made false changes to a file and want to correct them before you commit.  
+### You changed something you didn't want to change
+You made false changes to a file and want to correct them **before** you commit.  
 Within R Studio go to Git => Diff. Select the file you want to repair. The lower 
 part of the editor shows your changes:
 
@@ -976,55 +946,41 @@ part of the editor shows your changes:
 * Change to the `unstaged` window
 * Select the parts you changed by fault, with `shift` held down. Press `Discard selection`.
 
-## Case 7: You want to work on different remote branches. But you don't want to change the names of the remote branches and you don't want to introduce new remote branches.
+## Case 5: You worked on a project and want to pass it to github
 
-```
-> git checkout -b remotebranch remoteserver/remotebranch
-```
-Work on it and commit changes...
-```
-> git push -u origin remotebranch
-```
-Afterwards, you can push from Rstudio again...
-
-## Case 10: You worked on something and want to pass it to github
-
-Create a folder in Github. Then open a shell and add the remote repo
+Create a folder in Github. Then open a shell in your project and add the remote 
+repository as a branch (?):
 ```
 > git remote add origin https://github.com/account/remotefolder/
 ```
-
-**Think about what to add to gitignore before you push. Do you want /data to be 
-tracked on the server?**
-
-Push your master branch to the remote repo:
-```
-> git push -u origin master
-```
-See also `git push -u --all`!  
-
-Ensure the remote is set right with
+Ensure the remote is set right with 
 ```
 > git remote show origin
 ```
+Push your master branch to the remote repo:
+```
+> git push -u origin master
+> git remote show origin
+```
+The latter command will tell you the master pushes and pulls to remote/master.
+See also `git push -u --all`!
 
 [Reference](http://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore)
 
-## Case 11: Remove directory DIR from remote repository after adding them to .gitignore
+## Case 6: Remove directory DIR from remote repository after adding them to .gitignore
 
 All the data git uses info is stored in .git/ , so removing it is fine. Of 
 course, make sure that your working copy is in the exact state that 
-you want it, because everything else will be lost. /.git folder is hidden so 
+you want it, because everything else will be lost. The /.git folder is hidden so 
 make sure you turn on Show hidden files, folders and disks option.
 
-* Step 1. Add the folder path to your directories's root /.gitignore file.  
+* Add the folder path to your directories's root /.gitignore file.  
 `path2DIR/DIR/`  
 In case DIR is subfolder of your root directory, you only need to add `DIR/`
-* Step 2. Remove the folder from your local git tracking, but keep it on your disk.  
+* Remove the folder from your local git tracking, but keep it on your disk.  
 `git rm -r --cached path2DIR/DIR/`
-* Step 3. Commit and push your changes to your git repo.
+* Commit and push your changes to your git repo.
 ```
-> git rm -r --cached path2DIR/DIR/  
 > git commit -m "Message"  
 > git push origin master  
 ```
@@ -1035,7 +991,7 @@ repository, or you're using it from multiple computers. If you still want to
 do that, you can use git filter-branch to rewrite the history - 
 [there is a helpful guide to that here](https://help.github.com/articles/remove-sensitive-data/).
 
-## Case 12: You face a staging area with too many files which you never expect to be part of your project
+## Case 7: You face a staging area with too many files which you never expect to be part of your project
 This means that `git status` shows untracked file on a higher level. It could 
 happen as follows: You had a repo and you cloned it. You ran `git clone url/to/repo.git` 
 from your directory say /home/repos/my. Now after the clone, you try `git status` 
@@ -1054,26 +1010,33 @@ So see if 2) is your case. Try changing directory to the folder that git has
 created. Usually you should do a clone as git clone url/to/repo.git. (. at end) 
 if you are already in the folder where you want the repo to be.
 
-## Case 13: When do I use revert, reset, checkout
-If a commit has been made somewhere in the project's history, and you later 
-decide that the commit is wrong and should not have been done, then git revert 
-is the tool for the job. It will undo the changes introduced by the bad commit, 
-recording the "undo" in the history.
+## Case 8: When do I use revert, reset, checkout
 
 If you have modified a file in your working tree, but haven't committed the change, 
 then you can use git checkout to checkout a fresh-from-repository copy of the file.
 
+If a commit has been made somewhere in the project's history, and you later 
+decide that the commit is wrong and should not have been done, then git revert 
+is the tool for the job. It will undo the changes introduced by the bad commit, 
+recording the "undo" in the history. If it was the previous commit, the first 
+choice is `git commit --amend`.
+
+In all other cases use `git revert` to record some new commits to reverse the 
+effect of some earlier commits (often only a faulty one). If you want to throw 
+away all uncommitted changes in your working directory, you should see git-reset[1], 
+particularly the --hard option. If you want to extract specific files as they 
+were in another commit, you should see git-checkout[1], specifically the git 
+checkout <commit> -- <filename> syntax. Take care with these alternatives as 
+both will discard uncommitted changes in your working directory.
+
 If you have made a commit, but haven't shared it with anyone else and you decide 
-you don't want it, then you can use git reset to rewrite the history so that it 
-looks as though you never made that commit.
+you don't want it, then 
 
+* show your problem somebody experienced
+* and use `git reset` to rewrite the history so that it looks as though you 
+never made that commit. **This is really dangerous!**
 
-Given one or more existing commits, revert the changes that the related patches introduce, and record some new commits that record them. This requires your working tree to be clean (no modifications from the HEAD commit).
-
-Note: git revert is used to record some new commits to reverse the effect of some earlier commits (often only a faulty one). If you want to throw away all uncommitted changes in your working directory, you should see git-reset[1], particularly the --hard option. If you want to extract specific files as they were in another commit, you should see git-checkout[1], specifically the git checkout <commit> -- <filename> syntax. Take care with these alternatives as both will discard uncommitted changes in your working directory.
-
-
-## Case 14: You completely messed up git for unknown reasons but a working older version is on github.
+## Case 9: You completely messed up git for unknown reasons but a working older version is on github.
 First: Delete your local folder, try `git clone`.
 
 If for some unhappy reason this doesn't work, try the following:
@@ -1081,9 +1044,8 @@ Rename your messed up folder. Then you create a completely(!) new folder with
 subfolders - renamaing the old folder won't help...  
 Then copy the necessary bare files, e.g. .png, .R, ... to the new folders.
 
-Create a new package (A project based on existing folders should also work???), 
-initialize git (`git init`) and commit you changes "First commit after rebuilding".
-Then proceed as in 4.6 using a newbranch(!).
+Create a new package, initialize git (`git init`) and commit you changes "First 
+commit after rebuilding". Then proceed as in 4.6 using a newbranch(!).
 History is then clear and you are save as you last changes are in the previous 
 commit and the history is in newbranch.
 Think about what happend and merge master (your last changes) into newbranch.
@@ -1091,7 +1053,17 @@ In the end you need `git push -u origin newbranch. You can merge master and
 newbranch later on when you feel save.
 
 
-## Case 15: You want run "git add -A ." in each submodule.
+## Case 10: You want run "git add -A ." in each submodule.
+
+**his is not recommended**: You should carefully change into each 
+submodule in turn, and consider how you want to update them, treating each as 
+a standalone repository. Then only commit these new submodule versions in the 
+main project when you have tested that the project as a whole works with those 
+new versions of each submodule.
+
+Use git status to see untracked files. Empty folders are only visible, when you
+start to commit files in these new folders.
+
 ```
 git submodule foreach --recursive git add -A .
 ```
@@ -1101,59 +1073,70 @@ git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
 ```
 (If you don't have other submodules nested inside those submodules, the 
 `--recursive` option is unnecessary.)  
-This is not recommended: You should carefully change into each 
-submodule in turn, and consider how you want to update them, treating each as 
-a standalone repository. Then only commit these new submodule versions in the 
-main project when you have tested that the project as a whole works with those 
-new versions of each submodule.
-
-Use git status to see untracked files. Empty folders are only visible, when you
-start to commit files in these new folders.
 
 # Debugging
 
 Some useful hints from [here](http://adv-r.had.co.nz/Exceptions-Debugging.html)
 
-* It’s a great idea to adopt the scientific method. Generate hypotheses, design 
+It’s a great idea to adopt the scientific method. Generate hypotheses, design 
 experiments to test them, and record your results. This may seem like a lot of 
 work, but a systematic approach will end up saving you time. I often waste a lot 
 of time relying on my intuition to solve a bug (“oh, it must be an off-by-one 
 error, so I’ll just subtract 1 here”), when I would have been better off taking 
 a systematic approach.
-* **Fix it and test it:** Once you’ve found the bug, you need to figure out how 
+
+**Fix it and test it:** Once you’ve found the bug, you need to figure out how 
 to fix it and to check that the fix actually worked. Again, it’s very useful to 
 have automated tests in place. Not only does this help to ensure that you’ve 
 actually fixed the bug, it also helps to ensure you haven’t introduced any new 
 bugs in the process. In the absence of automated tests, make sure to carefully 
 record the correct output, and check against the inputs that previously failed.
+This can be summarized as follows:
+
+* Realise that you have a bug
+* Make it repeatable
+* Figure out where it is using traceback()
+* Fix it and test it
+
+The following basic tools are available in the console:
+
+* traceback() in the console
+* options(error = traceback) for automatation.
+* Use `browser()`anywhere in the code. Thus, you have
+    - full access to functions an variables - even the ones which are not yet evaluated,
+    - all environments available
+    - full access to command line (n=next, ls()=list all variables, s=step into function
+    f= finish and c=continue) and
+    - you can access packages when the --with-keep.source option is set for the 
+    present package.
+* options(error = browser)
+* options(error = recover)
+
+In general you can view the options using `options` or `options("error")`
 
 ***
 
+
 # Appendix: Some useful hooks
 
-Source files are from [here]<https://gist.github.com/rmflight/8863882>
+Source files are from [here](https://gist.github.com/rmflight/8863882):
+Licensed under CC0 (just be nice and point others to where you got this)
+Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
+This is a pre-/ post-commit hooks
+
+To install it, simply copy this into the `.git/hooks/pre-commit` or 
+`.git/hooks/pre-commit` file of your git repo, change `/path/2/Rscript`, and make 
+it executable. Note that `/path/2/Rscript` is the same as your `/path/2/R/bin/R`, 
+or may be in `/usr/bin/Rscript` depending on your installation. 
 
 ## Pre-commit hook (Tested)
 
 ```
 #!C:/R/R-3.2.2/bin/x64/Rscript
 
-# License: CC0 (just be nice and point others to where you got this)
-# Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
-#
-# This is a pre-commit hook that checks that there are files to be committed, 
-# and if there are, increments the package version in the DESCRIPTION file.
-#
-# To install it, simply copy this into the ".git/hooks/pre-commit" file of your 
-# git repo, change /path/2/Rscript, and make it executable. Note that 
-# /path/2/Rscript is the same as your /path/2/R/bin/R, or may be in /usr/bin/Rscript 
-# depending on your installation. This has been tested on both Linux and Windows 
-# installations.
-#
 # In instances where you do NOT want the version incremented, add the environment 
 # variable inc=FALSE to your git call e.g. "inc=FALSE git commit -m "commit message".
 # This is useful when you change the major version number for example.
-
 inc <- TRUE # default
 
 # get the environment variable and modify if necessary
@@ -1191,20 +1174,6 @@ if ((length(fileDiff) > 0) && inc) {
 ```
 #!C:/R/R-3.2.2/bin/x64/Rscript
 
-# License: CC0 (just be nice and point others to where you got this)
-# Author: Robert M Flight <rflight79@gmail.com>, github.com/rmflight
-#
-# This is a post-commit hook that after a successful commit subsequently 
-# increments the package version in DESCRIPTION and commits that. Analogous to 
-# the pre-commit at https://gist.github.com/rmflight/8863882, but useful if you 
-# only have good reasons for not doing it on the pre-commit.
-#
-# To install it, simply copy this into the ".git/hooks/post-commit" file of your 
-# git repo, change /path/2/Rscript, and make it executable. Note that 
-# /path/2/Rscript is the same as your /path/2/R/bin/R, or may be in /usr/bin/Rscript 
-# depending on your installation. This has been tested on both Linux and Windows 
-# installations.
-#
 # In instances where you do NOT want the version incremented, add the environment 
 # variable inc=FALSE to your git call e.g. "inc=FALSE git commit -m "commit message"".
 # This is useful when you change the major version number for example.
@@ -1238,18 +1207,16 @@ if (inc){
 }
 ```
 
-## git diff wrapper and the .gitconfig file (Windows)
+## .gitconfig file (Windows)
 
-After installing kdiff3, you need to adapt your git config file (For convenience, I show all of my config 
-file...)
+After installing kdiff3, you need to adapt your git config file (For convenience, 
+I show all of my config file...)
 ```
-[filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
 [user]
 	name = Christoph Strauss
 	email = christoph.strauss@fhsg.ch
+[merge] # SCN. Check SQC???
+	conflictstyle = diff3 # SCN. Check SQC???
 [credential]
 	helper = wincred # Use helper to avoid typing pwd all the time
 [alias]
@@ -1258,8 +1225,26 @@ file...)
 	cmd = 'C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE # Use kdiff3
 	keepBackup = false
 	trustExitCode = false
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
 ```
-if you also set
+For **MAC** you need to replace
+```
+[credential]
+	helper = osxkeychain
+[difftool "kdiff3"]
+    tool = kdiff3
+    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+    trustExitCode = false
+```
+Alternatively you can also use the MAC OSX integrated diff and merge tool 
+called "File Merge". Therefore you don't need to change anything in your 
+.gitconfig file. If you want to diff two branches just type: `git diff branch1 branch2` 
+into the terminal.
+
+If you also set
 ```
 [core]
 	editor = 'C:/Program Files/KDiff3/kdiff3' # Set core editor to kdiff3
@@ -1269,30 +1254,24 @@ if you also set
 	external = 'C:/Users/sqc/git-diff-wrapper.sh' # Use external wrapper for 7 arguments
 ```
 you run into problems with the nice "commit-editor" in RStudio. Therefore, I do 
-not use that any more. 
+not use that any more.
 
-## git diff wrapper and the .gitconfig file (Mac)
-After installing kdiff3, you need to adapt your git config file (For convenience, I show all of my config 
-file...)
-```
-[user]
-	name = Adrian Schmid
-	email = trompetenschmid@gmail.com
-[merge]
-	conflictstyle = diff3
-[credential]
-	helper = osxkeychain
-[alias]
-	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-[difftool "kdiff3"]
-    tool = kdiff3
-    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
-    trustExitCode = false
-```
+## R-script to calculate story points from symphonical
 
-Alternatively you can also use the MAC OSX integrated diff and merge tool called "File Merge". Therefore you don't need to change anything in your .gitconfig file. If you want to diff two branches just type: `git diff branch1 branch2` into the terminal.
+```
+imsbasics::clc()
+symphonical <- rjson::fromJSON(file = "swBn2e.json")
+cards <- symphonical$board_cards
+description <- c()
+aufwand <- c()
+for (i in 1:length(cards)) { 
+  description[i] <- cards[[i]]$description
+  aufwand[i] <- strsplit(description[i], split = "Aufwand: ")[[1]][2]
+  aufwand[i] <- strsplit(aufwand[i], split = " SP")[[1]][1]
+  }
+aufwand <- as.numeric(aufwand)
+sum(aufwand, na.rm = TRUE)
+```
 
 ***
-
-Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
 
