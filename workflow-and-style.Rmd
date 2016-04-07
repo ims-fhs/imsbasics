@@ -185,7 +185,7 @@ Important note: Install packages always to C:/R/R-x.x.x/
 ```
 
 It might also be useful to install [MikTex](http://miktex.org/download) to be 
-able to Rmarkdown.
+able to use Rmarkdown.
 
 Finally, make sure, you installed the packages
 
@@ -1098,6 +1098,13 @@ This can be summarized as follows:
 * Figure out where it is using traceback()
 * Fix it and test it
 
+##Debugging in RStudio
+The RStudio Article https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio describes the built in Debugging Tools in RStudio.
+
+IMHO, the best you can do is to set the RStudio Option in the menu "Debug/On Error" to "Break in Code". With this option set, RStudio stops execution if an error occurs on the line that threw the error. The environment shows all valid variables. The traceback window shows the call stack.
+
+
+##Debugging on the console
 The following basic tools are available in the console:
 
 * traceback() in the console
