@@ -1,7 +1,7 @@
 # =============================================================================
 # Independent functions:
 
-# force_warning <- function(mytext) { #.........................................Use???
+# force_warning <- function(mytext) { #... Be careful: Do you still know where the warning was created?
 #   old <- getOption("warn")
 #   options(warn = 0)
 #   warning(mytext) # This message is useful! Keep it. See warn handling...
@@ -9,9 +9,10 @@
 # }
 
 # set_custom_rstudio <- function(recordTraceback = T, warn = 2) {
-#   options(.rs.recordTraceback = T) # ? 
+#   options(.rs.recordTraceback = T) # ?
 #   options(warn = 2) # 0 on / -1 off / 2 warn2err
 #   options(stringsAsFactors = F)
+# options(error = traceback)
 # }
 
 

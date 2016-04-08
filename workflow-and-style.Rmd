@@ -1,7 +1,7 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "01 April 2016"
+date: "06 April 2016"
 output:
   pdf_document:
     fig_caption: yes
@@ -95,6 +95,10 @@ is worth writing a few lines (in the description file) and creating a GitHub Tag
 * PATCH version when you make a commit to your development branch. (bugfix, 
 feature or minor change)
 
+Process in case re-writing code is necessary:
+1. merge all relevant branches into master branch and review the result.
+2. re-write the code and commit. Review the result.
+3. don't forget to push!
 
 ## Indentation  
 
@@ -114,7 +118,22 @@ Place a space before left parenthesis, except in a function call.
 6. Executed statements, if applicable (e.g., print, plot)
 
 Unit tests should go in a separate file named `test-originalfunction(s).R`. See 
-testthat package for documentation.  
+testthat package for documentation. Implemented tests from  [Hadley](https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf)
+
+Full | Short cut
+------------- | -------------
+expect_that(x, is_true()) | expect_true(x)
+expect_that(x, is_false()) | expect_false(x)
+expect_that(x, is_a(y)) | expect_is(x, y)
+expect_that(x, equals(y)) | expect_equal(x, y)
+expect_that(x, is_equivalent_to(y)) | expect_equivalent(x, y)
+expect_that(x, is_identical_to(y)) | expect_identical(x, y)
+expect_that(x, matches(y)) | expect_matches(x, y)
+expect_that(x, prints_text(y)) | expect_output(x, y)
+expect_that(x, shows_message(y)) | expect_message(x, y)
+expect_that(x, gives_warning(y)) | expect_warning(x, y)
+expect_that(x, throws_error(y)) | expect_error(x, y)
+
 Include non-standard packages using `libraray(package)`
 
 Use the following structure for packages
@@ -165,10 +184,11 @@ Be careful with path conventions. R needs "/"!
 ```
 Be careful: Here, you have to add the system path "C:/R/R-x.x.x/bin;"
 ```
-To reach the path see `Systemsteuerung\System und Sicherheit\System`
+To reach the path see 
+`Systemsteuerung -> System und Sicherheit -> System -> Erweiterete Einstellungen`
 => Umgebungsvariablen...
 
-For further help see [Fox](http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html).
+Follow the steps in [Fox](http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html).
 
 ## Install RStudio
 
@@ -215,14 +235,21 @@ Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
 
 ## The shell
 
-### The shell: first steps
+### The shell: first steps for Linux shell (or bash?)
 
+For windows cmd commands see next section!
 A (Linux) shell can be opened in Rstudio via Rstudio => Tools => Shell...
 Notation for the cd-command.  
 You can find the help for any command via help command, e.g. `help cd`  
 There you will find  
 `cd [-L|-P] [dir]`.  
 Here, `[]` means an optional argument and `|` means "either or".  
+
+To change the directory type 
+```
+> cd C:/ # go from C:/somewhere/ to C: 
+> cd C: # go from H: to C: 
+```
 The "." notation refers to the working directory itself and the ".." notation 
 refers to the working directory's parent directory.
 Sometimes you can also find
@@ -232,11 +259,12 @@ Sometimes you can also find
 These two commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
 The first variant is fast to write, the second one is easy to read and understand.
 
-### The shell: overview over commands
+### The shell: overview over windows cmd commands
 
 The following commands are possible:
 
-* [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`
+* [Navigation](http://linuxcommand.org/lc3_lts0020.php) `cd, pwd`, e.g.
+    - `> cd /d C`: Change the directory. cmd.exe behaves like DOS.
 * [Looking](http://linuxcommand.org/lc3_lts0030.php) around `ls, less, file`
     - `q` = Quit!
 * [Manipulating files](http://linuxcommand.org/lc3_lts0050.php) `cp, mv, rm, mkdir`
@@ -379,7 +407,10 @@ Git for Windows is provided as installer package by the msysgit project.
 Download the latest package starting with "Git-", not a "msysgit-..." package 
 (the latter are supposed to be used to build git yourself). Git for Windows 
 comes with a UNIX environment as far as needed by git and also ships with a 
-Bash shell for using the git command line tools.
+Bash shell for using the git command line tools. Settings during installation: 
+* Git from Windows cmd (save way), then
+* Checkout windows style, commit in Unix style line endings, then
+* Use winTTY.
 
 Further useful literature:
 
@@ -393,7 +424,7 @@ Open a shell (e.g. from RStudio) and test some basic commands:
 ```
 > where git # Shows, where git.exe is located
 > git version # Shows the version
-> git config --global --edit # Here, you can see, which config file is used.
+> git config --list --show-origin # View config file and location (> V2.8).
 ```
 
 Now we are ready to start. You can use the following commands to track and 
@@ -516,15 +547,18 @@ any repository.
     branches" then you need to `fetch` them first - see `fetch`.
     - `checkout -b newbranch HEAD`: If you have a **detached HEAD** you can use 
     this command to assign newbranch to the detached HEAD.
-    - `checkout shorthash`: checkout old version. See `git log` for possible hash
-    keys. As result you end up with a **detached HEAD**. This is on purpose, as 
-    you can play around without consequences. Read the note after command is executed!
+    - `checkout shorthash` on Commit-level: Switch between branches or inspect 
+    old snapshots. See `git log` for possible hash keys. As result you end up 
+    with a **detached HEAD**. This is on purpose, as you can play around without 
+    consequences. Read the note after command is executed!
     With a subsequent `git checkout lastbranch` you go back as if nothing had happend.
     **This is even true, when you modified and commit the old version. All changes 
     are lost!** In case you meesed things up (e.g. `git checkout notlastbranch`) 
     and you don't want to keep changes see `git reset --hard HEAD`.
     - `checkout @{-1}`: Checkout previous branch. @{-1} is always a way to 
     refer to the last branch you were on. 
+    - `checkout file` on file-level: Discard changes after a `git reset file` 
+    in the working directory.
 * `clean -f`: Remove (= delete) untracked files.
     - `clean -f -n`: Don’t actually remove anything, just show what would be done.
     - `clean -fd`: Force removing Remove untracked directories in addition to 
@@ -550,8 +584,20 @@ will be called `master`)
     contains the message of your previous commit.
     Do **not use `--amend` option after you pushed the last commit**. In this 
     case you have to merge the two.
-* `config` : Configure git.
-    - `config --list`: List all configurations.
+* `config` : Configure git. 
+    - `config --list` or `config --list --show-origin`: List all configurations; 
+    in the ladder case with the origin of the file (only working for Git >2.8). 
+    Git checks 4 places for a configuration file:
+        + System config: Your machine's system `.gitconfig file`.
+        + User config: Your user .gitconfig file located at `~/.gitconfig`.
+        + A second user-specific configuration file located at 
+        `$XDG_CONFIG_HOME/git/config` or `$HOME/.config/git/config`.
+        + Repo-specific config: The local repo's config file .git/config.
+    The settings cascade in the following order, with each file adding or 
+    overriding settings defined in the file above it.  
+    You can see what each file has defined using the following commands:
+    - `config --system --list`: List all system configurations. Be careful when 
+    you change it. In the worst case you have to **reinstall everything**.
     - `config --global --list`: List all global configurations.
     - `config varname`: Display the value of git variable varname. 
     - `config --global alias.myshortname Realgitcommand`: Introduce shortcut
@@ -713,13 +759,15 @@ to share work. Be careful with fork (Github).
 * `reset` **is an exteremly dangerous method**. It can be used if you messed 
 things up and it is ok when you loose **all uncommited changes**. Therefore, you 
 shoud check your last commit before you reset as this commit is where you end up with 
-    - `reset --hard HEAD` Permanently undo uncommitted changes in case of a detached HEAD.
-* `revert`: This command creates a new commit that undoes the changes from a 
+    - `reset file` on file-level: Unstage a file (Not dangerous)
+    - `reset --hard HEAD` on commit-level: Discard commits in a private branch or 
+    throw away uncommited changes. Permanently undo uncommitted changes in case 
+    of a detached HEAD.
+* `revert hash`: This command creates a new commit that undoes the changes from a 
 previous commit. This command adds new history to the project (it doesn't 
 modify existing history). Therefore, it is a “safe” way to undo a single commit— it
 does not “revert” back to the previous state of a project by removing all subsequent 
 commits. In Git, this is actually called a reset, not a revert.
-** Not yet 100% understood. See RStudio revert button**
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
 
@@ -794,9 +842,12 @@ Keep in mind: You can do a lot of stuff in github, but only using the shell you
 create a consitent history where ou can go back if something unexpected happend!
 
 ## GitHub: set your credentials
-You can set your credentials to prevent to insert your username and password all the time on the git shell.
+You can set your credentials to prevent to insert your username and password all 
+the time on the git shell.
 
-For MAC OSX follow [these](https://help.github.com/articles/caching-your-github-password-in-git/) instructions.
+For MAC OSX follow 
+[these](https://help.github.com/articles/caching-your-github-password-in-git/) 
+instructions.
 
 ## Github: concerning fork and branch
 
@@ -847,7 +898,8 @@ and you want to join working on it. Do the following steps:
 > git push -u origin master      # Eventually: Restart RStudio if the Arrows 
     in the Git Section of RStudio are greyed out.
 ```
-Create a new branch `devXXX`, where `XXX` stands for your name. This ensures you don't work on the master branch directly, but on a development branch of your own.
+Create a new branch `devXXX`, where `XXX` stands for your name. This ensures you 
+don't work on the master branch directly, but on a development branch of your own.
 ```
 > git checkout -b devXXX
 ```
@@ -1114,6 +1166,13 @@ The following basic tools are available in the console:
 
 In general you can view the options using `options` or `options("error")`
 
+## Debugging in testthat
+
+When using RStudio GUI button (Strg + Shift + T) commands do not work. Therefore
+1. Insert a call to browser() somewhere within the testthat unit tests.
+2. Save the changes as there is no auto-save!
+3. Run devtools::test() from the RStudio console.
+
 ***
 
 
@@ -1229,6 +1288,8 @@ I show all of my config file...)
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+# [include] 
+#   path = 'C:/Users/sqc/.gitconfig' # SQC: Does not work. global options cannot be accesed from anywhere
 ```
 For **MAC** you need to replace
 ```
