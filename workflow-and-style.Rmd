@@ -1,7 +1,7 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "01 April 2016"
+date: "13 April 2016"
 output:
   pdf_document:
     fig_caption: yes
@@ -1123,6 +1123,132 @@ In general you can view the options using `options` or `options("error")`
 
 ***
 
+# packrat
+
+Packrat is a dependency management system for R. It allows you to make and manage a project specific library that can be shared with your colleagues.
+
+Why you should use this: (quote from the makers website)
+> R package dependencies can be frustrating. Have you ever had to use trial-and-error to figure out what R packages you need to install to make someone else’s code work–and then been left with those packages globally installed forever, because now you’re not sure whether you need them? Have you ever updated a package to get code in one of your projects to work, only to find that the updated package makes code in another project *stop* working?
+
+## Getting Started
+1. Read, understand and follow https://rstudio.github.io/packrat
+2. About packrat and RStudio https://rstudio.github.io/packrat/rstudio.html
+
+### RStudio on Mac OSX
+Somehow, the RStudio in built packrat support doesn't work on SCN's MAC OSX.
+Reported here: https://support.rstudio.com/hc/en-us/community/posts/206678697-RStudio-0-99-697-doesn-t-recognize-OSX-10-11-Xcode-7-command-line-tools-
+
+### Workflow for setting up packrat
+
+Start on an empty project. (Even if you want to integrate packrat in an existing project. If so just copy your project folder, name one copy _BACKUP, delete every file in the not _BACKUP folder and start). You can later copy back everything bit by bit.
+=> This helped SCN, but it's not sure if it really helps or if it's just vodoo.
+
+1. Install packrat
+`install.packages("packrat")` don't use the GitHub Version, it did not work for SCN..
+
+2. Initialise packrat
+Be sure you're in your project's working directory.  
+`packrat::init()` will parse your code (but you don't have any at the moment..) to see what packages you use and install all these packages into the `packrat` subfolder in your project. After that you type `packrat::snapshot()`. Type `packrat::status()` if you get back
+> Up to date.
+
+your packrat is setup. Happy you. If not, I can not help you.
+
+3. Put your code back to your project folder
+..and run again `packrat::status`. Now packrat finds all the packages you're referencing in your code. You'll get something like
+
+> The following packages are referenced in your code, but are not present
+in your library nor in packrat:
+    DT
+    LUKSR
+    RColorBrewer
+    base64enc
+    colorspace
+    data11R
+    dichromat
+    geocoder
+    htmlwidgets
+    jsonlite
+    labeling
+    leaflet
+    munsell
+    plot11R
+    plyr
+    png
+    raster
+    readxl
+    reshape2
+    scales
+    simTimeR
+    sp
+You will need to install these packages manually, then use
+packrat::snapshot() to record these packages in packrat.
+
+Do it with `install.packages("DT")` etc. This will only install those packages to your packrat library.
+
+After that do `packrat::snapshot()`
+
+You may need to repeat step 3. some times since packrat finds packages recursively.
+
+4. Installing the local packages
+After installing all packages available through CRAN or GitHub I ended up with
+
+`packrat::status()`
+
+> The following packages are used in your code, tracked by packrat, but no longer present in your library:
+               from   to
+    LUKSR       0.2   NA
+    data11R     0.1   NA
+    simTimeR    1.1   NA
+>
+> Use packrat::restore() to restore these libraries.
+
+If you only have these packages locally on your machine, copy the project folders of those packages into `..your-packrated-project-folder/packrat/lib/x86_64-apple-darwin13.4.0/3.2.1/` This path may be different, but it's just the packrat library inside your packrated project. Capisce?
+
+Run `packrat::snapshot()`
+
+Run `packrat::status()`
+
+If you get
+> Up to date.
+
+you're set.
+
+No wait. Now your local packages are known by packrat. Still they're not installed as you can verify in the packge tab in RStudio.
+
+You need to install these packages manually from their local sources stored in the "packrat/src" directories.
+
+I had to run:
+`install.packages("~/Documents/R/LUKS/packrat/src/cacheR/cacheR_0.1.tar.gz", repos = NULL, type = "source")`
+
+`install.packages("~/Documents/R/LUKS/packrat/src/data11R/data11R_0.1.tar.gz", repos = NULL, type = "source")`
+
+and
+
+`install.packages("~/Documents/R/LUKS/packrat/src/data11R/data11R_0_1.tar.gz", repos = NULL, type = "source")`
+
+Now you're set.
+
+### local.repos option
+There is the local.repos option in packrat. This should allow you to do step 4. automatically. It didn't work on the first try for me..
+
+Proof to be done.
+
+### GitHub Installation
+After installing `plot11R` v1.0.0 from GitHub with
+`devtools::install_github("ims-fhs/plot11R", auth_token = "35b77ed8d745a9572409e6c153e20e36d45094ed", ref = "v1.0.0")` packrat said, that there is a sync difference between my local library and packrat. Obviously since I updated the local library with the new `plot11R`. However `packrat::snapshot()` failed, because it didn't find `plot11R` on GitHub. Probably because it is a private repo..?
+
+I had to find a workaround:
+
+1. Get the source file from GitHub
+
+2. Put it into your local packrat/src folder
+
+3. Install `plot11R` from that source.
+
+Hurray.
+
+
+***
 
 # Appendix: Some useful hooks
 
