@@ -69,14 +69,14 @@ test_that("save_rdata", {
   expect_error(save_rdata(savename), )
 
   # save variable with using the given path:
-  save_rdata(testroutes, savename, savepath) # Warning cannot be switched off
-  expect_equal(file.exists(paste0(savepath, savename)), T)
+  save_rdata(testroutes, savename, path) # Warning cannot be switched off
+  expect_equal(file.exists(paste0(path, savename)), T)
 
   # Check warning, when file already exists:
-  expect_warning(save_rdata(testroutes, savename, savepath), )
+  expect_warning(save_rdata(testroutes, savename, path), )
 
   # Check overwriting:
-  expect_warning(save_rdata(testroutes, savename, savepath, force = T), )
+  expect_warning(save_rdata(testroutes, savename, path, force = T), )
 
   # Check errors if parameters are missing
   expect_error(save_rdata(testroutes, savename, force = T), ) # Warning cannot be switched off
