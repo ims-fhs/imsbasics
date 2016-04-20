@@ -9,12 +9,25 @@
 # }
 
 # set_custom_rstudio <- function(recordTraceback = T, warn = 2) {
-#   options(.rs.recordTraceback = T) # ?
-#   options(warn = 2) # 0 on / -1 off / 2 warn2err
-#   options(stringsAsFactors = F)
-# options(error = traceback)
+# options(error = NULL)
+# options(error = function(){.rs.breakOnError(TRUE)}) # RS => Debug => On Error => Error Inspector
+# options(warn = 2) # 0 on / -1 off / 2 warn2err
+# options(stringsAsFactors = F)
+# library(lubridate)
 # }
 
+# Siehe http://stackoverflow.com/questions/16042380/merge-data-frames-and-overwrite-values
+# function merge_replace
+# commonNames <- names(df1)[which(colnames(df1) %in% colnames(df2))]
+# commonNames <- commonNames[commonNames != "key"]
+# dfmerge<- merge(df1,df2,by="key",all=T)
+# for(i in commonNames){
+#   left <- paste(i, ".x", sep="")
+#   right <- paste(i, ".y", sep="")
+#   dfmerge[is.na(dfmerge[left]),left] <- dfmerge[is.na(dfmerge[left]),right]
+#   dfmerge[right]<- NULL
+#   colnames(dfmerge)[colnames(dfmerge) == left] <- i
+# }
 
 #' decimalplaces returns the number of decimal places of x
 #'

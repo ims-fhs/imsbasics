@@ -1,7 +1,7 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "06 April 2016"
+date: "20 April 2016"
 output:
   pdf_document:
     fig_caption: yes
@@ -135,7 +135,6 @@ expect_that(x, gives_warning(y)) | expect_warning(x, y)
 expect_that(x, throws_error(y)) | expect_error(x, y)
 
 Include non-standard packages using `libraray(package)`
-
 Use the following structure for packages
 
 * /package/data/: RData (Output).
@@ -147,6 +146,18 @@ For customer projekts we need
 
 * /project/data/rawdata/yyyy/: subfolder for rawdata for year yyyy.
 * /project/data/yyyy/: working directory includes all analysis for year yyyy.
+
+## Testing
+
+Unit tests should go in a separate directory, see testthat package for documentation.  
+The tests contain
+* a helper-file for
+    - loading data
+    - check that test data's uuid has not changed and
+    - limits for benchmark tests (`t_fast_us`, `t_fast_ms` and `t_slow`)
+* test files named `test-originalfunction(s).R`
+* benchmark tests and
+* a test which checks the result for consistency ("Simulation outcome ok").
 
 ## Project management and documentation
 
@@ -426,6 +437,26 @@ Open a shell (e.g. from RStudio) and test some basic commands:
 > git version # Shows the version
 > git config --list --show-origin # View config file and location (> V2.8).
 ```
+The last command shows all your config files and their content. In general, we 
+have the following hirarchy of config files:
+
+* System level (--system): OS level
+* User (--global): The file will be placed under your %HOME% folder.
+* Project (--local): Specific definitions for the given project. This file is 
+located in the project under `.git/config`.
+
+I have the following locations (Windows):
+```
+file:"C:\\ProgramData/Git/config"       ...
+file:"C:\\Git\\mingw64/etc/gitconfig"   ???
+file:C:/Users/sqc/.gitconfig            ...
+file:.git/config                        ...
+```
+
+If you want to have access to all commmands (e.g. alias names) from Windows cmd, you 
+need to set the `user variable` `HOME=C:\Users\sqc` (Backslash! `%USERPROFILE%` Not 
+tested). Git searches for the global config file in `%HOME%` (which is not set by 
+default on Windows). For further details see Appendix.
 
 Now we are ready to start. You can use the following commands to track and 
 understand what is going on. For explanations see below. 
@@ -604,7 +635,8 @@ will be called `master`)
     for "Real git command", e.g. `config --global alias.ci "commit -v"`.
     Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
     is needed. Excample for a complex command (working on windows!):
-    `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
+        + `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
+        + `git config --global alias.taghist "log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'"`:
     - `config --global --unset varname`: Delete global `varname`, e.g. 
     `alias.myshortname` shortcut. Does not work, if several `varname` with the 
     same name exist.
@@ -667,9 +699,20 @@ The default name for the starting branch is **master**.
     - `log -2`: Show last two commits.
     - `log --pretty=format "%h - %an, %ad: %s:"`: Nice format, shows 
     hash - authorname, date: commitcomment.
-    - `log --oneline --decorate`: Show branches including pointers.
+    - `log --oneline --decorate`: Show branches including pointers.  
+        + `--decorate`: Print out the ref names of any commits that are shown. If short is specified,
+        the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be 
+        printed. If full is specified, the full ref name (including prefix) will be 
+        printed. The default option is short.
+        + `--oneline`: <sha1> <title line>
     - `log --follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
+    - `log --date-order --graph --tags --simplify-by-decoration --pretty=format:"%ai %h %d"`:
+    List all tags with dates
+    - `log --tags`: List all commits and tags including all details.
+    - `log --no-walk --tags --pretty=format:"%d, %h - %an, %ad: %s" --date=short`: List 
+    all tags only including all details. `%d` stands for ref names, like the 
+    `--decorate` option of git-log
 
 #### M
 
@@ -798,6 +841,7 @@ publication of the code (Release V1.0).
     - `tag -a version HASH -m text`: Create an annotated tag as above for old 
     commit HASH.
     - `tag -l "xy"`: Search for tags starting with xy.
+    - `tag -l -n99`: List all tags including first 99 lines of the annotations.
 
 ### Advanced Git: hooks - the pre-commit hook
 For example files see appendix. The process is as follows:
@@ -1316,6 +1360,49 @@ If you also set
 ```
 you run into problems with the nice "commit-editor" in RStudio. Therefore, I do 
 not use that any more.
+
+### Work in progress...
+
+Many parts not understood. Identical to stuff above... (18.04.2016 SQC)
+```
+C:\07 Rprogress\05 Rettung SG>git config --list --show-origin
+file:"C:\\ProgramData/Git/config"       core.symlinks=false
+file:"C:\\ProgramData/Git/config"       core.autocrlf=true
+file:"C:\\ProgramData/Git/config"       core.fscache=true
+file:"C:\\ProgramData/Git/config"       color.diff=auto
+file:"C:\\ProgramData/Git/config"       color.status=auto
+file:"C:\\ProgramData/Git/config"       color.branch=auto
+file:"C:\\ProgramData/Git/config"       color.interactive=true
+file:"C:\\ProgramData/Git/config"       help.format=html
+file:"C:\\ProgramData/Git/config"       http.sslcainfo=C:/Git/mingw64/ssl/certs/ca-bundle.crt
+file:"C:\\ProgramData/Git/config"       diff.astextplain.textconv=astextplain
+file:"C:\\ProgramData/Git/config"       rebase.autosquash=true
+file:"C:\\Git\\mingw64/etc/gitconfig"   credential.helper=manager
+file:C:/Users/sqc/.gitconfig    filter.lfs.clean=git-lfs clean %f
+file:C:/Users/sqc/.gitconfig    filter.lfs.smudge=git-lfs smudge %f
+file:C:/Users/sqc/.gitconfig    filter.lfs.required=true
+file:C:/Users/sqc/.gitconfig    user.name=Christoph Strauss
+file:C:/Users/sqc/.gitconfig    user.email=christoph.strauss@fhsg.ch
+file:C:/Users/sqc/.gitconfig    credential.helper=wincred
+file:C:/Users/sqc/.gitconfig    alias.hist=log --pretty=format:'%h - %an, %ad: %s' --graph --date=short
+file:C:/Users/sqc/.gitconfig    alias.taghist=log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'
+file:C:/Users/sqc/.gitconfig    difftool.kdiff3.cmd='C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE
+file:C:/Users/sqc/.gitconfig    difftool.kdiff3.keepbackup=false
+file:C:/Users/sqc/.gitconfig    difftool.kdiff3.trustexitcode=false
+file:.git/config        core.repositoryformatversion=0
+file:.git/config        core.filemode=false
+file:.git/config        core.bare=false
+file:.git/config        core.logallrefupdates=true
+file:.git/config        core.symlinks=false
+file:.git/config        core.ignorecase=true
+file:.git/config        core.hidedotfiles=dotGitOnly
+file:.git/config        remote.origin.url=https://github.com/ims-fhs/Rettung-SG
+file:.git/config        remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config        branch.master.remote=origin
+file:.git/config        branch.master.merge=refs/heads/master
+file:.git/config        branch.devSCN.remote=origin
+file:.git/config        branch.devSCN.merge=refs/heads/devSCN
+```
 
 ## R-script to calculate story points from symphonical
 
