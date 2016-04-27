@@ -2,6 +2,7 @@
 # Independent functions:
 
 # force_warning <- function(mytext) { #... Be careful: Do you still know where the warning was created?
+#   options(digits = 20)
 #   old <- getOption("warn")
 #   options(warn = 0)
 #   warning(mytext) # This message is useful! Keep it. See warn handling...
@@ -87,27 +88,31 @@ load_rdata <- function(filename,
 #'
 #' @return path to file ot NULL in case file already exists.
 #'
-save_rdata <- function(data, filename, path, force = F) { # "inverse" of load_rdata
+save_rdata <- function(data, filename, path, force = F, warn = T) { # "inverse" of load_rdata
   # data, filename and path needed. Otherwise: error...
   if (missing(data) | missing(filename) | missing(path)) {
     stop("Data, filename and path arguments are required")
   }
-
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
   }
+
   # Check that you don't overwrite a file. If file already exists:
   if (file.exists(paste0(path, filename))) {
     if (force == F) {
       old <- getOption("warn")
-      options(warn = 0)
-      warning("File not saved. File already exists")
+      if (warn == T) {
+        options(warn = 0)
+        warning("File not saved. File already exists")
+      }
       options(warn = old)
     } else {
       old <- getOption("warn")
-      options(warn = 0)
-      warning("Old file overwritten")
+      if (warn == T) {
+        options(warn = 0)
+        warning("Old file overwritten")
+      }
       options(warn = old)
       save(data, file = paste0(path, filename))
     }

@@ -215,6 +215,8 @@ or use the built in package Editor => Install
 Important note: Install packages always to C:/R/R-x.x.x/
 ```
 
+**ToDO: .libPaths() = "C:/R/R-3.2.2/library"**
+
 It might also be useful to install [MikTex](http://miktex.org/download) to be 
 able to use Rmarkdown.
 
@@ -493,7 +495,7 @@ this change to the index with `git add`:
 ```
 Only then you can commit again. The following should be clear: The first time, 
 you say "here is a new file I want to commit" - then you commit. The second time, 
-git realises that "there is a new file you should commit"!
+git realises that "there is a changed file you should commit"!
 
 If you want to list all the files **currently being tracked** under the branch 
 "master", you could use this command:
@@ -508,6 +510,17 @@ git tells you:
 > git remote show origin
 > git log # for an elegant way see `git hist` 
 ```
+
+If you want git to ignore some files and/or folders, create a `.gitignore` file 
+in the root folder of your project and edit it with your favorite editor. It looks
+something like
+```
+.Rhistory # Comment here
+files.whatever
+
+Folders/
+```
+See [gitignore](https://git-scm.com/docs/gitignore) for further details.
 
 ### Git: useful commands
 
@@ -765,6 +778,8 @@ branch is specified, it is assumed that localbranch = remotebranch.
     - `push --tags remoteserver`: Push (and pull!) all tags to remoteserver.
     - `push --mirror`: Create identical copy of current folder. **Not tested**
     `push --mirror` = `push --all` + `push --tags`.
+    - `push origin :refs/tags/tagname`: Delete the tag `tagname` on the 
+    remoteserver `origin`
 
 #### R
 * `rebase branch`: Similar to merge - kind of rewrites history, which can be 
@@ -842,6 +857,8 @@ publication of the code (Release V1.0).
     commit HASH.
     - `tag -l "xy"`: Search for tags starting with xy.
     - `tag -l -n99`: List all tags including first 99 lines of the annotations.
+    - `tag -d tagname`: Delete tag in current branch. See `push` for deleting 
+    the tag remotedly.
 
 ### Advanced Git: hooks - the pre-commit hook
 For example files see appendix. The process is as follows:
