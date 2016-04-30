@@ -188,8 +188,19 @@ For windows: Install latest R version from <https://cran.r-project.org/bin/windo
 and install it to C:/R/R-x.x.x. Do not install it to the program folder because 
 you will run into trouble with admin right.  
 
-Next install latest Rtools version to C:/Rtools. The file (It is not a package) 
-can be downloaded from here: >https://cran.r-project.org/bin/windows/Rtools/>
+To build an R package in Windows, you will need to install some additional 
+software tools. These are summarized [here](http://cran.r-project.org/bin/windows/Rtools/)
+
+### Rtools
+
+This is a collection of unix-like tools that can be run from the DOS command 
+prompt. It also contains the MinGW compilers that are used for compiling Fortran 
+and C code. You should download and run the version corresponding to the flavour 
+of R you are using. When asked, choose the default “Package authoring 
+installation” to build add-on packages.
+
+Install the latest Rtools version to C:/Rtools. The file (It is not a package) 
+can be downloaded from [here](https://cran.r-project.org/bin/windows/Rtools/)
 Be careful with path conventions. R needs "/"!
 
 ```
@@ -200,6 +211,12 @@ To reach the path see
 => Umgebungsvariablen...
 
 Follow the steps in [Fox](http://socserv.mcmaster.ca/jfox/Courses/R/ICPSR/R-install-instructions.html).
+
+### MikTeX
+
+MikTeX is used for producing the pdf help files. You can produce an R package 
+without it, but the package will not contain pdf help files. Most of you will 
+have this installed anyway. Download from [here](http://www.miktex.org)
 
 ## Install RStudio
 
@@ -319,6 +336,21 @@ Useful backup tool.
     - `set prefix`: Display all existing variables ending with `prefix`.
     - `set variable=`: Delete `variable`.
 * `VAR=`: Delete `VAR`
+* `<` and `>`: Use `<` to redirect input, and `>` to redirect output.
+  `command1 > file1` executes `command1`, placing the output in `file1`, 
+  as opposed to displaying it at the terminal, which is the usual destination for 
+  standard output. This will clobber (overwrite) any existing data in `file1`.  
+  Using `command1 < file1` executes `command1`, with `file1` as the source of 
+  input, as opposed to the keyboard, which is the usual source for standard input.
+* `>>`: To append output to the end of the file, rather than clobbering it, 
+  the `>>` operator is used: `command1 >> file1` to read from a stream literal 
+  (an inline file, passed to the standard input), one can use a here document, 
+  using the `<<` operator.
+* `|`: Piping, that means programs can be run together such that one program 
+reads the output from another with no need for an explicit intermediate file:
+A pipeline of three programs run on a text terminal `command1 | command2` executes 
+`command1`, using its output as the input for `command2` (commonly called 
+piping, with the `|` character being known as "pipe").
 
 ### Assign programs to files, e.g. make R executable (not working yet?)
 
@@ -649,7 +681,8 @@ will be called `master`)
     Be careful: If the command uses a white space "..." (Windows) or '...' (Linux)
     is needed. Excample for a complex command (working on windows!):
         + `git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"`.
-        + `git config --global alias.taghist "log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'"`:
+        + `git config --global alias.taghist "log --no-walk --date-order --tags --simplify-by-decoration --pretty=format:'%ai %h %d'"`
+        + `git config --global alias.ignoreall "status --porcelain | grep '^??' | cut -c4- >> .gitignore"`
     - `config --global --unset varname`: Delete global `varname`, e.g. 
     `alias.myshortname` shortcut. Does not work, if several `varname` with the 
     same name exist.
@@ -841,10 +874,21 @@ stash@{1} is the one before it).
     - `stash list`: List the modifications stashed away 
     - `stash show`: Inspected modification.
     - `stash apply`: Restore modifications (potentially on top of a different commit) 
-* `status`: Get the status, displays
-    - Tracked **AND** Untracked (=new!) files
-    - Modified files
-    - Branches
+* `status`: Get the status, displays **tracked AND Untracked** (=new!) files,
+**Modified** files and **Branches**
+    - `status --porcelain | grep '^??' | cut -c4- >> .gitignore`: Move all 
+    untracked files to `.gitignore`. Format manually afterwards...  
+        + `status --porcelain` is used instead of `status --short` because manual 
+        states "Give the output in an easy-to-parse format for scripts. This is 
+        similar to the short output, but will remain stable across git versions 
+        and regardless of user configuration." So we have both the parseability 
+        and stability;
+        + `grep '^??'` filters only the lines starting with ??, which, according 
+        to the git status manual, correspond to the untracked files;
+        + `cut -c4-`: `-c` marks the beginning of a list of column numbers to cut. 
+        `4-` selects the line from column 4 to the end, which cuts columns 1-3. 
+        So the `cut` command actually removes the first 3 characters of each line.
+        + For the rest see explanation of shell commands
 
 #### T
    
