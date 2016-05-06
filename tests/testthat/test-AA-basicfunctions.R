@@ -88,3 +88,19 @@ test_that("save_rdata", {
     file.remove(filename_withpath)
 })
 
+
+context("archive data")
+test_that("archive data works", {
+  # skip("Skip for development of tests")
+
+  t0 <- lubridate::now()
+  prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
+  new_file <- paste0("../../data/", prefix, "-Z-testdata_hs_SG2014_", uuid, ".RData")
+
+  expect_equal(file.exists(new_file), F)
+  archive_data(path, "Z-testdata_hs_SG2014.RData", "../../data/")
+  expect_equal(file.exists(new_file), T)
+  file.remove(new_file)
+  expect_equal(file.exists(new_file), F)
+})
+
