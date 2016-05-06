@@ -1,34 +1,22 @@
 # =============================================================================
 # Independent functions:
 
-# force_warning <- function(mytext) { #... Be careful: Do you still know where the warning was created?
-#   options(digits = 20)
-#   old <- getOption("warn")
-#   options(warn = 0)
-#   warning(mytext) # This message is useful! Keep it. See warn handling...
-#   options(warn = old)
-# }
+#' set_custom_rstudio sets custom parameters
+#'
+#' @param recordTraceback = T, resets "error" options.
+#' @param warn = 0
+#'
+#' @return NULL
+#'
+set_custom_rstudio <- function(recordTraceback = T, warn = 0) {
+  options(error = NULL)
+  options(warn = warn) # 0 on / -1 off / 2 warn2err
+  options(stringsAsFactors = F)
+  library(lubridate)
+  library(data.table)
+  return(NULL)
+}
 
-# set_custom_rstudio <- function(recordTraceback = T, warn = 2) {
-# options(error = NULL)
-# options(error = function(){.rs.breakOnError(TRUE)}) # RS => Debug => On Error => Error Inspector
-# options(warn = 2) # 0 on / -1 off / 2 warn2err
-# options(stringsAsFactors = F)
-# library(lubridate)
-# }
-
-# Siehe http://stackoverflow.com/questions/16042380/merge-data-frames-and-overwrite-values
-# function merge_replace
-# commonNames <- names(df1)[which(colnames(df1) %in% colnames(df2))]
-# commonNames <- commonNames[commonNames != "key"]
-# dfmerge<- merge(df1,df2,by="key",all=T)
-# for(i in commonNames){
-#   left <- paste(i, ".x", sep="")
-#   right <- paste(i, ".y", sep="")
-#   dfmerge[is.na(dfmerge[left]),left] <- dfmerge[is.na(dfmerge[left]),right]
-#   dfmerge[right]<- NULL
-#   colnames(dfmerge)[colnames(dfmerge) == left] <- i
-# }
 
 #' decimalplaces returns the number of decimal places of x
 #'
@@ -92,7 +80,7 @@ save_rdata <- function(data, filename, path, force = F, warn = T) { # "inverse" 
   # data, filename and path needed. Otherwise: error...
   if (missing(data) | missing(filename) | missing(path)) {
     stop("Data, filename and path arguments are required")
-  }
+  } #.................................................................. Discuss sense of warn options: Throw out!
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
@@ -127,47 +115,160 @@ save_rdata <- function(data, filename, path, force = F, warn = T) { # "inverse" 
 #' Function returns blue of FH St. Gallen.
 #'
 #' @return RGB value for FHS-blue
+#'
 fhs <- function() {
-  # Args:
-  #   none (Else... x: vector of data)
-  #
-  # Returns:
-  #   RGB-color of FH St.Gallen
   return(rgb(0, 102, 153, maxColorValue = 255))
 }
 
 
 #' Function to remove all variables
-clear_all_var <- function() { # Define function "clr()"
-  # Clear the environment.
-  #
-  # Args:
-  #   none (Else... x: vector of data)
-  #
-  # Returns:
-  #   none
-  ENV <- globalenv() # Clear variables in the global environment
-  # Error handling
-  # none...
-  # Errors should be raised using stop().
+#'
+clear_all_var <- function() {
+  ENV <- globalenv()
   vars <- ls(envir = ENV)
   vars <- vars[vars != "clr"]
-  # rm(list =ls()) only deletes the variables of the script ( = nothing!)
   rm(list = vars, envir = ENV)
-  # TODO(username): Explicit description of action to be taken
+  return(NULL)
 }
 
 
 #' Function to close all graphs/ plots
+#'
 close_all_graph <- function() {
   if (dev.cur() != 1) {dev.off(which = dev.cur())} #close plots
   graphics.off() #close plots in win.graph()
+  return(NULL)
 }
 
 
 #' Function to clear console
+#'
 cc <- function() {
   cat("\014")
+  return(NULL)
+}
+
+
+#' zero_n creates string of form 000x from integer x.
+#'
+#' @param number
+#' @param position
+#'
+#' @return standard string
+#' @export
+#'
+zero_n <- function(number, position=3) {
+  res <- unlist(strsplit(toString(number + 10^position), split = ""))
+  return(paste(res[2:length(res)], collapse = ""))
+}
+
+
+#' Copy and rename one file. Used in archive_data
+#'
+#' @param path, a string: ending with "/"
+#' @param files, a list of characters: filenames or "all"
+#' @param prefix, a character added to the target filename
+#' @param suffix, an integer added to the target filename. Could be increased automatically.
+#'
+copy_rename_file <- function(path, file, save_path, prefix="") {
+  suffix = 0
+  if (file.exists(paste0(path, file))) {
+    file_sep <- unlist(strsplit(file, ".", fixed = T))
+    if (file_sep[2] == "RData") {
+      data <- imsbasics::load_rdata(file, path)
+      suffix <- substr(data$uuid, 1, 8)
+    }
+    save_name <- paste0(save_path, prefix, "-", file_sep[1], "_", suffix, ".", file_sep[2])
+    if (!file.exists(save_name)) {
+
+      file.copy(paste0(path, file), paste0(save_path, file))
+      file.rename(paste0(save_path, file), save_name)
+    } else {
+      warning(save_name, " already exists.")
+      # Increasing suffix possible.
+      # suffix += 1, paste0(zero_n(suffix), "-", HASH)
+    }
+  } else {
+    warning(paste0(path, file), " does not exist.")
+  }
+}
+
+
+#' midpoints calculates the midpoints of a factor level (x,y] created from ..... ?
+#'
+#' @param x
+#' @param dp
+#'
+#' @return mids
+#'
+midpoints <- function(x, dp=2){
+  lower <- as.numeric(gsub(",.*","",gsub("\\(|\\[|\\)|\\]","", x)))
+  upper <- as.numeric(gsub(".*,","",gsub("\\(|\\[|\\)|\\]","", x)))
+  return(round(lower + (upper - lower)/2, dp))
+}
+
+
+#' weekdays_abbr dictionary according to lubridate
+#'
+#' @return german and english weekdays
+#'
+weekdays_abbr <- function() { # ................................................ imsbasics
+  german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
+  english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat") # lubridate!
+  return(list(german = german, english = english))
+}
+
+
+#' g2e german to english using weekdays_abbr as reference.
+#'
+#' @param weekday_ger
+#' @param dict
+#'
+#' @return
+#' @export
+#'
+#' @examples
+g2e <- function(weekday_ger, dict) {
+  res <- character(length(weekday_ger))
+  for (i in 1:length(weekday_ger)) {
+    res[i] <- dict$english[which(dict$german == weekday_ger[i])]
+  }
+  return(res)
+}
+
+
+#' e2g english to german using weekdays_abbr as reference.
+#'
+#' @param weekday_eng
+#' @param dict
+#'
+#' @return
+#' @export
+#'
+#' @examples
+e2g <- function(weekday_eng) {
+  dict <- weekdays_abbr()
+  res <- character(length(weekday_eng))
+  for (i in 1:length(weekday_eng)) {
+    res[i] <- dict$german[which(dict$english == weekday_eng[i])]
+  }
+  return(res)
+}
+
+
+#' rectangle step to zero in (t0, t1). Otherwise 0.
+#'
+#' @param t
+#' @param t0
+#' @param t1
+#'
+#' @return
+#'
+rectangle <- function(t, t0, t1) { # Not used.
+  if (t1 > t0) {
+    y <- fBasics::Heaviside(t,t0) * fBasics::Heaviside(-t,-t1)
+  } else {stop("t1 > t0")}
+  return(y)
 }
 
 
@@ -176,41 +277,42 @@ cc <- function() {
 
 #' Function to remove all variables and close all graphs/ plots
 #' including Garbage Collection gc()
+#'
 clc <- function() {
   clear_all_var()
   close_all_graph()
   gc()
+  return(NULL)
 }
 
 
-# =============================================================================
-# Not used any more:
-#
-#' Function without functionality to show ims style guideline based on Hadley and google
-#' See workflow-and-style.Rmd for further details
+#' Archive data with date and version tag.
 #'
-#' Files end with .R: meaningful-file.R
-#' Variables: meaningful_variable
-#' Functions: meaningful_function => Verb for toDo...
+#' @param path, a string: ending with "/". The source directory.
+#' @param files, a list of characters: filenames or "all"
+#' @param save_path, a string: ending with "/". The target directory.
 #'
-#' Indentation
-#' When indenting your code, use two spaces.  Never use tabs or mix tabs and spaces.
-#' Spacing
-#' Place spaces around all binary operators (=, +, -, <-, etc.).
-#' Do not place a space before a comma, but always place one after a comma.
-#' Place a space before left parenthesis, except in a function call.
-#'
-#' General Layout and Ordering
-#' 1. Copyright statement comment
-#' 2. Author comment
-#' 3. File description comment, including purpose of program, inputs, and outputs
-#' 4. source() and library() statements
-#' 5. Function definitions
-#' 6. Executed statements, if applicable (e.g., print, plot)
-#'
-#' Unit tests should go in a separate file named test_originalfunction(s).R.
-#'
-#' Install packages with install.packages("package")
-#' Include non-standard libraries using libraray(package)
-# googlestyle <- function() {}
+archive_data <- function(path, files, save_path) {
+  t0 <- lubridate::now()
+  prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
+  if (files[1] == "all") {
+    # save all files in folder to folder with date and tag if !file.exists("all")
+    # file_list <- list.files(path, full.names = F) # include.dirs = F does not work when not recursive...
+    # Therefore:
+    lf <- list.files(path,full.names = T)
+    ld <- list.dirs(path,recursive = F)
+    file_list <- lf[match(setdiff(normalizePath(lf),normalizePath(ld)), normalizePath(lf))]
+    for (i in 1:length(file_list)) {
+      # save i in folder to folder with date and tag if !file.exists(i)
+      copy_rename_file(path, file_list[i], save_path, prefix)
+    }
+    # could be extended to subfolders via list.files(path, full.names = T, recursive = T)
+  } else {
+    for (i in 1:length(files)) {
+      # save i in folder to folder with date and tag if !file.exists(i)
+      copy_rename_file(path, files[i], save_path, prefix)
+    }
+  }
+  return(NULL)
+}
 
