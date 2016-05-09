@@ -39,7 +39,7 @@ decimalplaces <- function(x) {
 #' Call as data <- imsbasics::load_rdata(filename, path)
 #'
 #' @param filename, can be without ".RData"
-#' @param path in "../.." style. Default: getwd()
+#' @param path in "../.." style ending with "/".
 #'
 #' @return Obects(s) in filename
 #'
@@ -49,19 +49,13 @@ load_rdata <- function(filename,
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
   }
-
   file <- paste0(path, filename)
   if (file.exists(file)) {
-    # create new clear environment which can be deleted after loading
-    temp_space <- new.env()
-    # load file in temp.space as name.of.object:
-    name_of_object <- load(file, temp_space)
+    name_of_object <- load(file)
     # Assign data in name.f.objects to data:
-    data <- get(name_of_object, temp_space)
-    # Remove local variables to clean up environment:
-    rm(temp_space, name_of_object)
+    data <- get(name_of_object)
   } else {
-    stop(paste0("Error in load_rdata: no file: ", filename))
+    stop(paste0("no file: ", file))
   }
   return(data)
 }
@@ -72,41 +66,35 @@ load_rdata <- function(filename,
 #'
 #' @param data: An object in the environment. Required input.
 #' @param filename, can be without ".RData". Required input.
-#' @param path in "../.." style. Default: getwd()
+#' @param path in "../.." style ending with "/".
 #'
-#' @return path to file ot NULL in case file already exists.
+#' @return NULL
 #'
-save_rdata <- function(data, filename, path, force = F, warn = T) { # "inverse" of load_rdata
-  # data, filename and path needed. Otherwise: error...
+save_rdata <- function(data, filename,
+  path = stop("Data, filename and path arguments are required"), force = F, warn = T) {
   if (missing(data) | missing(filename) | missing(path)) {
     stop("Data, filename and path arguments are required")
-  } #.................................................................. Discuss sense of warn options: Throw out!
+  }
   # Default file type:
   if (!grepl(".RData", filename)) {
     filename <- paste0(filename, ".RData")
   }
-
+  file <- paste0(path, filename)
   # Check that you don't overwrite a file. If file already exists:
-  if (file.exists(paste0(path, filename))) {
+  if (file.exists(file)) {
     if (force == F) {
-      old <- getOption("warn")
       if (warn == T) {
-        options(warn = 0)
-        warning("File not saved. File already exists")
+        warning(file, " not saved. File already exists")
       }
-      options(warn = old)
     } else {
-      old <- getOption("warn")
       if (warn == T) {
-        options(warn = 0)
         warning("Old file overwritten")
       }
-      options(warn = old)
-      save(data, file = paste0(path, filename))
+      save(data, file = file)
     }
   } else {
     # File does not exist:
-    save(data, file = paste0(path, filename))
+    save(data, file = file)
   }
   return(NULL)
 }
@@ -212,9 +200,10 @@ midpoints <- function(x, dp=2){
 #'
 #' @return german and english weekdays
 #'
-weekdays_abbr <- function() { # ................................................ imsbasics
+weekdays_abbr <- function() {
   german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
-  english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat") # lubridate!
+  # names from lubridate.
+  english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat")
   return(list(german = german, english = english))
 }
 
@@ -296,14 +285,10 @@ archive_data <- function(path, files, save_path) {
   t0 <- lubridate::now()
   prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
   if (files[1] == "all") {
-    # save all files in folder to folder with date and tag if !file.exists("all")
-    # file_list <- list.files(path, full.names = F) # include.dirs = F does not work when not recursive...
-    # Therefore:
     lf <- list.files(path,full.names = T)
     ld <- list.dirs(path,recursive = F)
     file_list <- lf[match(setdiff(normalizePath(lf),normalizePath(ld)), normalizePath(lf))]
     for (i in 1:length(file_list)) {
-      # save i in folder to folder with date and tag if !file.exists(i)
       copy_rename_file(path, file_list[i], save_path, prefix)
     }
     # could be extended to subfolders via list.files(path, full.names = T, recursive = T)
