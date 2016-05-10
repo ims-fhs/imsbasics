@@ -164,7 +164,15 @@ copy_rename_file <- function(path, file, save_path, prefix="") {
     file_sep <- unlist(strsplit(file, ".", fixed = T))
     if (file_sep[2] == "RData") {
       data <- imsbasics::load_rdata(file, path)
-      suffix <- substr(data$uuid, 1, 8)
+      var <- data$uuid
+      # browser()
+      if (!length(var) == 0) {
+        suffix <- substr(var, 1, 8)
+      } else {
+        suffix <- zero_n(suffix, 3)
+      }
+    } else {
+      suffix <- zero_n(suffix, 3)
     }
     save_name <- paste0(save_path, prefix, "-", file_sep[1], "_", suffix, ".", file_sep[2])
     if (!file.exists(save_name)) {
@@ -285,11 +293,15 @@ archive_data <- function(path, files, save_path) {
   t0 <- lubridate::now()
   prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
   if (files[1] == "all") {
-    lf <- list.files(path,full.names = T)
-    ld <- list.dirs(path,recursive = F)
-    file_list <- lf[match(setdiff(normalizePath(lf),normalizePath(ld)), normalizePath(lf))]
+    if (path == "") {
+      path <- getwd()
+    }
+    lf <- list.files(path, full.names = T)
+    ld <- list.dirs(path, recursive = F)
+    file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
     for (i in 1:length(file_list)) {
-      copy_rename_file(path, file_list[i], save_path, prefix)
+      copy_rename_file(paste0(dirname(file_list[i]), "/"),
+        basename(file_list[i]), save_path, prefix)
     }
     # could be extended to subfolders via list.files(path, full.names = T, recursive = T)
   } else {
