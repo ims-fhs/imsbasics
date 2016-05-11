@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "20 April 2016"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -1307,45 +1307,45 @@ Reported here: https://support.rstudio.com/hc/en-us/community/posts/206678697-RS
 Start on an empty project. (Even if you want to integrate packrat in an existing project. If so just copy your project folder, name one copy _BACKUP, delete every file in the not _BACKUP folder and start). You can later copy back everything bit by bit.
 => This helped SCN, but it's not sure if it really helps or if it's just vodoo.
 
-1. Install packrat
+#### Install packrat
 `install.packages("packrat")` don't use the GitHub Version, it did not work for SCN..
 
-2. Initialise packrat
+#### Initialise packrat
 Be sure you're in your project's working directory.  
 `packrat::init()` will parse your code (but you don't have any at the moment..) to see what packages you use and install all these packages into the `packrat` subfolder in your project. After that you type `packrat::snapshot()`. Type `packrat::status()` if you get back
 > Up to date.
 
 your packrat is setup. Happy you. If not, I can not help you.
 
-3. Put your code back to your project folder
+#### Put your code back to your project folder
 ..and run again `packrat::status`. Now packrat finds all the packages you're referencing in your code. You'll get something like
 
 > The following packages are referenced in your code, but are not present
-in your library nor in packrat:
-    DT
-    LUKSR
-    RColorBrewer
-    base64enc
-    colorspace
-    data11R
-    dichromat
-    geocoder
-    htmlwidgets
-    jsonlite
-    labeling
-    leaflet
-    munsell
-    plot11R
-    plyr
-    png
-    raster
-    readxl
-    reshape2
-    scales
-    simTimeR
-    sp
-You will need to install these packages manually, then use
-packrat::snapshot() to record these packages in packrat.
+in your library nor in packrat:  
+>     DT  
+>     LUKSR  
+>     RColorBrewer  
+>     base64enc  
+>     colorspace  
+>     data11R  
+>     dichromat  
+>     geocoder  
+>     htmlwidgets  
+>     jsonlite  
+>     labeling  
+>     leaflet  
+>     munsell  
+>     plot11R  
+>     plyr  
+>     png  
+>     raster  
+>     readxl  
+>     reshape2  
+>     scales  
+>     simTimeR  
+>     sp  
+> You will need to install these packages manually, then use  
+> packrat::snapshot() to record these packages in packrat.  
 
 Do it with `install.packages("DT")` etc. This will only install those packages to your packrat library.
 
@@ -1359,10 +1359,10 @@ After installing all packages available through CRAN or GitHub I ended up with
 `packrat::status()`
 
 > The following packages are used in your code, tracked by packrat, but no longer present in your library:
-               from   to
-    LUKSR       0.2   NA
-    data11R     0.1   NA
-    simTimeR    1.1   NA
+>                from   to
+>     LUKSR       0.2   NA
+>     data11R     0.1   NA
+>     simTimeR    1.1   NA
 >
 > Use packrat::restore() to restore these libraries.
 
@@ -1411,6 +1411,41 @@ I had to find a workaround:
 
 Hurray.
 
+***
+
+# OSRM
+
+## How to run the OSRM server on Adrian's Mac.
+Open Terminal
+
+`cd /Users/adrianschmid/Documents/OSRM/osrm-backend/build`  
+`./osrm-routed switzerland-latet.osrm`
+
+> [info] starting up engines, v4.8.0
+> [info] populating base path: switzerland-latest.osrm
+> [info] HSGR file:	"switzerland-latest.osrm.hsgr"
+> [info] loading graph data
+> [info] loading graph from switzerland-latest.osrm.hsgr
+> [info] number_of_nodes: 1299323, number_of_edges: 5636126
+> [info] loaded 1299323 nodes and 5636126 edges
+> [info] Data checksum is 1237576090
+> [info] loading edge information
+> [info] loading core information
+> [info] loading geometries
+> [info] loading r-tree
+> [info] loading timestamp
+> [info] Loading Timestamp
+> [info] loading street names
+> [info] loaded plugin: table
+> [info] loaded plugin: hello
+> [info] loaded plugin: locate
+> [info] loaded plugin: nearest
+> [info] loaded plugin: match
+> [info] loaded plugin: timestamp
+> [info] loaded plugin: viaroute
+> [info] loaded plugin: trip
+> [info] http 1.1 compression handled by zlib version 1.2.5
+> [info] running and waiting for requests
 
 ***
 
