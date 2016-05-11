@@ -3,17 +3,14 @@
 
 #' set_custom_rstudio sets custom parameters
 #'
-#' @param recordTraceback = T, resets "error" options.
 #' @param warn = 0
 #'
 #' @return NULL
 #'
-set_custom_rstudio <- function(recordTraceback = T, warn = 0) {
-  options(error = NULL)
+r_options <- function(error = NULL, warn = 0, strings_as_factors = F) {
+  options(error = error)
   options(warn = warn) # 0 on / -1 off / 2 warn2err
-  options(stringsAsFactors = F)
-  library(lubridate)
-  library(data.table)
+  options(stringsAsFactors = strings_as_factors)
   return(NULL)
 }
 
@@ -219,13 +216,11 @@ weekdays_abbr <- function() {
 #' g2e german to english using weekdays_abbr as reference.
 #'
 #' @param weekday_ger
-#' @param dict
 #'
-#' @return
-#' @export
+#' @return res
 #'
-#' @examples
-g2e <- function(weekday_ger, dict) {
+g2e <- function(weekday_ger) {
+  dict <- weekdays_abbr()
   res <- character(length(weekday_ger))
   for (i in 1:length(weekday_ger)) {
     res[i] <- dict$english[which(dict$german == weekday_ger[i])]
@@ -237,12 +232,9 @@ g2e <- function(weekday_ger, dict) {
 #' e2g english to german using weekdays_abbr as reference.
 #'
 #' @param weekday_eng
-#' @param dict
 #'
-#' @return
-#' @export
+#' @return res
 #'
-#' @examples
 e2g <- function(weekday_eng) {
   dict <- weekdays_abbr()
   res <- character(length(weekday_eng))
