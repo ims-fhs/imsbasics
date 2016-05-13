@@ -233,6 +233,7 @@ Important note: Install packages always to C:/R/R-x.x.x/
 ```
 
 **ToDO: .libPaths() = "C:/R/R-3.2.2/library"**
+**ToDo: How to update R properly?** See [here](http://stackoverflow.com/questions/1401904/painless-way-to-install-a-new-version-of-r-on-windows)
 
 It might also be useful to install [MikTex](http://miktex.org/download) to be 
 able to use Rmarkdown.

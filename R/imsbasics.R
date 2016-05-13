@@ -1,6 +1,27 @@
 # =============================================================================
 # Independent functions:
 
+# install.packages("...")
+# --run in the old version of R
+# old_wd <- getwd()
+# setwd("C:/Temp/")
+# packages <- installed.packages()[,"Package"]
+# save(packages, file="Rpackages")
+# 
+# Followed by this in the new version:
+#   
+#   #--run in the new version
+#   setwd("C:/Temp/")
+# load("Rpackages")
+# for (p in setdiff(packages, installed.packages()[,"Package"]))
+#   install.packages(p)
+# setwd(old_wd)
+
+# hms <- function(dates) {
+#   res <- lubridate::ymd_hms(paste(lubridate::today(), format(lubridate::ymd_hms(dates), '%T')))
+#   return(res)
+# }
+
 #' set_custom_rstudio sets custom parameters
 #'
 #' @param warn = 0
