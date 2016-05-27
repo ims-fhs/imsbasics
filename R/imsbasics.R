@@ -22,6 +22,26 @@
 #   return(res)
 # }
 
+
+
+#' create_log directs output to logfile_name in save_path
+#'
+#' @param logfile_name 
+#' @param save_path 
+#'
+create_log <- function(logfile_name, save_path) {
+  if (file.exists(paste0(save_path, logfile_name))) {
+    file.remove(paste0(save_path, logfile_name))
+    message("Remove old log file")
+  }
+  fid <- file(paste0(save_path, logfile_name), open = "wt")
+  sink(fid, type = "message", split = F) # warnings are NOT displayed. split=T not possible.
+  sink(fid, append = T, type = "output", split = T) # print, cat
+  warning("Use closeAllConnections() in the end of the script")
+  return(NULL)
+}
+
+
 #' set_custom_rstudio sets custom parameters
 #'
 #' @param warn = 0

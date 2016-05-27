@@ -184,7 +184,7 @@ Goal is a monthly evaluation.
 
 ## Install R and Rtools
 
-For windows: Install latest R version from <https://cran.r-project.org/bin/windows/base/>
+For windows: Install latest R version from [CRAN](https://cran.r-project.org/bin/windows/base/)
 and install it to C:/R/R-x.x.x. Do not install it to the program folder because 
 you will run into trouble with admin right.  
 
@@ -251,6 +251,10 @@ and type the following command in the R console:
 This creates the test_that folders. When you change the project in RStudio, you 
 start with a **clear environment** and a **clear shell**. For Details see 
 Hadley "R packages", Ch. 7. 
+
+## Update R
+
+<http://stackoverflow.com/questions/1401904/painless-way-to-install-a-new-version-of-r-on-windows>
 
 ## Install a package with auth_token
 
