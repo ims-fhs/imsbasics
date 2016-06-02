@@ -7,9 +7,9 @@
 # setwd("C:/Temp/")
 # packages <- installed.packages()[,"Package"]
 # save(packages, file="Rpackages")
-# 
+#
 # Followed by this in the new version:
-#   
+#
 #   #--run in the new version
 #   setwd("C:/Temp/")
 # load("Rpackages")
@@ -26,13 +26,12 @@
 
 #' create_log directs output to logfile_name in save_path
 #'
-#' @param logfile_name 
-#' @param save_path 
+#' @param logfile_name
+#' @param save_path
 #'
 create_log <- function(logfile_name, save_path) {
   if (file.exists(paste0(save_path, logfile_name))) {
     file.remove(paste0(save_path, logfile_name))
-    message("Remove old log file")
   }
   fid <- file(paste0(save_path, logfile_name), open = "wt")
   sink(fid, type = "message", split = F) # warnings are NOT displayed. split=T not possible.
