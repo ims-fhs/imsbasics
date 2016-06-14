@@ -23,6 +23,46 @@
 # }
 
 
+#' percent_deviation return deviation of a number from a reference number x_ref
+#' in %.
+#'
+#' @param x, a numeric
+#' @param x_ref, a numeric
+#'
+#' @return absolute value of deviation in percent
+#'
+percent_deviation <- function(x, x_ref) {
+  return(abs(x - x_ref)/x_ref*100)
+}
+
+
+#' %<-% Matlabs '[...] =' operator. call as c(par1, par2, ...) %<-% somefunction(...)
+#' instead of calling res <- somefunction(...), par1 <- res$par1, ... rm(res)
+#' Should not be used in simulations
+#'
+#' @param lhs
+#' @param rhs
+#'
+#' @return result
+#'
+'%<-%' <- function(lhs, rhs) {
+  frame <- parent.frame()
+  lhs <- as.list(substitute(lhs))
+  if (length(lhs) > 1)
+    lhs <- lhs[-1]
+  if (length(lhs) == 1) {
+    do.call(`=`, list(lhs[[1]], rhs), envir = frame)
+    return(invisible(NULL))
+  }
+  if (is.function(rhs) || is(rhs, 'formula'))
+    rhs <- list(rhs)
+  if (length(lhs) > length(rhs))
+    rhs <- c(rhs, rep(list(NULL), length(lhs) - length(rhs)))
+  for (i in 1:length(lhs))
+    do.call(`=`, list(lhs[[i]], rhs[[i]]), envir = frame)
+  return(invisible(NULL))
+}
+
 
 #' create_log directs output to logfile_name in save_path
 #'
