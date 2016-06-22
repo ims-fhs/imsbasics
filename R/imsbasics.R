@@ -87,10 +87,13 @@ create_log <- function(logfile_name, save_path) {
 #'
 #' @return NULL
 #'
-r_options <- function(error = NULL, warn = 0, strings_as_factors = F) {
+r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = T) {
   options(error = error)
   options(warn = warn) # 0 on / -1 off / 2 warn2err
   options(stringsAsFactors = strings_as_factors)
+  if (english) {
+    Sys.setlocale(category = "LC_ALL", locale = "English_United States.1252")
+  }
   return(NULL)
 }
 
@@ -223,8 +226,8 @@ cc <- function() {
 #' @export
 #'
 zero_n <- function(number, position=3) {
-  res <- unlist(strsplit(toString(number + 10^position), split = ""))
-  return(paste(res[2:length(res)], collapse = ""))
+  res <- substr(number + 10^position, 2, nchar(number + 10^position))
+  return(res)
 }
 
 
@@ -300,10 +303,14 @@ weekdays_abbr <- function() {
 #' @return res
 #'
 g2e <- function(weekday_ger) {
-  dict <- weekdays_abbr()
+  # assertthat(ger!)
+  dict <- weekdays_abbr() # if (!exists("dict")) {dict <- ...}
   res <- character(length(weekday_ger))
   for (i in 1:length(weekday_ger)) {
+#     split <- strsplit(weekday_ger[i], split = ", ")
+#     if split == weekday_ger[i] {
     res[i] <- dict$english[which(dict$german == weekday_ger[i])]
+    # } else {for (k in 1:length(split)) {res[i]...} paste(res, collapse=", ")}
   }
   return(res)
 }

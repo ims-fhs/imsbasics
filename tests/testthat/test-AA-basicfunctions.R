@@ -113,3 +113,15 @@ test_that("archive data works", {
   expect_equal(all(file.exists(new_file, new_file2, new_file3, new_file4)), F)
 })
 
+
+context("zero_n")
+test_that("zero_n works", {
+  # skip("Skip for development of tests")
+#   browser()
+#   zero_n(c(1:10), position = 3)
+#   zero_n(c(1:10), position = 2)
+  expect_equal(zero_n(c(1:10), position = 3),
+    c("001", "002", "003", "004", "005", "006", "007", "008", "009", "010"))
+  expect_equal(zero_n(c(1:10), position = 2),
+    c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10"))
+})
