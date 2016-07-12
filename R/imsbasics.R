@@ -1,6 +1,3 @@
-# =============================================================================
-# Independent functions:
-
 # install.packages("...")
 # --run in the old version of R
 # old_wd <- getwd()
@@ -70,13 +67,13 @@ percent_deviation <- function(x, x_ref) {
 #' @param save_path
 #'
 create_log <- function(logfile_name, save_path) {
+  warning("Error messages not visible. Use closeAllConnections() in the end of the script")
   if (file.exists(paste0(save_path, logfile_name))) {
     file.remove(paste0(save_path, logfile_name))
   }
   fid <- file(paste0(save_path, logfile_name), open = "wt")
   sink(fid, type = "message", split = F) # warnings are NOT displayed. split=T not possible.
   sink(fid, append = T, type = "output", split = T) # print, cat
-  warning("Use closeAllConnections() in the end of the script")
   return(NULL)
 }
 
@@ -236,33 +233,40 @@ zero_n <- function(number, position=3) {
 #' @param path, a string: ending with "/"
 #' @param files, a list of characters: filenames or "all"
 #' @param prefix, a character added to the target filename
-#' @param suffix, an integer added to the target filename. Could be increased automatically.
 #'
 copy_rename_file <- function(path, file, save_path, prefix="") {
-  suffix = 0
+  n_suffix = 0
   if (file.exists(paste0(path, file))) {
-    file_sep <- unlist(strsplit(file, ".", fixed = T))
-    if (file_sep[2] == "RData") {
-      data <- imsbasics::load_rdata(file, path)
-      var <- data$uuid
-      # browser()
-      if (!length(var) == 0) {
-        suffix <- substr(var, 1, 8)
+    while (n_suffix < 999) {
+      file_sep <- unlist(strsplit(file, ".", fixed = T))
+      if (file_sep[2] == "RData") {
+        data <- imsbasics::load_rdata(file, path)
+        var <- data$uuid
+        if (!length(var) == 0) {
+          # uuid exists
+          if (n_suffix == 0) {
+            suffix <- substr(var, 1, 8)
+          } else {
+            # file already exists, use _HSASH_00x format
+            suffix <- paste0(substr(var, 1, 8), "_", zero_n(n_suffix, 3))
+          }
+        } else {
+          # uuid does not exist, use _00x format
+          suffix <- zero_n(n_suffix, 3)
+        }
       } else {
-        suffix <- zero_n(suffix, 3)
+        # For non-.RData files always use _00x format
+        suffix <- zero_n(n_suffix, 3)
       }
-    } else {
-      suffix <- zero_n(suffix, 3)
-    }
-    save_name <- paste0(save_path, prefix, "-", file_sep[1], "_", suffix, ".", file_sep[2])
-    if (!file.exists(save_name)) {
-
-      file.copy(paste0(path, file), paste0(save_path, file))
-      file.rename(paste0(save_path, file), save_name)
-    } else {
-      warning(save_name, " already exists.")
-      # Increasing suffix possible.
-      # suffix += 1, paste0(zero_n(suffix), "-", HASH)
+      save_name <- paste0(save_path, prefix, "-", file_sep[1], "_", suffix, ".", file_sep[2])
+      if (!file.exists(save_name)) {
+        file.copy(paste0(path, file), paste0(save_path, file))
+        file.rename(paste0(save_path, file), save_name)
+        n_suffix <- 999 # Terminate while-loop
+      } else {
+        warning(save_name, " already exists.")
+        n_suffix <- n_suffix + 1
+      }
     }
   } else {
     warning(paste0(path, file), " does not exist.")

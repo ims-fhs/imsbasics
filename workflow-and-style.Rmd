@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "20 April 2016"
 output:
-  html_document:
-    number_sections: yes
-    theme: united
-    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: united
     toc: yes
 ---
 
@@ -1451,6 +1451,23 @@ Open Terminal
 > [info] loaded plugin: trip
 > [info] http 1.1 compression handled by zlib version 1.2.5
 > [info] running and waiting for requests
+
+
+# git-GUI
+Not tested: [ref](http://stackoverflow.com/questions/22046808/how-to-ignore-files-using-git-gui-tcl-tk-application)
+
+the pragmatic way is, to add this to your git configuration:
+
+```
+git config --global guitool."Add to .gitignore".cmd $'echo "\n$FILENAME" >> .gitignore & git add .gitignore'
+git config --global guitool."Add to .gitignore".needsfile yes
+git config --global guitool."Add to .gitignore".confirm yes
+```
+
+Usage
+
+After that, you can use it under Tools > Ignore selected file in your git gui. 
+Select a file you want to ignore under Unstaged Changes -> Tools/ignore selected file
 
 ***
 
