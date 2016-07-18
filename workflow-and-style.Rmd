@@ -282,7 +282,7 @@ Here, `[]` means an optional argument and `|` means "either or".
 
 To change the directory type 
 ```
-> cd C:/ # go from C:/somewhere/ to C: 
+> cd C:/ # go from C:/somewhere/ to C: Windows CMD: cd\
 > cd C: # go from H: to C: 
 ```
 The "." notation refers to the working directory itself and the ".." notation 
@@ -293,6 +293,11 @@ Sometimes you can also find
   * `ls --reverse`
 These two commands are identical and the arguments just read `--longargument = -abbreviatedarg`.
 The first variant is fast to write, the second one is easy to read and understand.
+
+Run an Rscript: Go to the directory of `myfile.R`, then in Windows cmd
+```
+> Rscript "myfile.R"
+```
 
 ### The shell: overview over windows cmd commands
 

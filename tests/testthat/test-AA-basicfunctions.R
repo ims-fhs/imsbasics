@@ -125,3 +125,15 @@ test_that("zero_n works", {
   expect_equal(zero_n(c(1:10), position = 2),
     c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10"))
 })
+
+context("rectangle")
+test_that("rectangle works", {
+  # skip("Skip for development of tests")
+  t <- seq(0,10,1)
+  t0 <- 3
+  t1 <- 6
+  expect_equal(rectangle(t, t0, t1), c(0, 0, 0, 0.5, 1, 1, 0.5, 0, 0, 0, 0))
+  expect_equal(rectangle(t, t0, t1, 0), c(0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0))
+  expect_equal(rectangle(t, t0, t1, 1), c(0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0))
+  expect_error(rectangle(t, t0, t1, 2), "at_step = 0, 0.5 or 1")
+})

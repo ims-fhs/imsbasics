@@ -89,6 +89,7 @@ r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = 
   options(warn = warn) # 0 on / -1 off / 2 warn2err
   options(stringsAsFactors = strings_as_factors)
   if (english) {
+    Sys.setenv(LANG = "en")
     Sys.setlocale(category = "LC_ALL", locale = "English_United States.1252")
   }
   return(NULL)
@@ -344,11 +345,21 @@ e2g <- function(weekday_eng) {
 #'
 #' @return
 #'
-rectangle <- function(t, t0, t1) { # Not used.
-  if (t1 > t0) {
-    y <- fBasics::Heaviside(t,t0) * fBasics::Heaviside(-t,-t1)
-  } else {stop("t1 > t0")}
-  return(y)
+rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
+  if (upper > lower) {
+    y <- fBasics::Heaviside(t,lower) * fBasics::Heaviside(-t,-upper)
+  } else {
+    stop("upper > lower")
+  }
+  if (at_step == 0.5) {
+    return(y)
+  } else if (at_step == 0) {
+    return(floor(y))
+  } else if(at_step == 1) {
+    return(ceiling(y))
+  } else {
+    stop("at_step = 0, 0.5 or 1")
+  }
 }
 
 
@@ -394,5 +405,24 @@ archive_data <- function(path, files, save_path) {
     }
   }
   return(NULL)
+}
+
+
+load_fom_archive <- function(short_uuid, path2archive) {
+  lf <- list.files(path2archive, full.names = T)
+  ld <- list.dirs(path2archive, recursive = F)
+  file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
+  cond <- grepl(short_uuid, strsplit(file_list, split = "_", fixed = T))
+  if (sum(cond) != 1) {
+    stop("short_uuid not unique")
+    # Could be extended: grepl(substr(short_uuid, 1, 8)...)
+  }
+  file <- unlist(strsplit(file_list[cond], split = "/", fixed = T))
+  if (grepl(".RData", file[length(file)]))
+    return(load_rdata(file[length(file)], path2archive))
+  else {
+    stop("File not found")
+    return(NULL)
+  }
 }
 
