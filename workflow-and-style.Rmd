@@ -871,6 +871,8 @@ does not “revert” back to the previous state of a project by removing all su
 commits. In Git, this is actually called a reset, not a revert.
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
+* `rm -r --cached .`: remove all unstaged files from tracking (-r = recursive) 
+but keep the files in the folder (`--cached`).
 
 #### S
 

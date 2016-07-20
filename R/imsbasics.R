@@ -28,8 +28,8 @@
 #'
 #' @return absolute value of deviation in percent
 #'
-percent_deviation <- function(x, x_ref) {
-  return(abs(x - x_ref)/x_ref*100)
+percent_deviation <- function(x, x_ref, digits=1) {
+  return(round(abs(x - x_ref)/x_ref*100, digits))
 }
 
 
