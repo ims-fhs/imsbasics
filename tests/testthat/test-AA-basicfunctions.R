@@ -137,3 +137,17 @@ test_that("rectangle works", {
   expect_equal(rectangle(t, t0, t1, 1), c(0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0))
   expect_error(rectangle(t, t0, t1, 2), "at_step = 0, 0.5 or 1")
 })
+
+context("language and dictionary")
+test_that("language and dictionary", {
+  # skip("Skip for development of tests")
+
+  expect_equal(g2e("So"), "Sun")
+  expect_equal(g2e(c("So", "Di")), c("Sun", "Tues"))
+  expect_equal(var <- g2e(c("So, Mo, Mi", "Di, Mi, Do, Fr")),
+               c("Sun, Mon, Wed", "Tues, Wed, Thurs, Fri"))
+  expect_equal(e2g(g2e("So")), "So")
+  expect_equal(e2g(g2e(c("So", "Di"))), c("So", "Di"))
+  expect_equal(e2g(var), c("So, Mo, Mi", "Di, Mi, Do, Fr"))
+})
+
