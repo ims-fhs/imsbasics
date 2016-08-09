@@ -1,33 +1,10 @@
-# install.packages("...")
-# --run in the old version of R
-# old_wd <- getwd()
-# setwd("C:/Temp/")
-# packages <- installed.packages()[,"Package"]
-# save(packages, file="Rpackages")
-#
-# Followed by this in the new version:
-#
-#   #--run in the new version
-#   setwd("C:/Temp/")
-# load("Rpackages")
-# for (p in setdiff(packages, installed.packages()[,"Package"]))
-#   install.packages(p)
-# setwd(old_wd)
-
-# hms <- function(dates) {
-#   res <- lubridate::ymd_hms(paste(lubridate::today(), format(lubridate::ymd_hms(dates), '%T')))
-#   return(res)
-# }
-
-
-#' percent_deviation return deviation of a number from a reference number x_ref
-#' in %.
+#' Return deviation of a number from a reference number x_ref in percent.
 #'
 #' @param x, a numeric
 #' @param x_ref, a numeric
 #'
 #' @return absolute value of deviation in percent
-#'
+#' @export
 percent_deviation <- function(x, x_ref, digits=1) {
   return(round(abs(x - x_ref)/x_ref*100, digits))
 }
@@ -41,7 +18,7 @@ percent_deviation <- function(x, x_ref, digits=1) {
 #' @param rhs
 #'
 #' @return result
-#'
+#' @export
 '%<-%' <- function(lhs, rhs) {
   frame <- parent.frame()
   lhs <- as.list(substitute(lhs))
@@ -65,7 +42,7 @@ percent_deviation <- function(x, x_ref, digits=1) {
 #'
 #' @param logfile_name
 #' @param save_path
-#'
+#' @export
 create_log <- function(logfile_name, save_path) {
   warning("Error messages not visible. Use closeAllConnections() in the end of the script")
   if (file.exists(paste0(save_path, logfile_name))) {
@@ -83,7 +60,7 @@ create_log <- function(logfile_name, save_path) {
 #' @param warn = 0
 #'
 #' @return NULL
-#'
+#' @export
 r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = T) {
   options(error = error)
   options(warn = warn) # 0 on / -1 off / 2 warn2err
@@ -101,7 +78,7 @@ r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = 
 #' @param x A numeric
 #'
 #' @return result An integer, the number of decimalplaces of x
-#'
+#' @export
 decimalplaces <- function(x) {
   if ((x %% 1) != 0) {
     result <- nchar(strsplit(sub('0+$','', as.character(x)), ".",
@@ -120,7 +97,7 @@ decimalplaces <- function(x) {
 #' @param path in "../.." style ending with "/".
 #'
 #' @return Obects(s) in filename
-#'
+#' @export
 load_rdata <- function(filename,
   path = stop("Filename and path arguments are required")) {
   # Default file type:
@@ -147,7 +124,7 @@ load_rdata <- function(filename,
 #' @param path in "../.." style ending with "/".
 #'
 #' @return NULL
-#'
+#' @export
 save_rdata <- function(data, filename,
   path = stop("Data, filename and path arguments are required"), force = F, warn = T) {
   if (missing(data) | missing(filename) | missing(path)) {
@@ -181,14 +158,16 @@ save_rdata <- function(data, filename,
 #' Function returns blue of FH St. Gallen.
 #'
 #' @return RGB value for FHS-blue
-#'
+#' @export
 fhs <- function() {
   return(rgb(0, 102, 153, maxColorValue = 255))
 }
 
 
-#' Function to remove all variables
+#' Title
 #'
+#' @return
+#' @export
 clear_all_var <- function() {
   ENV <- globalenv()
   vars <- ls(envir = ENV)
@@ -198,8 +177,11 @@ clear_all_var <- function() {
 }
 
 
-#' Function to close all graphs/ plots
+
+#' Title
 #'
+#' @return
+#' @export
 close_all_graph <- function() {
   if (dev.cur() != 1) {dev.off(which = dev.cur())} #close plots
   graphics.off() #close plots in win.graph()
@@ -207,8 +189,11 @@ close_all_graph <- function() {
 }
 
 
-#' Function to clear console
+
+#' Title
 #'
+#' @return
+#' @export
 cc <- function() {
   cat("\014")
   return(NULL)
@@ -222,7 +207,6 @@ cc <- function() {
 #'
 #' @return standard string
 #' @export
-#'
 zero_n <- function(number, position=3) {
   res <- substr(number + 10^position, 2, nchar(number + 10^position))
   return(res)
@@ -234,7 +218,7 @@ zero_n <- function(number, position=3) {
 #' @param path, a string: ending with "/"
 #' @param files, a list of characters: filenames or "all"
 #' @param prefix, a character added to the target filename
-#'
+#' @export
 copy_rename_file <- function(path, file, save_path, prefix="") {
   n_suffix = 0
   if (file.exists(paste0(path, file))) {
@@ -281,7 +265,7 @@ copy_rename_file <- function(path, file, save_path, prefix="") {
 #' @param dp
 #'
 #' @return mids
-#'
+#' @export
 midpoints <- function(x, dp=2){
   lower <- as.numeric(gsub(",.*","",gsub("\\(|\\[|\\)|\\]","", x)))
   upper <- as.numeric(gsub(".*,","",gsub("\\(|\\[|\\)|\\]","", x)))
@@ -292,7 +276,7 @@ midpoints <- function(x, dp=2){
 #' weekdays_abbr dictionary according to lubridate
 #'
 #' @return german and english weekdays
-#'
+#' @export
 weekdays_abbr <- function() {
   german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
   # names from lubridate.
@@ -306,7 +290,7 @@ weekdays_abbr <- function() {
 #' @param weekday_ger
 #'
 #' @return res
-#'
+#' @export
 g2e <- function(weekday_ger) {
   # assertthat(ger!)
   dict <- weekdays_abbr() # if (!exists("dict")) {dict <- ...}
@@ -326,7 +310,7 @@ g2e <- function(weekday_ger) {
 #' @param weekday_eng
 #'
 #' @return res
-#'
+#' @export
 e2g <- function(weekday_eng) {
   dict <- weekdays_abbr()
   res <- character(length(weekday_eng))
@@ -344,7 +328,7 @@ e2g <- function(weekday_eng) {
 #' @param t1
 #'
 #' @return
-#'
+#' @export
 rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   if (upper > lower) {
     y <- fBasics::Heaviside(t,lower) * fBasics::Heaviside(-t,-upper)
@@ -369,6 +353,8 @@ rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
 #' Function to remove all variables and close all graphs/ plots
 #' including Garbage Collection gc()
 #'
+#' @return
+#' @export
 clc <- function() {
   clear_all_var()
   close_all_graph()
@@ -382,7 +368,7 @@ clc <- function() {
 #' @param path, a string: ending with "/". The source directory.
 #' @param files, a list of characters: filenames or "all"
 #' @param save_path, a string: ending with "/". The target directory.
-#'
+#' @export
 archive_data <- function(path, files, save_path) {
   t0 <- lubridate::now()
   prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
@@ -408,6 +394,13 @@ archive_data <- function(path, files, save_path) {
 }
 
 
+#' Title
+#'
+#' @param short_uuid
+#' @param path2archive
+#'
+#' @return
+#' @export
 load_fom_archive <- function(short_uuid, path2archive) {
   lf <- list.files(path2archive, full.names = T)
   ld <- list.dirs(path2archive, recursive = F)
