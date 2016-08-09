@@ -1,16 +1,16 @@
 ---
 title: "workflow-and-style"
 author: "SQC, SCN"
-date: "20 April 2016"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
-    toc: yes
-  html_document:
-    number_sections: yes
-    theme: united
     toc: yes
 ---
 
@@ -760,7 +760,7 @@ The default name for the starting branch is **master**.
         the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be 
         printed. If full is specified, the full ref name (including prefix) will be 
         printed. The default option is short.
-        + `--oneline`: <sha1> <title line>
+        + `--oneline <sha1> <title line>` : This is a shorthand for `--pretty=oneline --abbrev-commit` used together.
     - `log --follow name`: Continue listing the history of a file `name`. 
     beyond renames (works only for a single file).
     - `log --date-order --graph --tags --simplify-by-decoration --pretty=format:"%ai %h %d"`:
