@@ -38,6 +38,9 @@ for (i in 1:length(rep)) {
     stringsAsFactors = F
   )
 
+  print(df1) # print them: so R will evaluate them: this corrects the penalty the first run gets..
+  print(df2)
+
   bm1[i] <- median(microbenchmark::microbenchmark(left_join_col1(df1, df2))$time)/1000
   bm2[i] <- median(microbenchmark::microbenchmark(left_join_col2(df1, df2))$time)/1000
   bm3[i] <- median(microbenchmark::microbenchmark(left_join_col3(df1, df2))$time)/1000
