@@ -1243,6 +1243,17 @@ git submodule foreach --recursive "git commit -m 'Committing in a submodule'"
 (If you don't have other submodules nested inside those submodules, the 
 `--recursive` option is unnecessary.)  
 
+## Case 11: You want to remove a file, a folder, ... from git tracking
+
+Do the following steps (inbetween it looks like you delete everything, but that 
+will go away for some reasons)
+**I assume that everything you want to commit is commited!**
+```
+git rm -r --chached . # =all or specify folder, file
+git add .
+git commit -a -m "Remove ... from tracking"
+```
+
 # Debugging
 
 Some useful hints from [here](http://adv-r.had.co.nz/Exceptions-Debugging.html)
@@ -1492,6 +1503,7 @@ or may be in `/usr/bin/Rscript` depending on your installation.
 
 ## Pre-commit hook (Tested)
 
+**Use correct R-version, update when updating R!**
 ```
 #!C:/R/R-3.2.2/bin/x64/Rscript
 
@@ -1532,6 +1544,7 @@ if ((length(fileDiff) > 0) && inc) {
 
 ## Post-commit hook (Not tested)
 
+**Use correct R-version, update when updating R!**
 ```
 #!C:/R/R-3.2.2/bin/x64/Rscript
 
