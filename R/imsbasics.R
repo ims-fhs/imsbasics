@@ -145,11 +145,11 @@ save_rdata <- function(data, filename,
       if (warn == T) {
         warning("Old file overwritten")
       }
-      save(data, file = file)
+      save(list = deparse(substitute(data)), file = file)
     }
   } else {
     # File does not exist:
-    save(data, file = file)
+    save(list = deparse(substitute(data)), file = file)
   }
   return(NULL)
 }
