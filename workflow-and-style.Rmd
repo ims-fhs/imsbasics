@@ -588,6 +588,7 @@ If `git add`is not successful, **look at your .gitignore file**.
 
 #### B
 
+* `blame file`: Show what revision and author last modified each line of a file.
 * `branch` Note: A branch in Git is simply a lightweight movable pointer to one 
 of these commits. The default branch name in Git is master. The only reason nearly 
 every repository has one is that the git init command creates it by default and 
@@ -932,9 +933,9 @@ in /.git/hooks/ **without any ending**.
 * As described in the R-file, the version increases automatically.
 * If you don't want to increase the version run
 
-    `SET inc=FALSE`  
-    `git commit -a -m "Your message"`
-
+    `Version: x.y.z-1` # or
+    `Version: x.y.-1` # results in x.y.0 after commiting
+    
 **If you increase the minor or major version, the patch is set to 0.**
 
 * SET does not work for MAC OSX. Workaround to be found.
