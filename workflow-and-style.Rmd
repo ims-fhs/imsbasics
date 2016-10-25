@@ -266,6 +266,15 @@ Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
 
 ***
 
+# R packages
+
+1. Code that is stable, reviewed (4 eyes!) and generic goes into packages.  
+1. Code that is fresh, unstable, unreviewed, experimental or project specific goes into the project folder.  
+1. R packages include code, tests (written with `testthat`) a documentation and examples (written with `Roxygen`) and testdata to use those examples. `sim911`, `data911` and `plot911` are role models.  
+1. The manual goes into git, since we want people who only install the package to be able to read the documentation.
+
+***
+
 # The Shell, Git and GitHub
 
 ## The shell
