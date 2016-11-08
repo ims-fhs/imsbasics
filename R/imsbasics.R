@@ -1,3 +1,10 @@
+# replace_by_lookuptable <- function(df, lookup) {
+# lookup <- data.frame(old = seq(0,14,1),
+#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A", 
+#                              "S1", "S2A", "S2", "S3A", "S3", NA))
+# missions$vehicle_name <- unlist(lapply(missions$vehicle_name, 
+#                                                  function(x) lookup$new[match(x, lookup$old)]))
+
 #' Return deviation of a number from a reference number x_ref in percent.
 #'
 #' @param x, a numeric

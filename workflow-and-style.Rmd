@@ -3,14 +3,14 @@ title: "workflow-and-style"
 author: "SQC, SCN"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  html_document:
-    number_sections: yes
-    theme: united
-    toc: yes
   pdf_document:
     fig_caption: yes
     highlight: tango
     number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: united
     toc: yes
 ---
 
@@ -179,6 +179,54 @@ Goal is a monthly evaluation.
 
 ***
 
+### Remainder for SW reviews
+
+- Funktionsschnittstellen überprüfen:
+- Macht eine Funktion nur eine klar umrissene Aufgabe?
+- Manipuliert eine Funktion nur Daten, welche explizit übergeben und zurückgenommen 
+werden explizit mit der Aufgabe zu tun haben? Bei begründeten Ausnahmen:
+    + Ist die Ausnahme tatsächlich begründet?
+    + Ist die Ausnahme klar kommentiert?
+- Gibt es einen Doku-Kopf für die Funktion mit mindestens folgenden detailierten 
+Angaben: Funktionsname, Ein-/ und Ausgabeparameter (Typ + Sinn) 
+- Sind die Tests sinnvoll und richtig - Sind Tests allgemein in diesem Umfang sinnvoll?
+- Hat sich die Geschwindigkeit geändert? Wenn ja: Kritisch? Warum?
+- Wurden Tests durchgeführt
+- Länge Sprint 3 Wochen?
+- Ist neuer Code in master integriert worden? Falls nein: do it! (merge, SQC, SCN) + finales testthat
+- Derjenige, der einlädt, bereitet vor und verschickt eine Agenda
+- Nur master wird getagt.
+- DESCRIPTION prüfen: imports/depends
+- NAMESPACE (roxygen2) prüfen: Nichts zu tun, aber alle @export prüfen ob sinnvoll.
+- Der Programmierer setzt einen ersten Satz von testthat auf. Ein externer 
+überlegt sich ein unabhängiges Testkonzept: Was will ich wie und wo testen?
+
+## Handling of code and data
+
+For code (and only code!) use Git + Github.  
+For any kind of data (raw data, simulation output, ...) use Backup to `I:\ims-fhs\DATEN`.
+
+For windows you can adapt the following script (`.BAT`):
+
+```
+rem --- Edit the lines below to create your own backup strategy
+rem --- Add more lines for each new folder requiring backup
+rem --- The results of the backup can be found in my_backup_log.txt 
+rem --- /e	kopiert Unterverzeichnisse, auch die leeren
+rem --- /mir	Spiegelung anlegen – Zusammenfassung von /E und /PURGE
+rem --- /log:	bei jedem Syncvorgang eine neue Logdatei anlegen lassen
+rem --- /np	keine Fortschrittsinformationen anzeigen
+rem --- /z	Copies files in Restart mode.
+rem --- /tee	Informationen sowohl auf dem Bildschirm als auch in der Logdatei ausgeben
+rem --- /MT[:n]	Multithreadkopien mit n Threads erstellen (Standardwert: "8").
+rem --- For further help type "robocopy/?" in cmd
+rem --- Save file as .BAT
+robocopy "C:\02 Projekte\03 Rettung ZCH" "I:\ims-fhs\DATEN\Rettung ZCH" /e /mir 
+    ... /np /z /tee /mt /log+:my_backup_log.txt"
+robocopy "C:\07 Rprogress\11 Rettung ZCH" "I:\ims-fhs\DATEN\Rettung ZCH\05 Code" 
+    ... /e /b /mir /np /z /tee /mt /log+:my_backup_log.txt"
+pause
+```
 
 # R, Rtools and Rstudio
 
@@ -237,6 +285,20 @@ Important note: Install packages always to C:/R/R-x.x.x/
 
 It might also be useful to install [MikTex](http://miktex.org/download) to be 
 able to use Rmarkdown.
+
+Use snippets (Tools => Code => Snippets) for R and Rmd documents
+```
+snippet headeR
+	# ------------------------
+	# Author:  SQC
+	# Date:    `r paste(date())`
+	# Summary: 
+	# ------------------------
+```
+
+Modifications not needed here as they are tracked by Git!
+
+## R?
 
 Finally, make sure, you installed the packages
 
@@ -613,6 +675,8 @@ it moves forward automatically.
 
 #### C
 
+* `conig --global merge.conflictstyle diff3`: Display more details in case of conflicts.
+Not yet tested (SQC).
 * `checkout branch`: Switching to a specific, existing **LOCAL** branch. Update files in the 
 working tree to match the version in the index or the specified tree. If no paths 
 are given, git checkout will also update HEAD to set the specified branch as the 
@@ -779,7 +843,11 @@ differently in two branches you’re merging together, Git won’t be able to me
 them cleanly and an error results. Use "status" to get the unmerged files. In 
 this case the version in HEAD (your master branch, if you have checked out that 
 when you ran your merge command) is the top part of that block (everything 
-above the =======)
+above the =======). See git `conflict markers` for details
+    - `merge --abort`: Abbort merge (e.g. in case of unexpected conflicts)
+    - `merge --no-ff`: Do not use fast-forward. Keep to separate branches after merge.
+    - `merge --no-commit`: Check files as merge is done but without commit. Combination
+    `merge --abort --no-commit` possible.
 * `mv oldname newname`: Rename file `oldname`. 
 * `mv oldname newname`: Rename a file. Shorthand for `mv oldname newname` + 
 `git add newname` + `git rm oldname`. For religion see
@@ -873,7 +941,9 @@ commits. In Git, this is actually called a reset, not a revert.
 * `rm -r --cached folder`: remove `folder` from tracking including subfolders
 (-r = recursive) but keep the files in the folder (`--cached`).
 * `rm -r --cached .`: remove all unstaged files from tracking (-r = recursive) 
-but keep the files in the folder (`--cached`).
+but keep the files in the folder (`--cached`). Afterwards you need a `git add .` 
+and a `git commit -a -m "remove ... from tracking"` to finish the task. Before the commit
+your folder looks as if everything had changed (SCN confirm).
 
 #### S
 
