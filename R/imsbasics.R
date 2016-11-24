@@ -1,3 +1,10 @@
+# replace_by_lookuptable <- function(df, lookup) {
+# lookup <- data.frame(old = seq(0,14,1),
+#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A", 
+#                              "S1", "S2A", "S2", "S3A", "S3", NA))
+# missions$vehicle_name <- unlist(lapply(missions$vehicle_name, 
+#                                                  function(x) lookup$new[match(x, lookup$old)]))
+
 #' Return deviation of a number from a reference number x_ref in percent.
 #'
 #' @param x, a numeric
@@ -9,6 +16,32 @@ percent_deviation <- function(x, x_ref, digits=1) {
   return(round(abs(x - x_ref)/x_ref*100, digits))
 }
 
+#' shift array by n positions to the right or left
+#'
+#' @param x An array
+#' @param n An integer, the number of shifts
+#' @param default NA or any other type. which should be placed where i < n.
+#'
+#' @return An array
+#' @export
+shift_array <- function(x, n, default = NA) { # ...................................... To imsbasics
+  stopifnot(length(x) >= n)
+  if (n == 0) {
+    return(x)
+  }
+  if (n < 0) {
+    n <- abs(n)
+    forward <- F
+  } else {
+    forward <- T
+  }
+  if (forward) {
+    return(c(rep(default, n), x[seq_len(length(x)-n)]))
+  }
+  if (!forward) {
+    return(c(x[seq_len(length(x) - n) + n], rep(default, n)))
+  }
+}
 
 #' %<-% Matlabs '[...] =' operator. call as c(par1, par2, ...) %<-% somefunction(...)
 #' instead of calling res <- somefunction(...), par1 <- res$par1, ... rm(res)
@@ -145,11 +178,13 @@ save_rdata <- function(data, filename,
       if (warn == T) {
         warning("Old file overwritten")
       }
-      save(data, file = file)
+      assign(deparse(substitute(data)), data)
+      save(list = deparse(substitute(data)), file = file)
     }
   } else {
     # File does not exist:
-    save(data, file = file)
+    assign(deparse(substitute(data)), data)
+    save(list = deparse(substitute(data)), file = file)
   }
   return(NULL)
 }
@@ -277,7 +312,7 @@ midpoints <- function(x, dp=2){
 #'
 #' @return german and english weekdays
 #' @export
-weekdays_abbr <- function() {
+weekdays_abbr <- function() { # ................................................ Still used?
   german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
   # names from lubridate.
   english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat")
@@ -406,9 +441,11 @@ load_fom_archive <- function(short_uuid, path2archive) {
   ld <- list.dirs(path2archive, recursive = F)
   file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
   cond <- grepl(short_uuid, strsplit(file_list, split = "_", fixed = T))
-  if (sum(cond) != 1) {
+  if (sum(cond) > 1) {
     stop("short_uuid not unique")
     # Could be extended: grepl(substr(short_uuid, 1, 8)...)
+  } else if (sum(cond) == 0) {
+    stop("short_uuid not found")
   }
   file <- unlist(strsplit(file_list[cond], split = "/", fixed = T))
   if (grepl(".RData", file[length(file)]))
