@@ -535,9 +535,13 @@ Download the latest package starting with "Git-", not a "msysgit-..." package
 comes with a UNIX environment as far as needed by git and also ships with a 
 Bash shell for using the git command line tools. Settings during installation:
 
-* Git from Windows cmd (save way), then
+
+* Choose Option 2, Run Git from the Windows Command Prompt. Do not select 
+Option 1, Use Git Bash only, when installing or upgrading Git for the Crucible 
+server – this will not work with Crucible.
 * Checkout windows style, commit in Unix style line endings, then
 * Use winTTY.
+* Enable "file system caching" and "credential manager"
 
 Further useful literature:
 
@@ -635,6 +639,14 @@ files.whatever
 Folders/
 ```
 See [gitignore](https://git-scm.com/docs/gitignore) for further details.
+
+### Upgrade git to latest version
+
+Close all Git-Bash processes. Then
+
+* Download the Full installer
+* Run the Git installer as for done above. Ensuring that you install into the same location as any 
+existing Git installation. You can use `where git` to locate existing installations.
 
 ### Git: useful commands
 
