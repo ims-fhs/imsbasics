@@ -1334,6 +1334,21 @@ git add .
 git commit -a -m "Remove ... from tracking"
 ```
 
+## Case 12: You want to work on a subproject or subfolder
+
+From [SO](http://stackoverflow.com/questions/23289006/on-windows-git-error-sparse-checkout-leaves-no-entry-on-the-working-directory).
+Do the following steps (tested on Windows with Git Bash):
+```
+git clone -n http://github.com/ims-fhs/myfolder.git # myfolder contains subdirs Pr1 and Pr2
+cd Test
+git config core.sparsecheckout true
+echo Pr1 >> .git/info/sparse-checkout
+git checkout yourbranch
+```
+
+The first step grabs the whole repo (which is still required), but does importantly 
+does not perform a checkout.
+
 # Debugging
 
 Some useful hints from [here](http://adv-r.had.co.nz/Exceptions-Debugging.html)

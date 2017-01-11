@@ -1,3 +1,52 @@
+#' Plot runtime graph on a double log scale
+#'
+#' @param n iterations
+#' @param dt runtime
+#' @param dt_unit A character, the unit of runtime
+#' @param title  A character, the title of the graph
+#' @param display A bool, display fit if T
+#'
+#' @export
+#'
+#' @examples
+#' n <- 10^c(0:5)
+#' dt <- 300*n+50 # in us
+#' plot_runtime(n, dt, "us", "My function", T)
+plot_runtime <- function(n, dt, dt_unit, title, display) {
+  x_min <- floor(log10(min(n)))
+  y_min <- floor(log10(min(dt)))
+  x_max <- ceiling(log10(max(n)))
+  y_max <- ceiling(log10(max(dt)))
+  
+  plot(n, dt, col = "black", xlim = 10^c(x_min, x_max), ylim = 10^c(y_min, y_max), 
+       xlab = "n", ylab = paste0("dt [", dt_unit, "]"),
+       log = "xy", xaxt = "n", yaxt = "n", main = title)
+  if (display) {
+    abline(lm(dt ~ n), col = "blue", untf = T)
+  }
+  
+  # Labels...
+  at.y <- outer(1:9, 10^(y_min:y_max))
+  lab.y <- ifelse(log10(at.y) %% 1 == 0,
+                  sapply(at.y, function(i)
+                    as.expression(bquote(10^.(log10(i))))
+                  ), NA)
+  axis(2, at = at.y, labels = lab.y, las = 1)
+  
+  at.x <- outer(1:9, 10^(x_min:x_max))
+  lab.x <- ifelse(log10(at.x) %% 1 == 0,
+                  sapply(at.x, function(i)
+                    as.expression(bquote(10^.(log10(i))))
+                  ), NA)
+  axis(1, at = at.x, labels = lab.x, las = 1)
+  grid (NULL,NULL, lty = 6, col = "cornsilk2")
+  return(NULL)
+}
+
+is.installed <- function(mypkg) {
+  return(is.element(mypkg, installed.packages()[,1]))
+}
+
 # replace_by_lookuptable <- function(df, lookup) {
 # lookup <- data.frame(old = seq(0,14,1),
 #                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A", 
