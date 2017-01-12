@@ -341,6 +341,10 @@ Most up to date auth_token = "3bdb5ca1735725c6dd270e487eca41fea1c75f20"
 
 ## The shell
 
+Difference Windows cmd, Git bash, Shell?
+E.g. if you want to escape the commit message in Git bash type <esc> :wq <enter>` 
+as you are inside vim.
+
 ### The shell: first steps for Linux shell (or bash?)
 
 For windows cmd commands see next section!
@@ -645,7 +649,7 @@ See [gitignore](https://git-scm.com/docs/gitignore) for further details.
 Close all Git-Bash processes. Then
 
 * Download the Full installer
-* Run the Git installer as for done above. Ensuring that you install into the same location as any 
+* Run the Git installer as done above. Ensure that you install into the same location as any 
 existing Git installation. You can use `where git` to locate existing installations.
 
 ### Git: useful commands
@@ -1361,6 +1365,34 @@ git checkout yourbranch
 
 The first step grabs the whole repo (which is still required), but does importantly 
 does not perform a checkout.
+
+If you want to merge project-a into project-b you can also do (Git >2.11)
+
+```
+cd path/to/project-b
+git remote add project-a path/to/project-a
+git fetch project-a
+git merge --allow-unrelated-histories project-a/master # or whichever branch you want to merge
+git remote remove project-a
+```
+
+If you want to include it into its own directory you can do 
+
+```
+cd path/to/project-b
+git remote add project-a /C:/path/to/project-a
+git fetch project-a
+git merge -s ours --no-commit --allow-unrelated-histories project-a/master # or whichever branch you want to merge
+git read-tree --prefix=dir-B/ -u Bproject/master # put everything in ./dir-B/
+git commit -m "Merge B project as our subdirectory"
+git pull -s subtree Bproject master # not necessary?
+git remote remove project-a
+```
+
+The "ours" merge strategy (hear the quotes around merge?) actually does not use 
+any commits from the other branch. It's sometimes mentioned as "keeping the 
+other's history". But it records that history as "applied".
+
 
 # Debugging
 
