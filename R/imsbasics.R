@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' set.seed(1)
-#' df <- data.frame(name = c(1:5), 
-#'                  x = sample(c("a", "b", "c"), 5, T), 
+#' df <- data.frame(name = c(1:5),
+#'                  x = sample(c("a", "b", "c"), 5, T),
 #'                  y = sample(c("a", "b", "c"), 5, T), stringsAsFactors = F)
 #' lookup <- data.frame(old = c("a", "b", "c"),
 #'                      new = c("new_a", "new_b", "new_c"))
@@ -21,7 +21,7 @@ replace_by_lookuptable <- function(df, col, lookup) {
   # every lookup$old exists in all cols in df
   cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) match(x, lookup$old))))
   assertthat::assert_that(!any(cond_na_exists))
-  
+
   df[, col] <- unlist(lapply(df[, col], function(x) lookup$new[match(x, lookup$old)]))
   return(df)
 }
@@ -37,27 +37,27 @@ replace_by_lookuptable <- function(df, col, lookup) {
 #' @examples
 #' create_project("C:/", "myproj")
 create_project <- function(path, name) {
-  dirs_name <- c("Archiv", "Vorprojektphase", "Antrag", "Rechnungen", 
-            "Besprechungen Kunde", "Besprechungen Intern", 
+  dirs_name <- c("Archiv", "Vorprojektphase", "Antrag", "Rechnungen",
+            "Besprechungen Kunde", "Besprechungen Intern",
             "Projektleitung", "Code", "Dokumentation", "Literatur")
   dirs_numbers <- imsbasics::zero_n(c(0:(length(dirs_name)-1)), 2)
   dirs <- paste(dirs_numbers, dirs_name)
   status <- logical(length(dirs) + 1)
-  
+
   status[1] <- dir.create(paste0(path, name))
   for (i in 2:length(status)) {
     status[i] <- dir.create(paste0(path, name, "/", dirs[i-1]))
   }
   assertthat::assert_that(all(status))
-  
+
   # Code folder:
-  path2code <- list.dirs(paste0("C:/Test2/", "myproj"))[
-    grepl("Code", list.dirs(paste0("C:/Test2/", "myproj")))]
+  path2code <- list.dirs(paste0(path, name))[
+    grepl("Code", list.dirs(paste0(path, name)))]
   dir.create(paste0(path2code, "/R"))
   dir.create(paste0(path2code, "/R/data"))
   dir.create(paste0(path2code, "/R/data/rawdata"))
   dir.create(paste0(path2code, "/R/data/RData"))
-  
+
   message("Missing: git init, add .gitignore with .Rproj.user // .Rhistory // .RData // data // *.html // *.pdf")
   return(all(status))
 }
@@ -81,14 +81,14 @@ plot_runtime <- function(n, dt, dt_unit, title, display) {
   y_min <- floor(log10(min(dt)))
   x_max <- ceiling(log10(max(n)))
   y_max <- ceiling(log10(max(dt)))
-  
-  plot(n, dt, col = "black", xlim = 10^c(x_min, x_max), ylim = 10^c(y_min, y_max), 
+
+  plot(n, dt, col = "black", xlim = 10^c(x_min, x_max), ylim = 10^c(y_min, y_max),
        xlab = "n", ylab = paste0("dt [", dt_unit, "]"),
        log = "xy", xaxt = "n", yaxt = "n", main = title)
   if (display) {
     abline(lm(dt ~ n), col = "blue", untf = T)
   }
-  
+
   # Labels...
   at.y <- outer(1:9, 10^(y_min:y_max))
   lab.y <- ifelse(log10(at.y) %% 1 == 0,
@@ -96,7 +96,7 @@ plot_runtime <- function(n, dt, dt_unit, title, display) {
                     as.expression(bquote(10^.(log10(i))))
                   ), NA)
   axis(2, at = at.y, labels = lab.y, las = 1)
-  
+
   at.x <- outer(1:9, 10^(x_min:x_max))
   lab.x <- ifelse(log10(at.x) %% 1 == 0,
                   sapply(at.x, function(i)
@@ -113,9 +113,9 @@ is.installed <- function(mypkg) {
 
 # replace_by_lookuptable <- function(df, lookup) {
 # lookup <- data.frame(old = seq(0,14,1),
-#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A", 
+#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A",
 #                              "S1", "S2A", "S2", "S3A", "S3", NA))
-# missions$vehicle_name <- unlist(lapply(missions$vehicle_name, 
+# missions$vehicle_name <- unlist(lapply(missions$vehicle_name,
 #                                                  function(x) lookup$new[match(x, lookup$old)]))
 
 #' Return deviation of a number from a reference number x_ref in percent.
