@@ -18,48 +18,13 @@
 #' new_df <- replace_by_lookuptable(df, c("x", "y"), lookup)
 replace_by_lookuptable <- function(df, col, lookup) {
   assertthat::assert_that(all(col %in% names(df))) # all cols exist in df
-  # every lookup$old exists in all cols in df
-  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) match(x, lookup$old))))
+  # Problem with Encoding in x and y. grep somehow "solves" this. Concept really unclear.
+  # See ZH project 00-functions.R => my_match ..................................           ???
+  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) grep(x, lookup$old))))
   assertthat::assert_that(!any(cond_na_exists))
 
   df[, col] <- unlist(lapply(df[, col], function(x) lookup$new[match(x, lookup$old)]))
   return(df)
-}
-
-#' Create folder for a new project
-#'
-#' @param path A character, the path ending with /
-#' @param name A character, the name of the project (folder)
-#'
-#' @return T if creation was successful, else F
-#' @export
-#'
-#' @examples
-#' create_project("C:/", "myproj")
-create_project <- function(path, name) {
-  dirs_name <- c("Archiv", "Vorprojektphase", "Antrag", "Rechnungen",
-            "Besprechungen Kunde", "Besprechungen Intern",
-            "Projektleitung", "Code", "Dokumentation", "Literatur")
-  dirs_numbers <- imsbasics::zero_n(c(0:(length(dirs_name)-1)), 2)
-  dirs <- paste(dirs_numbers, dirs_name)
-  status <- logical(length(dirs) + 1)
-
-  status[1] <- dir.create(paste0(path, name))
-  for (i in 2:length(status)) {
-    status[i] <- dir.create(paste0(path, name, "/", dirs[i-1]))
-  }
-  assertthat::assert_that(all(status))
-
-  # Code folder:
-  path2code <- list.dirs(paste0(path, name))[
-    grepl("Code", list.dirs(paste0(path, name)))]
-  dir.create(paste0(path2code, "/R"))
-  dir.create(paste0(path2code, "/R/data"))
-  dir.create(paste0(path2code, "/R/data/rawdata"))
-  dir.create(paste0(path2code, "/R/data/RData"))
-
-  message("Missing: git init, add .gitignore with .Rproj.user // .Rhistory // .RData // data // *.html // *.pdf")
-  return(all(status))
 }
 
 #' Plot runtime graph on a double log scale

@@ -51,7 +51,7 @@ by Wilson et. al.
     - everything that has been created manually should be put in version control
     - keep the size of the files small!
 * Use a backup for all data. version control does not make sense for data
-* Don’t repeat yourself (or others).
+* Don't repeat yourself (or others).
     - every piece of data must have a single authoritative representation in the system
     - code should be modularized rather than copied and pasted
     - re-use code instead of rewriting it
@@ -374,6 +374,16 @@ Run an Rscript: Go to the directory of `myfile.R`, then in Windows cmd
 > Rscript "myfile.R"
 ```
 
+Useful commands:
+
+Short cut | Meaning
+------------- | -------------
+ls -a |	list all files including hidden file starting with '.'
+ls -d |	list directories - with ' */', e.g.  `ls -al ~/.ssh`
+ls -F |	add one char of */=>@| to enteries
+ls -i |	list file's inode index number
+ls -l |	list with long format - show permissions
+
 ### The shell: overview over windows cmd commands
 
 The following commands are possible:
@@ -545,13 +555,19 @@ Option 1, Use Git Bash only, when installing or upgrading Git for the Crucible
 server – this will not work with Crucible.
 * Checkout windows style, commit in Unix style line endings, then
 * Use winTTY.
-* Enable "file system caching" and "credential manager"
+* Enable "file system caching" and "credential manager". This means, that you 
+only have to enter the password once! Afterwards git uses git-credentials and does
+"everything" for you. See also SQC's `C:\08 Vortraege\2017\git config` for further 
+details.
 
 Further useful literature:
 
 * [Hadley](http://r-pkgs.had.co.nz/git.html): How to set up Rstudio, git/SVN and github.
 * [Github](https://help.github.com/articles/fetching-a-remote/) help on git's 
 clone, fetch, pull, merge.
+
+If you start immediatelly to work with Github: Make sure, you have the correct 
+read and write rights! See Github => Settings.
 
 ### Git: first steps and quick tour for impatient guys (RTFM!!!)
 
@@ -1774,10 +1790,11 @@ not use that any more.
 
 ### Work in progress...
 
-Many parts not understood. Identical to stuff above... (18.04.2016 SQC)
+Starting with Git > 2.8 you can get the following overview
 ```
-C:\07 Rprogress\05 Rettung SG>git config --list --show-origin
-file:"C:\\ProgramData/Git/config"       core.symlinks=false
+$ git config --list --show-origin
+
+file:"C:\\ProgramData/Git/config"       core.symlinks=false # ... see .git/config 
 file:"C:\\ProgramData/Git/config"       core.autocrlf=true
 file:"C:\\ProgramData/Git/config"       core.fscache=true
 file:"C:\\ProgramData/Git/config"       color.diff=auto
@@ -1788,18 +1805,23 @@ file:"C:\\ProgramData/Git/config"       help.format=html
 file:"C:\\ProgramData/Git/config"       http.sslcainfo=C:/Git/mingw64/ssl/certs/ca-bundle.crt
 file:"C:\\ProgramData/Git/config"       diff.astextplain.textconv=astextplain
 file:"C:\\ProgramData/Git/config"       rebase.autosquash=true
+
 file:"C:\\Git\\mingw64/etc/gitconfig"   credential.helper=manager
-file:C:/Users/sqc/.gitconfig    filter.lfs.clean=git-lfs clean %f
-file:C:/Users/sqc/.gitconfig    filter.lfs.smudge=git-lfs smudge %f
-file:C:/Users/sqc/.gitconfig    filter.lfs.required=true
-file:C:/Users/sqc/.gitconfig    user.name=Christoph Strauss
-file:C:/Users/sqc/.gitconfig    user.email=christoph.strauss@fhsg.ch
-file:C:/Users/sqc/.gitconfig    credential.helper=wincred
-file:C:/Users/sqc/.gitconfig    alias.hist=log --pretty=format:'%h - %an, %ad: %s' --graph --date=short
-file:C:/Users/sqc/.gitconfig    alias.taghist=log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'
-file:C:/Users/sqc/.gitconfig    difftool.kdiff3.cmd='C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE
-file:C:/Users/sqc/.gitconfig    difftool.kdiff3.keepbackup=false
-file:C:/Users/sqc/.gitconfig    difftool.kdiff3.trustexitcode=false
+
+file:C:/Users/myname/.gitconfig    filter.lfs.clean=git-lfs clean %f
+file:C:/Users/myname/.gitconfig    filter.lfs.smudge=git-lfs smudge %f
+file:C:/Users/myname/.gitconfig    filter.lfs.required=true
+file:C:/Users/myname/.gitconfig    user.name=My name
+file:C:/Users/myname/.gitconfig    user.email=my.name@domain.com
+file:C:/Users/myname/.gitconfig    credential.helper=wincred
+file:C:/Users/myname/.gitconfig    
+    alias.hist=log --pretty=format:'%h - %an, %ad: %s' --graph --date=short
+file:C:/Users/myname/.gitconfig    
+    difftool.kdiff3.cmd='C:/Program Files/KDiff3/kdiff3' $LOCAL $REMOTE
+file:C:/Users/myname/.gitconfig    difftool.kdiff3.keepbackup=false
+file:C:/Users/myname/.gitconfig    difftool.kdiff3.trustexitcode=false
+file:C:/Users/myname/.gitconfig    merge.conflictstyle=diff3
+
 file:.git/config        core.repositoryformatversion=0
 file:.git/config        core.filemode=false
 file:.git/config        core.bare=false
@@ -1807,13 +1829,70 @@ file:.git/config        core.logallrefupdates=true
 file:.git/config        core.symlinks=false
 file:.git/config        core.ignorecase=true
 file:.git/config        core.hidedotfiles=dotGitOnly
-file:.git/config        remote.origin.url=https://github.com/ims-fhs/Rettung-SG
+file:.git/config        remote.origin.url=https://github.com/repo/Rettung-ZCH
 file:.git/config        remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
 file:.git/config        branch.master.remote=origin
 file:.git/config        branch.master.merge=refs/heads/master
-file:.git/config        branch.devSCN.remote=origin
-file:.git/config        branch.devSCN.merge=refs/heads/devSCN
+file:.git/config        branch.dev1.remote=origin
+file:.git/config        branch.dev1.merge=refs/heads/dev1
+file:.git/config        branch.dev2.remote=origin
+file:.git/config        branch.dev2.merge=refs/heads/dev2
 ```
+
+The first part is the highest level config file which you can access via  
+`git config --file c:\ProgramData\Git\config --list`. Then, we have the system-, 
+global-, and local config files. **The local config is the lowest level and overwrites higher config files.**  
+`user.email` for example must not be set on global level, if you work on private 
+and corporate repos and use different addresses there. By not configuring either 
+on the global level you are reminded on local level to set it when doing the first commit.
+
+Mostly from git reference
+
+core.symlinks: If false, symbolic links are checked out as small plain files that contain the link text. git-update-index[1] and git-add[1] will not change the recorded type to regular file. Useful on filesystems like FAT that do not support symbolic links. The default is true, except git-clone[1] or git-init[1] will probe and set core.symlinks false if appropriate when the repository is created.
+
+core.autocrlf: Setting this variable to "true" is the same as setting the text attribute to "auto" on all files and core.eol to "crlf". Set to true if you want to have CRLF line endings in your working directory (Needed on windows!) and the repository has LF line endings (Needed on Unix, Linux, Mac!). This variable can be set to input, in which case no output conversion is performed.
+From Github: Every time you press return on your keyboard you're actually inserting an invisible character called a line ending. Historically, different operating systems have handled line endings differently. When you view changes in a file, Git handles line endings in its own way. Since you're collaborating on projects with Git and GitHub, Git might produce unexpected results if, for example, you're working on a Windows machine, and your collaborator has made a change in OS X. Default on Windows, you simply pass true to the configuration.
+
+core.fscache [Not git ref]: Enable file system caching. File system data will be read in bulk and cached in memory for certain operations ("core.fscache" is set to "true"). This provides a significant performance boost (experimental). 
+
+help.format: Override the default help format used by git-help[1]. Values man, info, web and html are supported. man is the default. web and html are the same.
+
+http.sslCAInfo: File containing the certificates to verify the peer with when fetching or pushing over HTTPS. Can be overridden by the GIT_SSL_CAINFO environment variable
+
+diff.astextplain.textconv: ???
+
+rebase.autoSquash: If set to true enable --autosquash option by default. From --no-autosquash: When the commit log message begins with "squash! ..." (or "fixup! ..."), and there is a commit whose title begins with the same ..., automatically modify the todo list of rebase -i so that the commit marked for squashing comes right after the commit to be modified, and change the action of the moved commit from pick to squash (or fixup). Ignores subsequent "fixup! " or "squash! " after the first, in case you referred to an earlier fixup/squash with git commit --fixup/--squash.
+
+credential.helper: Specify an external helper to be called when a username or password credential is needed; the helper may consult external storage to avoid prompting the user for the credentials. Note that multiple helpers may be defined. See gitcredentials[7] for details.
+From stackoverflow.com: On Windows you might be better off using the manager helper (git config --global credential.helper manager). This stores your credentials in the Windows credential store which has a Control Panel interface where you can delete or edit your stored credentials. With this store, your details are secured by your Windows login and can persist over multiple sessions. The manager helper included in Git for Windows 2.x has replaced the earlier wincred helper that was added in Git for Windows 1.8.1.1. A similar helper called winstore is also available online and was used with GitExtensions as it offers a more GUI driven interface. The manager helper offers the same GUI interface as winstore. You are using wincred if credentials are needed. But if you use an SSH URL, the ssh-key is used. 
+
+filter.lfs.xxx: LFS is an open source Git extension for versioning large files. Git Large File Storage (LFS) replaces large files
+such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote 
+server like GitHub.com. When using a git server that supports lfs, the lfs url defaults upon clone/adding a remote. However, 
+sometimes the LFS server and git server are two separate services (such as the lfs-test-server. 
+After you installed git-lfs: To see the lfs url, run git lfs env
+
+core.repositoryFormatVersion: Internal variable identifying the repository format and layout version
+
+core.fileMode: Tells Git if the executable bit of files in the working tree is to be honored. Some filesystems lose the executable
+bit when a file that is marked as executable is checked out, or checks out an non-executable file with executable bit on. 
+git-clone[1] or git-init[1] probe the filesystem to see if it handles the executable bit correctly and this variable is automatically set as necessary. 
+A repository, however, may be on a filesystem that handles the filemode correctly, and this variable is set to true when created, but later may be made accessible from another environment that loses the filemode (e.g. exporting ext4 via CIFS mount, visiting a Cygwin created repository with Git for Windows or Eclipse). In such a case it may be necessary to set this variable to false. See git-update-index[1].
+The default is true (when core.filemode is not specified in the config file).
+
+core.bare: If true this repository is assumed to be bare and has no working directory associated with it. If this is the case a number of commands that require a working directory will be disabled, such as git-add[1] or git-merge[1]. This setting is automatically guessed by git-clone[1] or git-init[1] when the repository was created. By default a repository that ends in "/.git" is assumed to be not bare (bare = false), while all other repositories are assumed to be bare (bare = true).
+
+core.logAllRefUpdates: Enable the reflog. Updates to a ref <ref> is logged to the file "$GIT_DIR/logs/<ref>", by appending the new and old SHA-1, the date/time and the reason of the update, but only when the file exists. If this configuration variable is set to true, missing "$GIT_DIR/logs/<ref>" file is automatically created for branch heads (i.e. under refs/heads/), remote refs (i.e. under refs/remotes/), note refs (i.e. under refs/notes/), and the symbolic ref HEAD. If it is set to always, then a missing reflog is automatically created for any ref under refs/.
+This information can be used to determine what commit was the tip of a branch "2 days ago".
+This value is true by default in a repository that has a working directory associated with it, and false by default in a bare repository.
+
+core.symlinks: If false, symbolic links are checked out as small plain files that contain the link text. git-update-index[1] and git-add[1] will not change the recorded type to regular file. Useful on filesystems like FAT that do not support symbolic links.
+The default is true, except git-clone[1] or git-init[1] will probe and set core.symlinks false if appropriate when the repository is created.
+
+core.ignoreCase: If true, this option enables various workarounds to enable Git to work better on filesystems that are not case sensitive, like FAT. For example, if a directory listing finds "makefile" when Git expects "Makefile", Git will assume it is really the same file, and continue to remember it as "Makefile".
+The default is false, except git-clone[1] or git-init[1] will probe and set core.ignoreCase true if appropriate when the repository is created.
+
+core.hideDotFiles: (Windows-only) If true, mark newly-created directories and files whose name starts with a dot as hidden. If dotGitOnly, only the .git/ directory is hidden, but no other files starting with a dot. The default mode is dotGitOnly.
 
 ## R-script to calculate story points from symphonical
 
