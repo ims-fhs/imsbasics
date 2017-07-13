@@ -1,32 +1,3 @@
-#' replace entries using a lookup table
-#'
-#' @param df A data.frame
-#' @param col A charcter vector, the name(s) of the columns with replacements
-#' @param lookup A data.frame, the lookup table
-#'
-#' @return df with replaced entries
-#' @export
-#'
-#' @examples
-#' set.seed(1)
-#' df <- data.frame(name = c(1:5),
-#'                  x = sample(c("a", "b", "c"), 5, T),
-#'                  y = sample(c("a", "b", "c"), 5, T), stringsAsFactors = F)
-#' lookup <- data.frame(old = c("a", "b", "c"),
-#'                      new = c("new_a", "new_b", "new_c"))
-#' new_df <- replace_by_lookuptable(df, "x", lookup)
-#' new_df <- replace_by_lookuptable(df, c("x", "y"), lookup)
-replace_by_lookuptable <- function(df, col, lookup) {
-  assertthat::assert_that(all(col %in% names(df))) # all cols exist in df
-  # Problem with Encoding in x and y. grep somehow "solves" this. Concept really unclear.
-  # See ZH project 00-functions.R => my_match ..................................           ???
-  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) grep(x, lookup$old))))
-  assertthat::assert_that(!any(cond_na_exists))
-
-  df[, col] <- unlist(lapply(df[, col], function(x) lookup$new[match(x, lookup$old)]))
-  return(df)
-}
-
 #' Plot runtime graph on a double log scale
 #'
 #' @param n iterations
