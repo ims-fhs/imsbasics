@@ -1,12 +1,12 @@
 Package: imsbasics
 Type: Package
 Title: Provides basic functions
-Version: 1.7.19
+Version: 1.7.21
 Date: 2017-10-10
 Author: Christoph Strauss, Adrian Staempfli
 Maintainer: Christoph Strauss <Christoph.Strauss@fhsg.ch>
 Description: bla
 License: -
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: testthat
