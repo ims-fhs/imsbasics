@@ -47,13 +47,6 @@ is.installed <- function(mypkg) {
   return(is.element(mypkg, installed.packages()[,1]))
 }
 
-# replace_by_lookuptable <- function(df, lookup) {
-# lookup <- data.frame(old = seq(0,14,1),
-#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A",
-#                              "S1", "S2A", "S2", "S3A", "S3", NA))
-# missions$vehicle_name <- unlist(lapply(missions$vehicle_name,
-#                                                  function(x) lookup$new[match(x, lookup$old)]))
-
 #' Return deviation of a number from a reference number x_ref in percent.
 #'
 #' @param x, a numeric
@@ -73,7 +66,7 @@ percent_deviation <- function(x, x_ref, digits=1) {
 #'
 #' @return An array
 #' @export
-shift_array <- function(x, n, default = NA) { # ...................................... To imsbasics
+shift_array <- function(x, n, default = NA) {
   stopifnot(length(x) >= n)
   if (n == 0) {
     return(x)
@@ -361,7 +354,7 @@ midpoints <- function(x, dp=2){
 #'
 #' @return german and english weekdays
 #' @export
-weekdays_abbr <- function() { # ................................................ Still used?
+weekdays_abbr <- function() {
   german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
   # names from lubridate.
   english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat")
@@ -416,7 +409,10 @@ e2g <- function(weekday_eng) {
 rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   if (upper > lower) {
     y <- fBasics::Heaviside(t,lower) * fBasics::Heaviside(-t,-upper)
+  } else if (upper == lower) {
+    y <- rep(0, length(t))
   } else {
+    browser()
     stop("upper > lower")
   }
   if (at_step == 0.5) {
