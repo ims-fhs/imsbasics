@@ -10,3 +10,4 @@ License: -
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Suggests: testthat
+Imports: assertthat, fBasics, lubridate
