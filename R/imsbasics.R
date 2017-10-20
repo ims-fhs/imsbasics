@@ -8,17 +8,16 @@
 #'
 #' @param use_r_cmd_check A boolean if TRUE, devtools::check() will be used
 #'
-#' @return
+#' @return NULL
 #' @export
 pre_commit <- function(use_r_cmd_check = T) {
   devtools::document()
-  devtools::build()
-  devtools::install()
   devtools::run_examples()
   devtools::test()
   if (use_r_cmd_check) {
     devtools::check()
   }
+  return(NULL)
 }
 
 
