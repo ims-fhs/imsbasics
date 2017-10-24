@@ -513,6 +513,8 @@ load_fom_archive <- function(short_uuid, path2archive) {
   file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
   cond <- grepl(short_uuid, strsplit(file_list, split = "_", fixed = T))
   if (sum(cond) > 1) {
+    cat(paste0("The following files do not have a unique short uuid:\n",
+               paste(basename(file_list[cond]), collapse = ",\n ")))
     stop("short_uuid not unique")
     # Could be extended: grepl(substr(short_uuid, 1, 8)...)
   } else if (sum(cond) == 0) {
