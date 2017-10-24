@@ -1,3 +1,26 @@
+#' pre_commit: uses devtools to document package, run all examples and
+#' run all testthat tests and if use_r_cmd_check = T even run devtools::check.
+#'Use this before every commit.
+#'
+#' R CMD check() can be set inactive (use_r_cmd_check = F), because it may
+#' throw errors even if devtools::run_examples() and devtools::test()
+#' run without errors. Not fully understood by SCN.
+#'
+#' @param use_r_cmd_check A boolean if TRUE, devtools::check() will be used
+#'
+#' @return NULL
+#' @export
+pre_commit <- function(use_r_cmd_check = T) {
+  devtools::document()
+  devtools::run_examples()
+  devtools::test()
+  if (use_r_cmd_check) {
+    devtools::check()
+  }
+  return(NULL)
+}
+
+
 #' Plot runtime graph on a double log scale
 #'
 #' @param n iterations
@@ -47,13 +70,6 @@ is.installed <- function(mypkg) {
   return(is.element(mypkg, installed.packages()[,1]))
 }
 
-# replace_by_lookuptable <- function(df, lookup) {
-# lookup <- data.frame(old = seq(0,14,1),
-#                      new = c(NA, NA, NA, NA, "P1A", "P1", "P2", "P3", "S1A",
-#                              "S1", "S2A", "S2", "S3A", "S3", NA))
-# missions$vehicle_name <- unlist(lapply(missions$vehicle_name,
-#                                                  function(x) lookup$new[match(x, lookup$old)]))
-
 #' Return deviation of a number from a reference number x_ref in percent.
 #'
 #' @param x, a numeric
@@ -73,7 +89,7 @@ percent_deviation <- function(x, x_ref, digits=1) {
 #'
 #' @return An array
 #' @export
-shift_array <- function(x, n, default = NA) { # ...................................... To imsbasics
+shift_array <- function(x, n, default = NA) {
   stopifnot(length(x) >= n)
   if (n == 0) {
     return(x)
@@ -161,7 +177,9 @@ r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = 
 #'
 #' @return result An integer, the number of decimalplaces of x
 #' @export
+#' @examples decimalplaces(12.234)
 decimalplaces <- function(x) {
+  assertthat::assert_that(is.numeric(x))
   if ((x %% 1) != 0) {
     result <- nchar(strsplit(sub('0+$','', as.character(x)), ".",
       fixed = TRUE)[[1]][[2]])
@@ -169,6 +187,7 @@ decimalplaces <- function(x) {
   } else {
     return(0L)
   }
+  assertthat::assert_that(is.integer(x))
 }
 
 
@@ -361,7 +380,7 @@ midpoints <- function(x, dp=2){
 #'
 #' @return german and english weekdays
 #' @export
-weekdays_abbr <- function() { # ................................................ Still used?
+weekdays_abbr <- function() {
   german <- c("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa")
   # names from lubridate.
   english <- c("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat")
@@ -416,7 +435,10 @@ e2g <- function(weekday_eng) {
 rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   if (upper > lower) {
     y <- fBasics::Heaviside(t,lower) * fBasics::Heaviside(-t,-upper)
+  } else if (upper == lower) {
+    y <- rep(0, length(t))
   } else {
+    browser()
     stop("upper > lower")
   }
   if (at_step == 0.5) {
