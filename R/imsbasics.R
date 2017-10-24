@@ -1,3 +1,26 @@
+#' pre_commit: uses devtools to document package, run all examples and
+#' run all testthat tests and if use_r_cmd_check = T even run devtools::check.
+#'Use this before every commit.
+#'
+#' R CMD check() can be set inactive (use_r_cmd_check = F), because it may
+#' throw errors even if devtools::run_examples() and devtools::test()
+#' run without errors. Not fully understood by SCN.
+#'
+#' @param use_r_cmd_check A boolean if TRUE, devtools::check() will be used
+#'
+#' @return NULL
+#' @export
+pre_commit <- function(use_r_cmd_check = T) {
+  devtools::document()
+  devtools::run_examples()
+  devtools::test()
+  if (use_r_cmd_check) {
+    devtools::check()
+  }
+  return(NULL)
+}
+
+
 #' Plot runtime graph on a double log scale
 #'
 #' @param n iterations
@@ -154,7 +177,9 @@ r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = 
 #'
 #' @return result An integer, the number of decimalplaces of x
 #' @export
+#' @examples decimalplaces(12.234)
 decimalplaces <- function(x) {
+  assertthat::assert_that(is.numeric(x))
   if ((x %% 1) != 0) {
     result <- nchar(strsplit(sub('0+$','', as.character(x)), ".",
       fixed = TRUE)[[1]][[2]])
@@ -162,6 +187,7 @@ decimalplaces <- function(x) {
   } else {
     return(0L)
   }
+  assertthat::assert_that(is.integer(x))
 }
 
 
