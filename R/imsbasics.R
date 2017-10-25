@@ -1,3 +1,29 @@
+#' install_simiverse: Installs all the packages for the sim911-universe.
+#' Uses devtools::install_github, accesses always master branches.
+#' No examples and tests provided since they will change your library..
+#'
+#' @param auth_token The token to access your privat Repos on GitHub
+#'
+#' @return df_package_status A data.frame with package names and installation status
+#' @export
+install_simiverse <- function(auth_token = stop(
+  "Provide GitHub AuthToken to access private Repos")) {
+
+  res_data911 <- devtools::install_github("ims-fhs/data911", auth_token = auth_token)
+  needed_ims_packages <- data911::needed_ims_packages()
+  assertthat::are_equal(needed_ims_packages[1], "data911") # otherwise the return shows nonsense ... SCN
+  installed <- devtools::install_github(paste0("ims-fhs/", needed_ims_packages[
+    needed_ims_packages != "data911"]), auth_token = auth_token)
+  installed <- c(res_data911, installed)
+
+  assertthat::noNA(installed)
+
+  return(data.frame(
+    package = needed_ims_packages,
+    installed = installed
+  ))
+}
+
 #' pre_commit: uses devtools to document package, run all examples and
 #' run all testthat tests and if use_r_cmd_check = T even run devtools::check.
 #'Use this before every commit.
