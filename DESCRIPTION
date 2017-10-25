@@ -1,8 +1,8 @@
 Package: imsbasics
 Type: Package
 Title: Provides basic functions
-Version: 1.7.24
-Date: 2017-10-24
+Version: 1.8.0
+Date: 2017-10-25
 Author: Christoph Strauss, Adrian Staempfli
 Maintainer: Christoph Strauss <Christoph.Strauss@fhsg.ch>
 Description: bla
@@ -10,4 +10,4 @@ License: -
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Suggests: testthat
-Imports: assertthat, lubridate
+Imports: assertthat, devtools, lubridate
