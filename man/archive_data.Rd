@@ -4,7 +4,7 @@
 \alias{archive_data}
 \title{Archive data with date and version tag.}
 \usage{
-archive_data(path, files, save_path)
+archive_data(path, files, save_path, exclude_file_type = "none")
 }
 \arguments{
 \item{path, }{a string: ending with "/". The source directory.}
@@ -12,7 +12,13 @@ archive_data(path, files, save_path)
 \item{files, }{a list of characters: filenames or "all"}
 
 \item{save_path, }{a string: ending with "/". The target directory.}
+
+\item{exclude_file_type, }{an array, the type to be excluded. Either "none" or e.g. c(".pdf", ".html")}
 }
 \description{
 Archive data with date and version tag.
+}
+\examples{
+imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/", c(".html", ".pdf"))
+imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/")
 }
