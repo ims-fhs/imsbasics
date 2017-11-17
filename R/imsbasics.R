@@ -654,3 +654,21 @@ e2g <- function(eng_expr) {
   return(res)
 }
 
+#' Wrapper for unlink to automatically remove directories. For details see unlink.
+#'
+#' @param path A character, the path
+#' @param recursive A boolean, set to TRUE to remove directories. Refer to help for unlink.
+#' @param force A boolean, refer to help for unlink.
+#'
+#' @return TRUE value which can be assigned, but which is not print. ?invisible.
+#' @export
+dir.remove <- function(path, recursive, force) {
+  assertthat::assert_that(dir.exists(path))
+  if (substr(path, nchar(path), nchar(path)) == "/") {
+    path <- substr(path, 1, nchar(path)-1)
+  }
+  if (unlink(path, recursive, force) == 0) {
+    return(invisible(TRUE))
+  }
+  stop(sprintf("Failed to remove [%s]", x))
+}
