@@ -500,8 +500,15 @@ clc <- function() {
 #' @param path, a string: ending with "/". The source directory.
 #' @param files, a list of characters: filenames or "all"
 #' @param save_path, a string: ending with "/". The target directory.
+#' @param exclude_file_type, an array, the type to be excluded. Either "none" or e.g. c(".pdf", ".html")
+#'
+#' @return NULL
 #' @export
-archive_data <- function(path, files, save_path) {
+#'
+#' @examples
+#' imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/", c(".html", ".pdf"))
+#' imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/")
+archive_data <- function(path, files, save_path, exclude_file_type = "none") {
   t0 <- lubridate::now()
   prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
   if (files[1] == "all") {
@@ -511,9 +518,16 @@ archive_data <- function(path, files, save_path) {
     lf <- list.files(path, full.names = T)
     ld <- list.dirs(path, recursive = F)
     file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
+    if (exclude_file_type[1] != "none") {
+      keep_files_df <- t(as.data.frame(lapply(exclude_file_type, function(x)
+        !grepl(x, basename(file_list))), stringsAsFactors = F))
+      colnames(keep_files_df) <- paste0("V", c(1:ncol(keep_files_df)))
+      rownames(keep_files_df) <- NULL
+      file_list <- file_list[unlist(lapply(c(1:ncol(keep_files_df)), function(x) all(keep_files_df[, x])))]
+    }
     for (i in 1:length(file_list)) {
       copy_rename_file(paste0(dirname(file_list[i]), "/"),
-        basename(file_list[i]), save_path, prefix)
+                       basename(file_list[i]), save_path, prefix)
     }
     # could be extended to subfolders via list.files(path, full.names = T, recursive = T)
   } else {
@@ -640,3 +654,21 @@ e2g <- function(eng_expr) {
   return(res)
 }
 
+#' Wrapper for unlink to automatically remove directories. For details see unlink.
+#'
+#' @param path A character, the path
+#' @param recursive A boolean, set to TRUE to remove directories. Refer to help for unlink.
+#' @param force A boolean, refer to help for unlink.
+#'
+#' @return TRUE value which can be assigned, but which is not print. ?invisible.
+#' @export
+dir.remove <- function(path, recursive, force) {
+  assertthat::assert_that(dir.exists(path))
+  if (substr(path, nchar(path), nchar(path)) == "/") {
+    path <- substr(path, 1, nchar(path)-1)
+  }
+  if (unlink(path, recursive, force) == 0) {
+    return(invisible(TRUE))
+  }
+  stop(sprintf("Failed to remove [%s]", x))
+}
