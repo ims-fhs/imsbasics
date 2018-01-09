@@ -678,3 +678,74 @@ dir.remove <- function(path, recursive, force) {
   }
   stop(sprintf("Failed to remove [%s]", x))
 }
+
+#' Search for a string (case sensitive, not a pattern!) in a vector y. Full match
+#' is done through comparison of string's length. Used in replace_by_lookuptable()
+#' In theory, this function should be identical to match(pattern, y).
+#' Sometimes, match has problems with encodings. Not reproducible.
+#'
+#' Comment: Method has been taken from zh911::my_match and renamed as ims_match.
+#'
+#' @param pattern the pattern to be matched
+#' @param y the vector being searched
+#'
+#' @return array of indices with exact case sensitive matching
+#' @export
+#'
+#' @examples
+#' y <- c("Test", "a", "b", "t", "T", "Te", "Test", "hurz")
+#' ims_match("T", y) # 5
+#' y[ims_match("T", y)] # "T"
+#' grep("T", y) # 1 5 6 7
+#' grepl("T", y)  #  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE => returns too much
+ims_match <- function(pattern, y, encoding_match_type = "base_r") {
+  # most have to use this:
+  if (encoding_match_type == "base_r") {
+    l <- match(pattern, y) # Use this if possible!
+  } else if (encoding_match_type == "sqc") {
+    # perhaps only SQC uses this:
+    l <- unlist(lapply(pattern, function(x) {
+      res <- grep(x, y, fixed = T, value = F) # should be ", fixed = T" because we do not look for regexpr!
+      # grep looks for pattern. Full match assumes that length of string should be unique.
+      if (length(res) > 1) {
+        y_old <- res
+        res <- y_old[nchar(y[res]) == nchar(pattern)]
+      }
+      return(res)}))
+  } else {
+    stop("encoding_match_type has to be either default base_r or sqc")
+  }
+  #
+
+  return(l)
+}
+
+#' Replace a string through another one in one or more columns of a data.frame.
+#' If for a given row there is no match found in the old-value-colum to map to
+#' the new-value-column, NA will be inserted instead.
+#'
+#' Comment: Method has been taken from zh911::my_match and renamed as ims_match.
+#'
+#' @param df A data.frame
+#' @param col A character(array)
+#' @param lookup A lookup table containing columns "old" and "new"
+#'
+#' @return df A data.frame
+#' @export
+replace_by_lookuptable <- function(df, col, lookup, ...) {
+  params <- list(...)
+  optionalParamNames <- c("encoding_match_type")
+  unusedParams <- setdiff(names(params),optionalParamNames)
+  if (length(unusedParams)) {
+    stop('unused parameters ',paste(unusedParams,collapse = ', '))
+  }
+
+  assertthat::assert_that(all(col %in% names(df))) # all cols exist in df
+  assertthat::assert_that(all(c("new", "old") %in% colnames(lookup)))
+
+  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) ims_match(x, lookup$old, ...))))
+  assertthat::assert_that(!any(cond_na_exists))
+
+  df[, col] <- unlist(lapply(df[, col], function(x) lookup$new[ims_match(x, lookup$old, ...)]))
+  return(df)
+}
