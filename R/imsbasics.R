@@ -388,17 +388,23 @@ copy_rename_file <- function(path, file, save_path, prefix="") {
 }
 
 
-#' midpoints calculates the midpoints of a factor level (x,y] created from ..... ?
+#' Calculates the midpoints of a factor level (x,y]
 #'
-#' @param x
-#' @param dp
+#' @param x A factor
+#' @param digits An integer, the number of digits
 #'
-#' @return mids
+#' @return mids A numeric, the array of midpoints
 #' @export
-midpoints <- function(x, dp=2){
+#'
+#' @examples
+#' n <- 3; k <- 5
+#' d <- gl(n, k, length = n*k, labels = seq_len(n), ordered = FALSE)
+#' x <- cut(as.numeric(d), 4)
+#' imsbasics::midpoints(x, 4)
+midpoints <- function(x, digits = 2){
   lower <- as.numeric(gsub(",.*","",gsub("\\(|\\[|\\)|\\]","", x)))
   upper <- as.numeric(gsub(".*,","",gsub("\\(|\\[|\\)|\\]","", x)))
-  return(round(lower + (upper - lower)/2, dp))
+  return(round(lower + (upper - lower)/2, digits))
 }
 
 
