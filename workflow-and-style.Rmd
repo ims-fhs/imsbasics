@@ -543,11 +543,13 @@ Remark concerning RStudio:
 
 ### Git: Installation on Windows
 
-Git for Windows is provided as installer package by the msysgit project. 
+~~Git for Windows is provided as installer package by the msysgit project. 
 Download the latest package starting with "Git-", not a "msysgit-..." package 
 (the latter are supposed to be used to build git yourself). Git for Windows 
 comes with a UNIX environment as far as needed by git and also ships with a 
-Bash shell for using the git command line tools. Settings during installation:
+Bash shell for using the git command line tools. Settings during installation:~~
+
+Git for Windows can be downloaded here: https://git-scm.com/download/win
 
 
 * Choose Option 2, Run Git from the Windows Command Prompt. Do not select 
