@@ -9,5 +9,5 @@ Description: bla
 License: -
 LazyData: TRUE
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: testthat, roxygen2
 Imports: assertthat, devtools, fBasics, lubridate
