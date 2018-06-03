@@ -46,7 +46,6 @@ pre_commit <- function(use_r_cmd_check = T) {
   return(NULL)
 }
 
-
 #' Plot runtime graph on a double log scale
 #'
 #' @param n iterations
@@ -92,6 +91,14 @@ plot_runtime <- function(n, dt, dt_unit, title, display) {
   return(NULL)
 }
 
+#' Title
+#'
+#' @param mypkg
+#'
+#' @return
+#' @export
+#'
+#' @examples
 is.installed <- function(mypkg) {
   return(is.element(mypkg, installed.packages()[,1]))
 }
@@ -161,7 +168,6 @@ shift_array <- function(x, n, default = NA) {
   return(invisible(NULL))
 }
 
-
 #' create_log directs output to logfile_name in save_path
 #'
 #' @param logfile_name
@@ -177,7 +183,6 @@ create_log <- function(logfile_name, save_path) {
   sink(fid, append = T, type = "output", split = T) # print, cat
   return(NULL)
 }
-
 
 #' set_custom_rstudio sets custom parameters
 #'
@@ -195,7 +200,6 @@ r_options <- function(error = NULL, warn = 0, strings_as_factors = F, english = 
   }
   return(NULL)
 }
-
 
 #' decimalplaces returns the number of decimal places of x
 #'
@@ -215,7 +219,6 @@ decimalplaces <- function(x) {
   }
   assertthat::assert_that(is.integer(x))
 }
-
 
 #' Load data from specific folder to a variable in current environment.
 #' Call as data <- imsbasics::load_rdata(filename, path)
@@ -241,7 +244,6 @@ load_rdata <- function(filename,
   }
   return(data)
 }
-
 
 #' Save a specific variable in environmet to file in specific folder
 #' Call as cacheR::varToFile(data, filename, path)
@@ -283,15 +285,13 @@ save_rdata <- function(data, filename,
   return(NULL)
 }
 
-
-#' Function returns blue of FH St. Gallen.
+#' Function returns blue of FH St. Gallen. ???
 #'
 #' @return RGB value for FHS-blue
 #' @export
 fhs <- function() {
   return(rgb(0, 102, 153, maxColorValue = 255))
 }
-
 
 #' Title
 #'
@@ -305,8 +305,6 @@ clear_all_var <- function() {
   return(NULL)
 }
 
-
-
 #' Title
 #'
 #' @return
@@ -316,8 +314,6 @@ close_all_graph <- function() {
   graphics.off() #close plots in win.graph()
   return(NULL)
 }
-
-
 
 #' Title
 #'
@@ -341,53 +337,6 @@ zero_n <- function(number, position=3) {
   return(res)
 }
 
-
-#' Copy and rename one file. Used in archive_data
-#'
-#' @param path, a string: ending with "/"
-#' @param files, a list of characters: filenames or "all"
-#' @param prefix, a character added to the target filename
-#' @export
-copy_rename_file <- function(path, file, save_path, prefix="") {
-  n_suffix = 0
-  if (file.exists(paste0(path, file))) {
-    while (n_suffix < 999) {
-      file_sep <- unlist(strsplit(file, ".", fixed = T))
-      if (file_sep[2] == "RData") {
-        data <- imsbasics::load_rdata(file, path)
-        var <- data$uuid
-        if (!length(var) == 0) {
-          # uuid exists
-          if (n_suffix == 0) {
-            suffix <- substr(var, 1, 8)
-          } else {
-            # file already exists, use _HSASH_00x format
-            suffix <- paste0(substr(var, 1, 8), "_", zero_n(n_suffix, 3))
-          }
-        } else {
-          # uuid does not exist, use _00x format
-          suffix <- zero_n(n_suffix, 3)
-        }
-      } else {
-        # For non-.RData files always use _00x format
-        suffix <- zero_n(n_suffix, 3)
-      }
-      save_name <- paste0(save_path, prefix, "-", file_sep[1], "_", suffix, ".", file_sep[2])
-      if (!file.exists(save_name)) {
-        file.copy(paste0(path, file), paste0(save_path, file))
-        file.rename(paste0(save_path, file), save_name)
-        n_suffix <- 999 # Terminate while-loop
-      } else {
-        warning(save_name, " already exists.")
-        n_suffix <- n_suffix + 1
-      }
-    }
-  } else {
-    warning(paste0(path, file), " does not exist.")
-  }
-}
-
-
 #' Calculates the midpoints of a factor level (x,y]
 #'
 #' @param x A factor
@@ -407,8 +356,7 @@ midpoints <- function(x, digits = 2){
   return(round(lower + (upper - lower)/2, digits))
 }
 
-
-#' weekdays_abbr dictionary according to lubridate
+#' weekdays_abbr dictionary according to lubridate ???
 #'
 #' @return german and english weekdays
 #' @export
@@ -419,8 +367,7 @@ weekdays_abbr <- function() {
   return(list(german = german, english = english))
 }
 
-
-#' g2e german to english using weekdays_abbr as reference.
+#' g2e german to english using weekdays_abbr as reference. ???
 #'
 #' @param weekday_ger
 #'
@@ -439,8 +386,7 @@ g2e <- function(weekday_ger) {
   return(res)
 }
 
-
-#' e2g english to german using weekdays_abbr as reference.
+#' e2g english to german using weekdays_abbr as reference. ???
 #'
 #' @param weekday_eng
 #'
@@ -454,7 +400,6 @@ e2g <- function(weekday_eng) {
   }
   return(res)
 }
-
 
 #' rectangle step to zero in (t0, t1). Otherwise 0.
 #'
@@ -484,10 +429,6 @@ rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   }
 }
 
-
-# =============================================================================
-# Functions with dependencies:
-
 #' Function to remove all variables and close all graphs/ plots
 #' including Garbage Collection gc()
 #'
@@ -500,82 +441,7 @@ clc <- function() {
   return(NULL)
 }
 
-
-#' Archive data with date and version tag.
-#'
-#' @param path, a string: ending with "/". The source directory.
-#' @param files, a list of characters: filenames or "all"
-#' @param save_path, a string: ending with "/". The target directory.
-#' @param exclude_file_type, an array, the type to be excluded. Either "none" or e.g. c(".pdf", ".html")
-#'
-#' @return NULL
-#' @export
-#'
-#' @examples
-#' imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/", c(".html", ".pdf"))
-#' imsbasics::archive_data("C:/Temp/Test/", "all", "C:/Temp/Archiv/")
-archive_data <- function(path, files, save_path, exclude_file_type = "none") {
-  t0 <- lubridate::now()
-  prefix <- paste(lubridate::year(t0), lubridate::month(t0), lubridate::day(t0), sep = "-")
-  if (files[1] == "all") {
-    if (path == "") {
-      path <- getwd()
-    }
-    lf <- list.files(path, full.names = T)
-    ld <- list.dirs(path, recursive = F)
-    file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
-    if (exclude_file_type[1] != "none") {
-      keep_files_df <- t(as.data.frame(lapply(exclude_file_type, function(x)
-        !grepl(x, basename(file_list))), stringsAsFactors = F))
-      colnames(keep_files_df) <- paste0("V", c(1:ncol(keep_files_df)))
-      rownames(keep_files_df) <- NULL
-      file_list <- file_list[unlist(lapply(c(1:ncol(keep_files_df)), function(x) all(keep_files_df[, x])))]
-    }
-    for (i in 1:length(file_list)) {
-      copy_rename_file(paste0(dirname(file_list[i]), "/"),
-                       basename(file_list[i]), save_path, prefix)
-    }
-    # could be extended to subfolders via list.files(path, full.names = T, recursive = T)
-  } else {
-    for (i in 1:length(files)) {
-      # save i in folder to folder with date and tag if !file.exists(i)
-      copy_rename_file(path, files[i], save_path, prefix)
-    }
-  }
-  return(NULL)
-}
-
-
-#' Title
-#'
-#' @param short_uuid
-#' @param path2archive
-#'
-#' @return
-#' @export
-load_fom_archive <- function(short_uuid, path2archive) {
-  lf <- list.files(path2archive, full.names = T)
-  ld <- list.dirs(path2archive, recursive = F)
-  file_list <- lf[match(setdiff(normalizePath(lf), normalizePath(ld)), normalizePath(lf))]
-  cond <- grepl(short_uuid, strsplit(file_list, split = "_", fixed = T))
-  if (sum(cond) > 1) {
-    cat(paste0("The following files do not have a unique short uuid:\n",
-               paste(basename(file_list[cond]), collapse = ",\n ")))
-    stop("short_uuid not unique")
-    # Could be extended: grepl(substr(short_uuid, 1, 8)...)
-  } else if (sum(cond) == 0) {
-    stop("short_uuid not found")
-  }
-  file <- unlist(strsplit(file_list[cond], split = "/", fixed = T))
-  if (grepl(".RData", file[length(file)]))
-    return(load_rdata(file[length(file)], path2archive))
-  else {
-    stop("File not found")
-    return(NULL)
-  }
-}
-
-#' Define a German <-> English dictionary for weekday and month names
+#' Define a German <-> English dictionary for weekday and month names ???
 #'
 #' @return A dictionary as list (subset possible)
 #' @export
@@ -594,7 +460,7 @@ dict <- function() { # Not used anymore
   return(list(g2e = dict_g2e, e2g = dict_e2g))
 }
 
-#' Define a Integer-alias <-> English dictionary for weekday and month names
+#' Define a Integer-alias <-> English dictionary for weekday and month names ???
 #'
 #' @return A dictionary as list (subset possible)
 #' @export
@@ -613,7 +479,7 @@ int_dict <- function() { # This is used for Jan -> integer conversion
   return(list(e2int = dict_e2int, int2e = dict_int2e))
 }
 
-#' German => English translator based on dict()
+#' German => English translator based on dict() ???
 #'
 #' @param ger_expr A character (in german)
 #'
@@ -637,7 +503,7 @@ g2e <- function(ger_expr) {
   return(res)
 }
 
-#' English => German translator based on dict()
+#' English => German translator based on dict() ???
 #'
 #' @param eng_expr A character (in english)
 #'
@@ -663,7 +529,8 @@ e2g <- function(eng_expr) {
 #' Wrapper for unlink to automatically remove directories. For details see unlink.
 #'
 #' @param path A character, the path
-#' @param recursive A boolean, set to TRUE to remove directories. Refer to help for unlink.
+#' @param recursive A boolean, set to TRUE to remove directories.
+#' Refer to help for unlink.
 #' @param force A boolean, refer to help for unlink.
 #'
 #' @return TRUE value which can be assigned, but which is not print. ?invisible.
@@ -743,9 +610,12 @@ replace_by_lookuptable <- function(df, col, lookup, ...) {
   assertthat::assert_that(all(col %in% names(df))) # all cols exist in df
   assertthat::assert_that(all(c("new", "old") %in% colnames(lookup)))
 
-  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x) ims_match(x, lookup$old, ...))))
+  cond_na_exists <- is.na(unlist(lapply(df[, col], function(x)
+    ims_match(x, lookup$old, ...))))
   assertthat::assert_that(!any(cond_na_exists))
 
-  df[, col] <- unlist(lapply(df[, col], function(x) lookup$new[ims_match(x, lookup$old, ...)]))
+  df[, col] <- unlist(lapply(df[, col], function(x)
+    lookup$new[ims_match(x, lookup$old, ...)]))
   return(df)
 }
+
