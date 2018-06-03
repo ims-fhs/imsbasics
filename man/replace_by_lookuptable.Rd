@@ -19,7 +19,5 @@ replace_by_lookuptable(df, col, lookup, ...)
 df A data.frame
 }
 \description{
-Replace a string through another one in one or more columns of a data.frame.
-If for a given row there is no match found in the old-value-colum to map to
-the new-value-column, NA will be inserted instead.
+Comment: Method has been taken from zh911::my_match and renamed as ims_match.
 }

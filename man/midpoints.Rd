@@ -2,16 +2,24 @@
 % Please edit documentation in R/imsbasics.R
 \name{midpoints}
 \alias{midpoints}
-\title{midpoints calculates the midpoints of a factor level (x,y] created from ..... ?}
+\title{Calculates the midpoints of a factor level (x,y]}
 \usage{
-midpoints(x, dp = 2)
+midpoints(x, digits = 2)
 }
 \arguments{
-\item{dp}{}
+\item{x}{A factor}
+
+\item{digits}{An integer, the number of digits}
 }
 \value{
-mids
+mids A numeric, the array of midpoints
 }
 \description{
-midpoints calculates the midpoints of a factor level (x,y] created from ..... ?
+Calculates the midpoints of a factor level (x,y]
+}
+\examples{
+n <- 3; k <- 5
+d <- gl(n, k, length = n*k, labels = seq_len(n), ordered = FALSE)
+x <- cut(as.numeric(d), 4)
+imsbasics::midpoints(x, 4)
 }

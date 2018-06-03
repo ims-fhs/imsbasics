@@ -18,10 +18,7 @@ ims_match(pattern, y, encoding_match_type = "base_r")
 array of indices with exact case sensitive matching
 }
 \description{
-Search for a string (case sensitive, not a pattern!) in a vector y. Full match
-is done through comparison of string's length. Used in replace_by_lookuptable()
-In theory, this function should be identical to match(pattern, y).
-Sometimes, match has problems with encodings. Not reproducible.
+Comment: Method has been taken from zh911::my_match and renamed as ims_match.
 }
 \examples{
 y <- c("Test", "a", "b", "t", "T", "Te", "Test", "hurz")
