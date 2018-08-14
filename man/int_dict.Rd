@@ -2,7 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{int_dict}
 \alias{int_dict}
-\title{Define a Integer-alias <-> English dictionary for weekday and month names ???}
+\title{Define a Integer-alias <-> English dictionary for weekday and month names SLC: Remove???}
 \usage{
 int_dict()
 }
@@ -10,5 +10,5 @@ int_dict()
 A dictionary as list (subset possible)
 }
 \description{
-Define a Integer-alias <-> English dictionary for weekday and month names ???
+Define a Integer-alias <-> English dictionary for weekday and month names SLC: Remove???
 }

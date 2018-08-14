@@ -91,14 +91,15 @@ plot_runtime <- function(n, dt, dt_unit, title, display) {
   return(NULL)
 }
 
-#' Title
+#' Check if package is installed
 #'
-#' @param mypkg
+#' @param mypkg A character, the package name
 #'
-#' @return
+#' @return A boolean, TRUE or FALSE
 #' @export
 #'
 #' @examples
+#' is.installed("imsbasics") #  [1] TRUE
 is.installed <- function(mypkg) {
   return(is.element(mypkg, installed.packages()[,1]))
 }
@@ -122,6 +123,10 @@ percent_deviation <- function(x, x_ref, digits=1) {
 #'
 #' @return An array
 #' @export
+#'
+#' @examples
+#' shift_array(c(1, 2, 3, 4), 2)
+#' shift_array(c(1, 2, 3, 4), -2, "hurz")
 shift_array <- function(x, n, default = NA) {
   stopifnot(length(x) >= n)
   if (n == 0) {
@@ -141,15 +146,21 @@ shift_array <- function(x, n, default = NA) {
   }
 }
 
+#' Matlab's "[...] ="
+#'
 #' %<-% Matlabs '[...] =' operator. call as c(par1, par2, ...) %<-% somefunction(...)
 #' instead of calling res <- somefunction(...), par1 <- res$par1, ... rm(res)
 #' Should not be used in simulations
 #'
-#' @param lhs
-#' @param rhs
+#' @param lhs A list, the left hand side
+#' @param rhs An expression, the right hand side
 #'
 #' @return result
 #' @export
+#'
+#' @examples
+#' foo <- function() {return(list(x1=1, x2=2))}
+#' c(a, b) %<-% foo() # See a, b in Environment!
 '%<-%' <- function(lhs, rhs) {
   frame <- parent.frame()
   lhs <- as.list(substitute(lhs))
@@ -170,8 +181,8 @@ shift_array <- function(x, n, default = NA) {
 
 #' create_log directs output to logfile_name in save_path
 #'
-#' @param logfile_name
-#' @param save_path
+#' @param logfile_name A character, the name of the log file
+#' @param save_path A character, the oath to the log file
 #' @export
 create_log <- function(logfile_name, save_path) {
   warning("Error messages not visible. Use closeAllConnections() in the end of the script")
@@ -179,7 +190,8 @@ create_log <- function(logfile_name, save_path) {
     file.remove(paste0(save_path, logfile_name))
   }
   fid <- file(paste0(save_path, logfile_name), open = "wt")
-  sink(fid, type = "message", split = F) # warnings are NOT displayed. split=T not possible.
+  # warnings are NOT displayed. split=T not possible.
+  sink(fid, type = "message", split = F)
   sink(fid, append = T, type = "output", split = T) # print, cat
   return(NULL)
 }
@@ -289,13 +301,15 @@ save_rdata <- function(data, filename,
 #'
 #' @return RGB value for FHS-blue
 #' @export
-fhs <- function() {
+fhsblue <- function() {
   return(rgb(0, 102, 153, maxColorValue = 255))
 }
 
-#' Title
+#' Clear all variables
 #'
-#' @return
+#' Clear all variables from environment
+#'
+#' @return NULL
 #' @export
 clear_all_var <- function() {
   ENV <- globalenv()
@@ -305,9 +319,11 @@ clear_all_var <- function() {
   return(NULL)
 }
 
-#' Title
+#' Close all graphs
 #'
-#' @return
+#' Close all graphs in plot, but not in viewer.
+#'
+#' @return NULL
 #' @export
 close_all_graph <- function() {
   if (dev.cur() != 1) {dev.off(which = dev.cur())} #close plots
@@ -315,9 +331,11 @@ close_all_graph <- function() {
   return(NULL)
 }
 
-#' Title
+#' Clean console
 #'
-#' @return
+#' Analogue to Matlab. Corresponds to Crtl + L in RStudio now.
+#'
+#' @return NULL
 #' @export
 cc <- function() {
   cat("\014")
@@ -327,11 +345,16 @@ cc <- function() {
 
 #' zero_n creates string of form 000x from integer x.
 #'
-#' @param number
-#' @param position
+#' @param number A numeric, the number
+#' @param position An integer, the number of leading zeros.
 #'
-#' @return standard string
+#' @return A character, a standardized string of number
 #' @export
+#'
+#' @examples
+#' imsbasics::zero_n(1.234, 1) # [1] "1.234"
+#' imsbasics::zero_n(1.234, 2) # [1] "01.234"
+#' imsbasics::zero_n(1.234, 3) # [1] "001.234"
 zero_n <- function(number, position=3) {
   res <- substr(number + 10^position, 2, nchar(number + 10^position))
   return(res)
@@ -367,9 +390,9 @@ weekdays_abbr <- function() {
   return(list(german = german, english = english))
 }
 
-#' g2e german to english using weekdays_abbr as reference. ???
+#' g2e german to english using weekdays_abbr as reference. SLC: Remove???
 #'
-#' @param weekday_ger
+#' @param weekday_ger A character
 #'
 #' @return res
 #' @export
@@ -386,9 +409,9 @@ g2e <- function(weekday_ger) {
   return(res)
 }
 
-#' e2g english to german using weekdays_abbr as reference. ???
+#' e2g english to german using weekdays_abbr as reference. SLC: Remove???
 #'
-#' @param weekday_eng
+#' @param weekday_eng A character
 #'
 #' @return res
 #' @export
@@ -401,13 +424,15 @@ e2g <- function(weekday_eng) {
   return(res)
 }
 
-#' rectangle step to zero in (t0, t1). Otherwise 0.
+#' rectangle function
 #'
-#' @param t
-#' @param t0
-#' @param t1
+#' Rectangle step to zero in (t0, t1). Otherwise 0. Use stepfun instead?
 #'
-#' @return
+#' @param t An array of numeric
+#' @param t0 A numeric contained in t, the position for step up
+#' @param t1 A numeric contained in t, the position for step down
+#'
+#' @return An array of numerics, the y-values of the rectangle function.
 #' @export
 rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   if (upper > lower) {
@@ -427,12 +452,15 @@ rectangle <- function(t, lower, upper, at_step=0.5) { # Not used.
   } else {
     stop("at_step = 0, 0.5 or 1")
   }
+  return(y)
 }
 
+#' Clear all and close all graphs
+#'
 #' Function to remove all variables and close all graphs/ plots
 #' including Garbage Collection gc()
 #'
-#' @return
+#' @return NULL
 #' @export
 clc <- function() {
   clear_all_var()
@@ -441,7 +469,7 @@ clc <- function() {
   return(NULL)
 }
 
-#' Define a German <-> English dictionary for weekday and month names ???
+#' Define a German <-> English dictionary for weekday and month names SLC: Remove???
 #'
 #' @return A dictionary as list (subset possible)
 #' @export
@@ -460,7 +488,7 @@ dict <- function() { # Not used anymore
   return(list(g2e = dict_g2e, e2g = dict_e2g))
 }
 
-#' Define a Integer-alias <-> English dictionary for weekday and month names ???
+#' Define a Integer-alias <-> English dictionary for weekday and month names SLC: Remove???
 #'
 #' @return A dictionary as list (subset possible)
 #' @export
@@ -479,7 +507,7 @@ int_dict <- function() { # This is used for Jan -> integer conversion
   return(list(e2int = dict_e2int, int2e = dict_int2e))
 }
 
-#' German => English translator based on dict() ???
+#' German => English translator based on dict() SLC: Remove???
 #'
 #' @param ger_expr A character (in german)
 #'
@@ -503,7 +531,7 @@ g2e <- function(ger_expr) {
   return(res)
 }
 
-#' English => German translator based on dict() ???
+#' English => German translator based on dict() SLC: Remove???
 #'
 #' @param eng_expr A character (in english)
 #'
@@ -526,6 +554,8 @@ e2g <- function(eng_expr) {
   return(res)
 }
 
+#' Remove directory
+#'
 #' Wrapper for unlink to automatically remove directories. For details see unlink.
 #'
 #' @param path A character, the path
@@ -546,6 +576,8 @@ dir.remove <- function(path, recursive, force) {
   stop(sprintf("Failed to remove [%s]", x))
 }
 
+#' SQC's strange but working match function
+#'
 #' Search for a string (case sensitive, not a pattern!) in a vector y. Full match
 #' is done through comparison of string's length. Used in replace_by_lookuptable()
 #' In theory, this function should be identical to match(pattern, y).
@@ -572,7 +604,8 @@ ims_match <- function(pattern, y, encoding_match_type = "base_r") {
   } else if (encoding_match_type == "sqc") {
     # perhaps only SQC uses this:
     l <- unlist(lapply(pattern, function(x) {
-      res <- grep(x, y, fixed = T, value = F) # should be ", fixed = T" because we do not look for regexpr!
+      # should be ", fixed = T" because we do not look for regexpr!
+      res <- grep(x, y, fixed = T, value = F)
       # grep looks for pattern. Full match assumes that length of string should be unique.
       if (length(res) > 1) {
         y_old <- res
@@ -582,11 +615,11 @@ ims_match <- function(pattern, y, encoding_match_type = "base_r") {
   } else {
     stop("encoding_match_type has to be either default base_r or sqc")
   }
-  #
-
   return(l)
 }
 
+#' Replace columns in data.frame using lookup table
+#'
 #' Replace a string through another one in one or more columns of a data.frame.
 #' If for a given row there is no match found in the old-value-colum to map to
 #' the new-value-column, NA will be inserted instead.

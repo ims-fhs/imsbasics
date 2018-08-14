@@ -2,13 +2,20 @@
 % Please edit documentation in R/imsbasics.R
 \name{rectangle}
 \alias{rectangle}
-\title{rectangle step to zero in (t0, t1). Otherwise 0.}
+\title{rectangle function}
 \usage{
 rectangle(t, lower, upper, at_step = 0.5)
 }
 \arguments{
-\item{t1}{}
+\item{t}{An array of numeric}
+
+\item{t0}{A numeric contained in t, the position for step up}
+
+\item{t1}{A numeric contained in t, the position for step down}
+}
+\value{
+An array of numerics, the y-values of the rectangle function.
 }
 \description{
-rectangle step to zero in (t0, t1). Otherwise 0.
+Rectangle step to zero in (t0, t1). Otherwise 0. Use stepfun instead?
 }

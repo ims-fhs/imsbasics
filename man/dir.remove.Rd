@@ -2,7 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{dir.remove}
 \alias{dir.remove}
-\title{Wrapper for unlink to automatically remove directories. For details see unlink.}
+\title{Remove directory}
 \usage{
 dir.remove(path, recursive, force)
 }

@@ -19,3 +19,7 @@ An array
 \description{
 shift array by n positions to the right or left
 }
+\examples{
+shift_array(c(1, 2, 3, 4), 2)
+shift_array(c(1, 2, 3, 4), -2, "hurz")
+}

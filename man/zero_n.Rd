@@ -7,11 +7,18 @@
 zero_n(number, position = 3)
 }
 \arguments{
-\item{position}{}
+\item{number}{A numeric, the number}
+
+\item{position}{An integer, the number of leading zeros.}
 }
 \value{
-standard string
+A character, a standardized string of number
 }
 \description{
 zero_n creates string of form 000x from integer x.
+}
+\examples{
+imsbasics::zero_n(1.234, 1) # [1] "1.234"
+imsbasics::zero_n(1.234, 2) # [1] "01.234"
+imsbasics::zero_n(1.234, 3) # [1] "001.234"
 }

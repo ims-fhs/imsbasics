@@ -3,7 +3,7 @@
 \name{e2g}
 \alias{e2g}
 \alias{e2g}
-\title{e2g english to german using weekdays_abbr as reference. ???}
+\title{e2g english to german using weekdays_abbr as reference. SLC: Remove???}
 \usage{
 e2g(eng_expr)
 
@@ -12,7 +12,7 @@ e2g(eng_expr)
 \arguments{
 \item{eng_expr}{A character (in english)}
 
-\item{weekday_eng}{}
+\item{weekday_eng}{A character}
 }
 \value{
 res
@@ -20,7 +20,7 @@ res
 A character, the translation
 }
 \description{
-e2g english to german using weekdays_abbr as reference. ???
+e2g english to german using weekdays_abbr as reference. SLC: Remove???
 
-English => German translator based on dict() ???
+English => German translator based on dict() SLC: Remove???
 }

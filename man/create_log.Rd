@@ -6,6 +6,11 @@
 \usage{
 create_log(logfile_name, save_path)
 }
+\arguments{
+\item{logfile_name}{A character, the name of the log file}
+
+\item{save_path}{A character, the oath to the log file}
+}
 \description{
 create_log directs output to logfile_name in save_path
 }

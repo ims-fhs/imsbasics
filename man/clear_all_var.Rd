@@ -2,10 +2,10 @@
 % Please edit documentation in R/imsbasics.R
 \name{clear_all_var}
 \alias{clear_all_var}
-\title{Title}
+\title{Clear all variables}
 \usage{
 clear_all_var()
 }
 \description{
-Title
+Clear all variables from environment
 }

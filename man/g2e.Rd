@@ -3,7 +3,7 @@
 \name{g2e}
 \alias{g2e}
 \alias{g2e}
-\title{g2e german to english using weekdays_abbr as reference. ???}
+\title{g2e german to english using weekdays_abbr as reference. SLC: Remove???}
 \usage{
 g2e(ger_expr)
 
@@ -12,7 +12,7 @@ g2e(ger_expr)
 \arguments{
 \item{ger_expr}{A character (in german)}
 
-\item{weekday_ger}{}
+\item{weekday_ger}{A character}
 }
 \value{
 res
@@ -20,7 +20,7 @@ res
 A character, the translation
 }
 \description{
-g2e german to english using weekdays_abbr as reference. ???
+g2e german to english using weekdays_abbr as reference. SLC: Remove???
 
-German => English translator based on dict() ???
+German => English translator based on dict() SLC: Remove???
 }

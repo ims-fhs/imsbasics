@@ -2,8 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{clc}
 \alias{clc}
-\title{Function to remove all variables and close all graphs/ plots
-including Garbage Collection gc()}
+\title{Clear all and close all graphs}
 \usage{
 clc()
 }

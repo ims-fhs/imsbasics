@@ -2,14 +2,14 @@
 % Please edit documentation in R/imsbasics.R
 \name{\%<-\%}
 \alias{\%<-\%}
-\title{%<-% Matlabs '[...] =' operator. call as c(par1, par2, ...) %<-% somefunction(...)
-instead of calling res <- somefunction(...), par1 <- res$par1, ... rm(res)
-Should not be used in simulations}
+\title{Matlab's "[...] ="}
 \usage{
 lhs \%<-\% rhs
 }
 \arguments{
-\item{rhs}{}
+\item{lhs}{A list, the left hand side}
+
+\item{rhs}{An expression, the right hand side}
 }
 \value{
 result
@@ -18,4 +18,8 @@ result
 %<-% Matlabs '[...] =' operator. call as c(par1, par2, ...) %<-% somefunction(...)
 instead of calling res <- somefunction(...), par1 <- res$par1, ... rm(res)
 Should not be used in simulations
+}
+\examples{
+foo <- function() {return(list(x1=1, x2=2))}
+c(a, b) \%<-\% foo() # See a, b in Environment!
 }

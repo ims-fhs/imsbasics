@@ -2,10 +2,10 @@
 % Please edit documentation in R/imsbasics.R
 \name{close_all_graph}
 \alias{close_all_graph}
-\title{Title}
+\title{Close all graphs}
 \usage{
 close_all_graph()
 }
 \description{
-Title
+Close all graphs in plot, but not in viewer.
 }

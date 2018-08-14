@@ -2,10 +2,10 @@
 % Please edit documentation in R/imsbasics.R
 \name{cc}
 \alias{cc}
-\title{Title}
+\title{Clean console}
 \usage{
 cc()
 }
 \description{
-Title
+Analogue to Matlab. Corresponds to Crtl + L in RStudio now.
 }

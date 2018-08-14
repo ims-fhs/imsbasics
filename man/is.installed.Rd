@@ -2,13 +2,19 @@
 % Please edit documentation in R/imsbasics.R
 \name{is.installed}
 \alias{is.installed}
-\title{Title}
+\title{Check if package is installed}
 \usage{
 is.installed(mypkg)
 }
 \arguments{
-\item{mypkg}{}
+\item{mypkg}{A character, the package name}
+}
+\value{
+A boolean, TRUE or FALSE
 }
 \description{
-Title
+Check if package is installed
+}
+\examples{
+is.installed("imsbasics") #  [1] TRUE
 }

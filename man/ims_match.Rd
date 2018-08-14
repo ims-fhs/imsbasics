@@ -2,10 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{ims_match}
 \alias{ims_match}
-\title{Search for a string (case sensitive, not a pattern!) in a vector y. Full match
-is done through comparison of string's length. Used in replace_by_lookuptable()
-In theory, this function should be identical to match(pattern, y).
-Sometimes, match has problems with encodings. Not reproducible.}
+\title{SQC's strange but working match function}
 \usage{
 ims_match(pattern, y, encoding_match_type = "base_r")
 }
@@ -18,6 +15,12 @@ ims_match(pattern, y, encoding_match_type = "base_r")
 array of indices with exact case sensitive matching
 }
 \description{
+Search for a string (case sensitive, not a pattern!) in a vector y. Full match
+is done through comparison of string's length. Used in replace_by_lookuptable()
+In theory, this function should be identical to match(pattern, y).
+Sometimes, match has problems with encodings. Not reproducible.
+}
+\details{
 Comment: Method has been taken from zh911::my_match and renamed as ims_match.
 }
 \examples{
