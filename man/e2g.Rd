@@ -3,7 +3,7 @@
 \name{e2g}
 \alias{e2g}
 \alias{e2g}
-\title{e2g english to german using weekdays_abbr as reference.}
+\title{e2g english to german using weekdays_abbr as reference. ???}
 \usage{
 e2g(eng_expr)
 
@@ -20,7 +20,7 @@ res
 A character, the translation
 }
 \description{
-e2g english to german using weekdays_abbr as reference.
+e2g english to german using weekdays_abbr as reference. ???
 
-English => German translator based on dict()
+English => German translator based on dict() ???
 }

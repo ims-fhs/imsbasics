@@ -9,7 +9,8 @@ dir.remove(path, recursive, force)
 \arguments{
 \item{path}{A character, the path}
 
-\item{recursive}{A boolean, set to TRUE to remove directories. Refer to help for unlink.}
+\item{recursive}{A boolean, set to TRUE to remove directories.
+Refer to help for unlink.}
 
 \item{force}{A boolean, refer to help for unlink.}
 }

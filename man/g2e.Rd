@@ -3,7 +3,7 @@
 \name{g2e}
 \alias{g2e}
 \alias{g2e}
-\title{g2e german to english using weekdays_abbr as reference.}
+\title{g2e german to english using weekdays_abbr as reference. ???}
 \usage{
 g2e(ger_expr)
 
@@ -20,7 +20,7 @@ res
 A character, the translation
 }
 \description{
-g2e german to english using weekdays_abbr as reference.
+g2e german to english using weekdays_abbr as reference. ???
 
-German => English translator based on dict()
+German => English translator based on dict() ???
 }

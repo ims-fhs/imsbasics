@@ -2,7 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{fhs}
 \alias{fhs}
-\title{Function returns blue of FH St. Gallen.}
+\title{Function returns blue of FH St. Gallen. ???}
 \usage{
 fhs()
 }
@@ -10,5 +10,5 @@ fhs()
 RGB value for FHS-blue
 }
 \description{
-Function returns blue of FH St. Gallen.
+Function returns blue of FH St. Gallen. ???
 }

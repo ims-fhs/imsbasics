@@ -2,7 +2,7 @@
 % Please edit documentation in R/imsbasics.R
 \name{dict}
 \alias{dict}
-\title{Define a German <-> English dictionary for weekday and month names}
+\title{Define a German <-> English dictionary for weekday and month names ???}
 \usage{
 dict()
 }
@@ -10,5 +10,5 @@ dict()
 A dictionary as list (subset possible)
 }
 \description{
-Define a German <-> English dictionary for weekday and month names
+Define a German <-> English dictionary for weekday and month names ???
 }
