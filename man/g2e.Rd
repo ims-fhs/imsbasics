@@ -2,7 +2,6 @@
 % Please edit documentation in R/imsbasics.R
 \name{g2e}
 \alias{g2e}
-\alias{g2e}
 \title{g2e german to english using weekdays_abbr as reference. SLC: Remove???}
 \usage{
 g2e(ger_expr)

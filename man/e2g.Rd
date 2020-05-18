@@ -2,7 +2,6 @@
 % Please edit documentation in R/imsbasics.R
 \name{e2g}
 \alias{e2g}
-\alias{e2g}
 \title{e2g english to german using weekdays_abbr as reference. SLC: Remove???}
 \usage{
 e2g(eng_expr)

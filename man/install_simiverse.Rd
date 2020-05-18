@@ -6,8 +6,9 @@
 Uses devtools::install_github, accesses always master branches.
 No examples and tests provided since they will change your library..}
 \usage{
-
-  install_simiverse(auth_token = stop("Provide GitHub AuthToken to access private Repos"))
+install_simiverse(
+  auth_token = stop("Provide GitHub AuthToken to access private Repos")
+)
 }
 \arguments{
 \item{auth_token}{The token to access your privat Repos on GitHub}

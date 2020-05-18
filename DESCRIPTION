@@ -1,13 +1,14 @@
 Package: imsbasics
 Type: Package
 Title: Provides basic functions
-Version: 1.9.8
+Version: 1.9.9
 Date: 2020-05-18
 Author: Christoph Strauss, Adrian Staempfli
 Maintainer: Christoph Strauss <Christoph.Strauss@fhsg.ch>
 Description: bla
 License: -
 LazyData: TRUE
-RoxygenNote: 6.0.1
+Encoding: UTF-8
+RoxygenNote: 7.1.0
 Suggests: testthat, roxygen2
-Imports: assertthat, devtools, fBasics, lubridate
+Imports: assertthat, devtools, fBasics

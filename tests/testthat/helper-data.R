@@ -3,7 +3,7 @@
 
 # Load file in data and check some values:
 path <- ""
-data <- imsbasics::load_rdata("Z-testdata_hs_SG2014", path)
+data <- load_rdata("Z-testdata_hs_SG2014", path)
 short_uuid <- substr(data$uuid, 1, 8)
 
 file <- "Z-testdata_routes"
