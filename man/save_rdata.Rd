@@ -5,9 +5,13 @@
 \title{Save a specific variable in environmet to file in specific folder
 Call as cacheR::varToFile(data, filename, path)}
 \usage{
-save_rdata(data, filename,
-  path = stop("Data, filename and path arguments are required"), force = F,
-  warn = T)
+save_rdata(
+  data,
+  filename,
+  path = stop("Data, filename and path arguments are required"),
+  force = F,
+  warn = T
+)
 }
 \arguments{
 \item{filename, }{can be without ".RData". Required input.}
