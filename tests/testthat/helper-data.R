@@ -6,8 +6,8 @@ path <- ""
 data <- load_rdata("Z-testdata_hs_SG2014", path)
 short_uuid <- substr(data$uuid, 1, 8)
 
-file <- "Z-testdata_routes"
-fileRData <- paste0(file, ".RData")
+filename <- "Z-testdata_routes"
+fileRData <- paste0(filename, ".RData")
 
 savename <- "ZZ-routes.RData"
 filename_withoutpath <- paste0("../testthat/", savename)

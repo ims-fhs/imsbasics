@@ -39,7 +39,7 @@ test_that("load_rdata works", {
   expect_equal(round(myroutes$lng2[2], 5), 7.84218)
 
   # Check whether .RData is completed correctly:
-  myroutes2 <- load_rdata(file, path)
+  myroutes2 <- load_rdata(filename, path)
   expect_equal(nrow(myroutes2), 25244)
 
   # Check error message, when file does not exist:
@@ -47,7 +47,7 @@ test_that("load_rdata works", {
   # Leave error message blank as statement depends on language.
 
   # Check what happens, if file or path is missing
-  expect_error(load_rdata(file), )
+  expect_error(load_rdata(filename), )
   expect_error(load_rdata(path), )
 })
 

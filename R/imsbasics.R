@@ -621,8 +621,8 @@ ims_match <- function(pattern, y, encoding_match_type = "base_r") {
 #' Replace columns in data.frame using lookup table
 #'
 #' Replace a string through another one in one or more columns of a data.frame.
-#' If for a given row there is no match found in the old-value-colum to map to
-#' the new-value-column, NA will be inserted instead.
+#' If for a given row there is no match found in the old-value-column of the
+#' lookup table, the function stops with an error (It's a feature not a Bug!)
 #'
 #' Comment: Method has been taken from zh911::my_match and renamed as ims_match.
 #'
